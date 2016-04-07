@@ -6,9 +6,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Zai</title>
-    <link href="http://kamsolutions.pl/projects/resume/css/bootstrap.min.css" rel="stylesheet">
-    <link href="http://kamsolutions.pl/projects/resume/css/font-awesome.css" rel="stylesheet">
-    <link href="http://kamsolutions.pl/projects/resume/css/main.css" rel="stylesheet">
+    <link href="bootstrap.min.css" rel="stylesheet">
+    <link href="font-awesome.css" rel="stylesheet">
+    <link href="main.css" rel="stylesheet">
     <!--[if lt IE 9]>
       <script src="js/html5shiv.js"></script>
       <script src="js/respond.min.js"></script>
@@ -141,7 +141,7 @@
               <div class="item-skills" data-percent="0.90">CSS</div>
               <div class="item-skills" data-percent="0.80">jQuery</div>
               <div class="item-skills" data-percent="0.75">PHP</div>
-              <div class="item-skills" data-percent="0.25">Laravel 2 (framework)</div>
+              <div class="item-skills" data-percent="0.80">Codeigniter</div>
               <div class="skills-legend clearfix">
                 <div class="legend-left legend">Beginner</div>
                 <div class="legend-left legend"><span>Proficient</span></div>
@@ -169,10 +169,34 @@
       </div>
     </div>
     <!-- JQUERY -->
-    <script src="http://kamsolutions.pl/projects/resume/js/jquery.min.js"></script>
+    <script src="jquery.min.js"></script>
     <!-- BOOTSTRAP -->
-    <script src="http://kamsolutions.pl/projects/resume/js/bootstrap.min.js"></script>
+    <script src="bootstrap.min.js"></script>
     <!-- SCRIPTS -->
-    <script src="http://kamsolutions.pl/projects/resume/js/scripts.js"></script>
+    <script>
+	    var callback = function(){
+		$('.item-skills').each(function(){
+			newWidth = $(this).parent().width() * $(this).data('percent');
+				$(this).width(0);
+			    $(this).animate({
+			        width: newWidth,
+			    }, 1000);
+				});
+				$('.icons-red').each(function(){
+					height = $(this).height();
+			    $(this).animate({
+			        height: 14,
+			    }, 2000);
+			});
+		};
+		$(document).ready(callback);
+			var resize;
+			window.onresize = function() {
+				clearTimeout(resize);
+				resize = setTimeout(function(){
+					callback();
+				}, 100);
+		};
+    </script>
   </body>
 </html>
