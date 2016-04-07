@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Zai</title>
+    <title>Zai - Profile</title>
     <link href="bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
     <link href="main.css" rel="stylesheet">
@@ -51,21 +51,21 @@
             <h2>Education</h2>
             <ul id="education" class="clearfix">
               <li>
-                <div class="year pull-left">1990</div>
+                <div class="year pull-left">1989</div>
                 <div class="description pull-right">
                   <h3>I was born in La Union</h3>
                   <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sapiente, exercitationem, totam, dolores iste dolore est aut modi.</p>
                 </div>
               </li>
               <li>
-                <div class="year pull-left">2005</div>
+                <div class="year pull-left">2002</div>
                 <div class="description pull-right">
                   <h3>Sto. Tomas Central School</h3>
                   <p>Sto. Tomas La Union</p>
                 </div>
               </li>
               <li>
-                <div class="year pull-left">2009</div>
+                <div class="year pull-left">2006</div>
                 <div class="description pull-right">
                   <h3>Saint Mary of The Sea Academy</h3>
                   <p>Sto. Tomas La Union</p>
@@ -189,8 +189,8 @@
     <script src="bootstrap.min.js"></script>
     <!-- SCRIPTS -->
     <script>
-	    var callback = function(){
-		$('.item-skills').each(function(){
+		function callback() {
+			$('.item-skills').each(function(){
 			newWidth = $(this).parent().width() * $(this).data('percent');
 				$(this).width(0);
 			    $(this).animate({
@@ -203,7 +203,7 @@
 			        height: 14,
 			    }, 2000);
 			});
-		};
+		}
 		$(document).ready(callback);
 			var resize;
 			window.onresize = function() {
