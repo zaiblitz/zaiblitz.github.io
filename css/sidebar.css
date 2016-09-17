@@ -1,0 +1,28 @@
+#sidebar-wrapper {
+	position: fixed;
+	width: 200px;
+	float: left;
+	height: 100%;
+	border-right: thick double #e74c3c;
+}
+
+
+#page-content-wrapper {
+	margin-left: 200px;
+}
+
+
+
+.sidebar-nav {
+	list-style: none;
+}
+
+.sidebar-nav li {
+	line-height: 30px;
+}
+
+.sidebar-nav li a {
+    display: block;
+    text-decoration: none;
+    color: #999999;
+}
