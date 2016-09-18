@@ -4,16 +4,17 @@
 	float: left;
 	height: 100%;
 	margin-top:-20px;
-	border-right: thick double #e74c3c;
+	border-right: thin double gray;
+}
+
+a.list-group-item:hover {
+	border-style: solid;
+	border-left-width: 5px;
+	border-left-color: #ff0000;
 }
 
 #page-content-wrapper {
 	margin-left: 240px;
 }
 
-
-
-.sidebar-nav {
-	list-style: none;
-}
 
