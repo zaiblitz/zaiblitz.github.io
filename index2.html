@@ -12,13 +12,13 @@
 </head>
 <body>
 
-	<nav class="navbar navbar-inverse">
+	<nav class="navbar navbar-inverse navbar-fixed-top">
 		<div class="container-fluid">
 			<!-- LOGO -->	
 			<div class="navbar-header">
 				<!--
 				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#mainNavBar">
-					<span class="icon-bar"></span>
+					<s></s>pan class="icon-bar"></span>
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</button>
@@ -42,7 +42,20 @@
 							<li><a href="#">Photos</a></li>
 						</ul>	
 					</li>
-				</ul>	
+				</ul>
+
+				<!-- Search -->
+			    <div class="col-sm-3 col-md-3">
+			        <form class="navbar-form" role="search">
+			        <div class="input-group">
+			            <input type="text" class="form-control" placeholder="Search" id="search-input">
+			            <div class="input-group-btn">
+			                <button class="btn btn-default" type="button" id="search">
+			                	<i class="glyphicon glyphicon-search"></i></button>
+			            </div>
+			        </div>
+			        </form>
+			    </div>	
 
 				<!-- RIGHT ALIGN -->
 				<ul class="nav navbar-nav navbar-right">
@@ -57,14 +70,21 @@
 		<div id="sidebar-wrapper">
 			<div class="list-group">
 				<a href="#" class="list-group-item">AngularJS</a>
-				<a href="#" class="list-group-item" data-toggle="collapse">ReactJS</a>
+				<a href="#" class="list-group-item" data-toggle="collapse">
+					ReactJS</a>
 				
-				<a href="#jquery" class="list-group-item" data-toggle="collapse">jQuery</a>
+				<a href="#jquery" class="list-group-item" data-toggle="collapse">
+					jQuery<i class="pull-right fa fa-angle-down" aria-hidden="true"></i></a>
 				<div class="collapse list-group-submenu" id="jquery">
-					<a href="#" class="list-group-item sub-item" >AJAX</a>
+					<a href="#ajax" class="list-group-item">Ajax</a>
+					<a href="#snippet" class="list-group-item">Snippet</a>
 				</div>
 
-				<a href="#" class="list-group-item">ReactJS</a>	
+				<a href="#dataTables" class="list-group-item" data-toggle="collapse">
+					DataTables<i class="pull-right fa fa-angle-down" aria-hidden="true"></i></a>	
+				<div class="collapse list-group-submenu" id="dataTables">
+					<a href="#" class="list-group-item">Server side</a>
+				</div>
 
 			</div>
 		</div>	
@@ -72,8 +92,7 @@
 		<div id="page-content-wrapper">
 			<div class="container-fluid">
 				<div class="row">
-					<div class="col-md-12">
-						<h2>Hello World</h2>
+					<div class="col-md-12" id="loadData">
 					</div>
 				</div>
 			</div>
@@ -84,11 +103,28 @@
 <script>
 	$(document).ready(function(){
 
-		$('#sidebar-wrapper li > ul').on('click', function(){
-			alert('ok');
+		// sidebar
+		$('.list-group > a').on('click', function(){	
+			var script = $(this).text().toLowerCase();
+			$('#loadData').load(script + '.html');
 		});
 
+		// sidebar child
+		$('.list-group-submenu a').on('click', function(){
+			var parentLi = $(this).parent('.list-group-submenu').attr('id').toLowerCase();
+			var childLi = $(this).text().toLowerCase();
 
+			// e.g load(jquery.html #targetDiv);
+			$('#loadData').load( parentLi+'.html ' + '#'+childLi);	
+		});
+
+		//search target div
+		$('#search').on('click', function(){
+			var text = $('#search-input').val();
+			 $("body, html").animate({ 
+		      scrollTop: $('#' + text).offset().top 
+		    }, 600);
+		});
 
 		// TODO
 		$('#menu-toggle').on('click', function(e){

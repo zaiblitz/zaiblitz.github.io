@@ -1,20 +1,32 @@
+#wrapper {
+	margin-top:50px;
+}
+
 #sidebar-wrapper {
 	position: fixed;
 	width: 240px;
 	float: left;
 	height: 100%;
-	margin-top:-20px;
 	border-right: thin double gray;
 }
 
-a.list-group-item:hover {
+a.list-group-item {
+	-webkit-border-radius: 0px;
+	-moz-border-radius: 0px;
+	-o-border-radius: 0px;
+	border-radius: 0px;
+}
+
+.list-group > a.list-group-item:hover {
 	border-style: solid;
 	border-left-width: 5px;
 	border-left-color: #ff0000;
 }
 
+.list-group-submenu a.list-group-item {
+	color:#e74c3c;
+}
+
 #page-content-wrapper {
 	margin-left: 240px;
 }
-
-
