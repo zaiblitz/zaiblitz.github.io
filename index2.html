@@ -11,15 +11,17 @@
 </head>
 <body>
 
-	<nav class="navbar navbar-default">
+	<nav class="navbar navbar-inverse">
 		<div class="container-fluid">
 			<!-- LOGO -->
 			<div class="navbar-header">
+				<!--
 				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#mainNavBar">
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</button>
+				-->
 				<a href="#" class="navbar-brand">WEBSCRIPTS</a>
 			</div>
 
@@ -52,16 +54,18 @@
 	<div id="wrapper">
 
 		<div id="sidebar-wrapper">
-			<ul class="sidebar-nav">
-				<li><a href="#"> AngularJS</a>
-				<li class="dropdown">
-					<a href="#" class="dropdown-toggle" data-toggle="dropdown">jQuery</a>
-					<ul class="dropdown-menu">
-						<li><a href="#">Ajax</a></li>
-						<li><a href="#">Select</a></li>
-					</ul>
-				<li>
-			</ul>
+			<div class="list-group">
+				<a href="#" class="list-group-item">AngularJS</a>
+				<a href="#" class="list-group-item" data-toggle="collapse">ReactJS</a>
+				
+				<a href="#jquery" class="list-group-item" data-toggle="collapse">jQuery</a>
+				<div class="collapse list-group-submenu" id="jquery">
+					<a href="#" class="list-group-item sub-item" >AJAX</a>
+				</div>
+
+				<a href="#" class="list-group-item">ReactJS</a>	
+
+			</div>
 		</div>	
 
 		<div id="page-content-wrapper">
