@@ -1,0 +1,85 @@
+<div class="container-fluid" id="serverside">
+	<div class="row" style="margin-top:10px;">
+		<div class="col-md-12">
+			   <div class="panel panel-primary">
+			      <div class="panel-heading" data-toggle="collapse" data-target="#tblServer">Datatable Server</div>
+			      <div class="panel-collapse collapse" id="tblServer">
+   			      	<div class="panel-body" >
+   			      		<pre>
+ $('#personTbl').DataTable({
+        destroy: true,
+        responsive : true,
+        ajax : {
+            url     : 'http://localhost/zairus/datatables/person_list',
+            type    : 'POST',
+            data    : {
+                action : 'payroll_approval_list'
+            },
+            async   : true
+        },
+        order : [[ 2, "asc" ]],
+        columns : [
+            { data : "pr_id", visible : false },
+            {
+                data : 'pr_id',
+                render : function(data, type, row ) {
+                    //console.log(row.pr_login_id);             // get specific data in a row
+                    return "&lt;input type='checkbox' value='"+data+"'&gt;";
+                }
+            },
+            { data : 'pr_login_id' },
+            { data : 'pr_fname' },
+            { data : 'pr_lname' },
+            {
+                data : 'pr_gender', class: 'text-left',
+                render : function(data, type, row ) {
+                    return data == 1 ? 'Male' : 'Female';
+                }
+            },
+            { data : 'pr_email'},
+            { data : 'pr_id',
+                render: function(data, type, row ) {
+                    return '&lt;form action="export.html" method="post"&gt;&lt;button class="btn btn-default">Download CSV&lt;/button&gt;&lt;input type="hidden" value="'+data.pr_id+'"&lt;/form&gt;';
+                }
+            }
+        ],
+        drawCallback : function() {
+            var rows = this.fnGetData();
+
+            if ( rows.length > 0 ) {                             // check if table body has a row data
+                var table = $('#personTbl').DataTable();
+
+                $(this).find('tbody tr').dblclick(function() {
+                    var pos = table.fnGetPosition(this);         // get position then
+                    var data = table.fnGetData(pos);             // get row data
+                    showEditModal(data);
+                });
+            }
+        },
+        rowCallback : function( row, data) {
+            $('input', row).on( 'change', function(){           // get row data by check
+                if( $(this).is(":checked") ) {
+                    checkedRows.push(data.pr_id);
+                } else {
+                    var index = checkedRows.indexOf(data.pr_id);
+                    if (index > -1) {
+                        checkedRows.splice(index, 1);
+                    }
+                }
+                console.log(checkedRows);
+            });
+        },
+        sorting :[[1, 'asc']]
+    });
+
+
+   			      		</pre>	
+
+
+   			      	</div>			      	
+			      </div>
+			   </div>
+		</div>		
+	</div>
+</div>
+

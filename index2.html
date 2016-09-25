@@ -69,7 +69,9 @@
 
 		<div id="sidebar-wrapper">
 			<div class="list-group">
-				<a href="#" class="list-group-item">AngularJS</a>
+				<a href="#" class="list-group-item">
+				AngularJS</a>
+
 				<a href="#" class="list-group-item" data-toggle="collapse">
 					ReactJS</a>
 				
@@ -83,19 +85,13 @@
 				<a href="#dataTables" class="list-group-item" data-toggle="collapse">
 					DataTables<i class="pull-right fa fa-angle-down" aria-hidden="true"></i></a>	
 				<div class="collapse list-group-submenu" id="dataTables">
-					<a href="#" class="list-group-item">Server side</a>
+					<a href="#serverside" class="list-group-item">Server side</a>
 				</div>
 
 			</div>
 		</div>	
 
-		<div id="page-content-wrapper">
-			<div class="container-fluid">
-				<div class="row">
-					<div class="col-md-12" id="loadData">
-					</div>
-				</div>
-			</div>
+		<div id="page-content-wrapper" class="loadData">
 		</div>
 	</div>
 </body>
@@ -106,16 +102,14 @@
 		// sidebar
 		$('.list-group > a').on('click', function(){	
 			var script = $(this).text().toLowerCase();
-			$('#loadData').load(script + '.html');
+			$('.loadData').load(script + '.html');
 		});
 
 		// sidebar child
 		$('.list-group-submenu a').on('click', function(){
 			var parentLi = $(this).parent('.list-group-submenu').attr('id').toLowerCase();
-			var childLi = $(this).text().toLowerCase();
-
-			// e.g load(jquery.html #targetDiv);
-			$('#loadData').load( parentLi+'.html ' + '#'+childLi);	
+			var childLi = $(this).text().toLowerCase().replace(/ /g,'');
+			$('.loadData').load( parentLi+'.html ' + '#'+childLi);	
 		});
 
 		//search target div
