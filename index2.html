@@ -99,6 +99,13 @@
 <script>
 	$(document).ready(function(){
 
+		//$('.loadData').css({'white-space': 'pre-line'});
+		//$('.loadData').load('../array.txt');
+		jQuery.get('../array.txt', function(data) {
+		   //process text file line by line
+		   $('.loadData').html(data.replace('n',''));
+		});
+
 		// sidebar
 		$('.list-group > a').on('click', function(){	
 			var script = $(this).text().toLowerCase();
