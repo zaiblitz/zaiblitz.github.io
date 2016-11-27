@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Zai Profile</title>
+    <title>Scripts</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
@@ -103,7 +103,7 @@
 		//$('.loadData').load('../array.txt');
 		jQuery.get('../array.txt', function(data) {
 		   //process text file line by line
-		   $('.loadData').html(data.replace('n',''));
+		   //$('.loadData').html(data.replace('n',''));
 		});
 
 		// sidebar
@@ -116,7 +116,8 @@
 		$('.list-group-submenu a').on('click', function(){
 			var parentLi = $(this).parent('.list-group-submenu').attr('id').toLowerCase();
 			var childLi = $(this).text().toLowerCase().replace(/ /g,'');
-			$('.loadData').load( parentLi+'.html ' + '#'+childLi);	
+			var url = parentLi+'.html ' + '#'+childLi;
+			$('.loadData').load(url);	
 		});
 
 		//search target div
