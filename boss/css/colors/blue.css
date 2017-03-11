@@ -1,0 +1,84 @@
+
+/*
+	Theme Color :  Blue
+*/
+
+
+a {
+    color:#2db2ea;
+}
+
+.btn-theme {
+    background-color:#2db2ea;
+}
+
+/* 	header section  */
+
+.navbar {
+    background-color:#2db2ea;
+}
+
+
+/* 	services section  */
+
+.icon-box-primary .icon-box-icon i {
+    color:#2db2ea;
+}
+
+
+/*  work section */
+
+.pic .overlay a.link, .pic .overlay a.zoom{
+
+    background:#2db2ea;
+}
+
+/*  accordion */
+
+.panel-group .panel-heading > a:after {
+    background:#2db2ea;
+}
+
+/*  achievement section */
+
+.achivement-box i {
+    color:#2db2ea;
+}
+
+/* team section */
+
+.team-box .team-social a:hover{
+    color:#2db2ea;
+}
+
+/*  progress bar */
+
+.progress-bar-theme {
+    background:#2db2ea;
+}
+
+/*  price section */
+.price-box.active .price-header {
+    background:#2db2ea;
+}
+
+/*  contact section */
+
+.contact-box i {
+    color:#2db2ea;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

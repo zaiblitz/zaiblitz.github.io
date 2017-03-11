@@ -1,0 +1,60 @@
+/* =================================================================== */
+/* Styles Switcher
+====================================================================== */
+
+#style-switcher h3 {
+    color:#fff;
+    font-size:12px;
+    margin: 5px 0 -3px 3px;
+}
+
+#style-switcher {
+    background: #222;
+    width:195px;
+    position:fixed;
+    top:90px;
+    z-index:9999;
+    left:0px;
+    border-radius: 0 0 3px 0;
+}
+
+#style-switcher div {
+    padding:5px 10px;
+}
+
+#style-switcher h2 {
+    background: #333;
+    color: #FFFFFF;
+    font-weight: bold;
+    padding: 0;
+    font-size: 14px;
+    padding: 6px 0 5px 10px;
+}
+
+#style-switcher h2 a {
+    background: url("../img/switcher.png") no-repeat scroll left center transparent;
+    display: block;
+    height: 41px;
+    position: absolute;
+    right: -39px;
+    text-indent: -9999px;
+    top: 0;
+    width: 39px;
+    border-radius: 0 3px 3px 0;
+}
+
+.colors { list-style:none; margin:0; overflow: hidden; padding: 0 3px 4px 0;}
+.colors li { float:left; margin:2px; }
+.colors li a { display: block; width:28px; height:28px; cursor: pointer;}
+
+.blue{ background: #2db2ea; }
+.orange {background: #e8643e; }
+.yellow { background: #ffb400; }
+.pink{ background: #c71c77; }
+.cyan{ background: #37b6bd;}
+.olive{ background: #b3c211; }
+
+
+.colors li a.active { box-shadow:0 0 0 2px #404040 inset }
+
+@media only screen and (max-width: 1029px) {#style-switcher {display: none;}}
