@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="bea7c65f-9243-49b9-92c9-f8caf2c7be84" name="Default" comment="Updateg">
+      <change type="DELETED" beforePath="$PROJECT_DIR$/boss/img/fluke/company_logo.jpg" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/boss/index.html" afterPath="$PROJECT_DIR$/boss/index.html" />
     </list>
@@ -28,9 +29,10 @@
       <file leaf-file-name="index.html" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/boss/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.6871379">
-              <caret line="529" column="82" selection-start-line="529" selection-start-column="82" selection-end-line="529" selection-end-column="82" />
+            <state vertical-scroll-proportion="1.1796061">
+              <caret line="555" column="22" selection-start-line="555" selection-start-column="22" selection-end-line="555" selection-end-column="22" />
               <folding>
+                <element signature="n#style#0;n#a#0;n#div#0;n#div#0;n#nav#0;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#iframe#0;n#div#0;n#div#0;n#div#1;n#div#0;n#section#5;n#body#0;n#html#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#section#8;n#body#0;n#html#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#div#0;n#section#8;n#body#0;n#html#0;n#!!top" expanded="true" />
@@ -602,9 +604,10 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/boss/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.6871379">
-          <caret line="529" column="82" selection-start-line="529" selection-start-column="82" selection-end-line="529" selection-end-column="82" />
+        <state vertical-scroll-proportion="1.1796061">
+          <caret line="555" column="22" selection-start-line="555" selection-start-column="22" selection-end-line="555" selection-end-column="22" />
           <folding>
+            <element signature="n#style#0;n#a#0;n#div#0;n#div#0;n#nav#0;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#iframe#0;n#div#0;n#div#0;n#div#1;n#div#0;n#section#5;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#section#8;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#div#0;n#section#8;n#body#0;n#html#0;n#!!top" expanded="true" />
