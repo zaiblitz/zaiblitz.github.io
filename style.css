@@ -22,3 +22,8 @@ html .content span, body .content span {
      width: 30px;
      display: inline-block;
 }
+
+
+.nbr:hover {
+     cursor: pointer;
+}
