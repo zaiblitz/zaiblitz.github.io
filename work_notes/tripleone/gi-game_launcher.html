@@ -1,0 +1,51 @@
+<style>
+
+</style>
+<div class="col-xs-7" id="content">
+    <table id="game_links" class="table table-striped table-bordered dt-responsive nowrap">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Link</th>
+                <th></th>
+            </tr>
+        <thead>
+        <tbody></tbody>
+    </table>
+</div>
+
+<script>
+    $(document).ready(function(){
+
+
+        var clip = new ClipboardJS('.copy-btn');
+
+        $('#game_links').DataTable({
+            "data": gameLink,
+            "bLengthChange": false,     // remove show entries above
+            "bInfo": false,             // remove show entries below
+            "bFilter": true,
+            "columns" : [
+                { data: "name" },
+                {
+                    data: "link",
+                    render : function(data, type, row) {
+                        return "<div id='"+row.id+"'>"+data+"</div>";
+                    }
+                },
+                {
+                    data: "id",
+                    render : function(data, type, row ) {
+                        return "<button class='copy-btn' data-clipboard-target='#"+row.id+"'>Copy</button>";
+                    }
+                }
+            ],
+            "drawCallback" : function(data) {
+            },
+            "rowCallback" : function(data) {
+
+            }
+        });
+        console.log('api links')
+    });
+</script>

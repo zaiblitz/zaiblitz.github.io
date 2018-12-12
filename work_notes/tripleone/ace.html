@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Tripleone</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="http://206.189.144.197/zbet/assets/admin/css/normalize.css">
+    <link rel="stylesheet" href="http://206.189.144.197/zbet/assets/admin/css/bootstrap.min.css">
+    <link rel="stylesheet" href="http://206.189.144.197/zbet/assets/admin/css/font-awesome.min.css">
+    <link rel="stylesheet" href="http://206.189.144.197/zbet/assets/admin/css/cs-skin-elastic.css">
+    <link rel="stylesheet" href="http://206.189.144.197/zbet/assets/admin/scss/style.css">.
+    <link rel="stylesheet" href="http://206.189.144.197/zbet/assets/bower_components/datatables.net-dt/css/jquery.dataTables.min.css">
+
+    <script src="http://206.189.144.197/zbet/assets/bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="http://206.189.144.197/zbet/assets/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="http://206.189.144.197/zbet/assets/bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+    <script src="https://ace.c9.io/build/src/ace.js"></script>
+    <script src="https://ace.c9.io/build/src/ext-static_highlight.js"></script>
+
+<style>
+    #parent {
+        height: 680px;
+        display:inline-block;
+        position:relative;
+    }
+    #editor {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+    }
+</style>
+
+</head>
+<body>
+	
+	<div class="col-md-9 right-snippet-info" id="parent" >
+		<div id="editor">alert('ok');</div>
+	</div>
+
+</body>
+</html>
+
+<script type="text/javascript">
+	var editor = ace.edit("editor");
+    editor.setTheme("ace/theme/monokai");
+    editor.session.setMode("ace/mode/javascript");
+</script>
