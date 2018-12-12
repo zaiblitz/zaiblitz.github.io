@@ -120,15 +120,10 @@
         toggleMenu();
         loadDashboard();
 
-        $('ul.sidebar-nav > li > ul li').on('click', function(){
-            $('#content-name').text($.trim($(this).text()));
-        });
-
         $(window).bind('hashchange', function(){
             var newHash = window.location.hash.substring(1);
 
             if(newHash) {
-
                 // LOAD PAGE
                 var page = $('#page-container');
                 page.load(newHash);
