@@ -30,13 +30,13 @@
                 {
                     data: "link",
                     render : function(data, type, row) {
-                        return "<div id='"+row.id+"'>"+data+"</div>";
+                        return "<div id='"+row.api+"'>"+data+"</div>";
                     }
                 },
                 {
                     data: "id",
                     render : function(data, type, row ) {
-                        return "<button class='copy-btn' data-clipboard-target='#"+row.id+"'>Copy</button>";
+                        return "<button class='copy-btn' data-clipboard-target='#"+row.api+"'>Copy</button>";
                     }
                 }
             ],

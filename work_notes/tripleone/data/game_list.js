@@ -1,16 +1,16 @@
 var gameLink = [
 	{
-		"id" : 't1_evo',
+		"api" : 't1_evo',
 		"name" : "T1 Evolution",
 		"link" : "/iframe_module/goto_t1games/1040/zixzea8nrf1675oh/real/baccarat",
 	},
 	{
-		"id" : 'haba',
+		"api" : 'hb_api',
 		"name" : "Habanero",
 		"link" : "/iframe_module/goto_habagame/real/AmericanBaccarat",
 	},
 	{
-		"id" : 'sa',
+		"api" : 'sa_gaming_api',
 		"name" : "SA Gaming",
 		"link" : "/iframe_module/goto_sagaminggame",
 	},
