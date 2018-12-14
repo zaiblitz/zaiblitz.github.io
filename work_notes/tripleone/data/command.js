@@ -9,7 +9,7 @@ var gameCommandList = [
 	{
 		"tag" : "sync_merge_game_logs",
 		"name" : "Sync Merge Game Logs",
-		"command" : "sudo ./command.sh sync_game_logs 'false' '2018-10-01 00:00:00' '2018-10-11 23:59:59' '232' 60 '_null' 'true' 'false'",
+		"command" : "sudo ./command.sh sync_game_logs 'false' '2018-12-04 00:00:00' '2018-12-06 23:59:59' '183' 60 '_null' 'true' 'false'",
 		"description" : "Sync merge game logs. Make sure md5_sum is cleared when running this function"
 	},
 	{

@@ -14,12 +14,13 @@
     </table>
 </div>
 
+<div class="col-xs-5">
+CUTE
+</div>
+
 <script>
     $(document).ready(function(){
-
-
         var clip = new ClipboardJS('.copy-btn');
-
         $('#game_links').DataTable({
             "data": gameLink,
             "bLengthChange": false,     // remove show entries above
@@ -43,7 +44,6 @@
             "drawCallback" : function(data) {
             },
             "rowCallback" : function(data) {
-
             }
         });
         console.log('api links')
