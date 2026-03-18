@@ -37,7 +37,6 @@ body {
   min-height: 100vh;
   overflow-x: hidden;
   cursor: crosshair;
-  /* Background grid */
   background-image:
     linear-gradient(var(--grid-line) 1px, transparent 1px),
     linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
@@ -385,7 +384,6 @@ body {
   background: rgba(0, 20, 40, 0.3);
 }
 
-/* Holographic border sweep */
 .project-card::before {
   content: '';
   position: absolute;
@@ -670,11 +668,6 @@ body {
 @keyframes scroll-marquee {
   0%   { transform: translateX(0); }
   100% { transform: translateX(-50%); }
-}
-
-/* Duplicate marquee content for seamless loop (handled in JS or double the spans) */
-.marquee__inner::after {
-  content: attr(data-text);
 }
 
 /* ============================================
