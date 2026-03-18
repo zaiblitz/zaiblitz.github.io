@@ -1,9 +1,12 @@
 import { profile } from '../data/profile'
 import SocialIcon from './SocialIcon'
+import { useTypingEffect } from '../hooks/useTypingEffect'
 
 export default function LeftPanel() {
+  const { displayed: typedTagline, done } = useTypingEffect(profile.tagline, 40, 800)
+
   return (
-    <section className="panel panel--left">
+    <section className="panel panel--left fade-in-panel">
       <div className="panel__header">
         <span className="panel__label">IDENTITY</span>
         <span className="panel__decoration">━━━━━━━━</span>
@@ -21,7 +24,10 @@ export default function LeftPanel() {
 
       <h2 className="identity__name glow">{profile.name}</h2>
       <p className="identity__title">{profile.title}</p>
-      <p className="identity__tagline">{profile.tagline}</p>
+      <p className="identity__tagline">
+        {typedTagline}
+        {!done && <span className="typing-cursor">|</span>}
+      </p>
 
       <div className="social-links">
         {profile.socialLinks.map((link) => (

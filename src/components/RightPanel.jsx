@@ -3,7 +3,7 @@ import { skills, stats } from '../data/skills'
 
 export default function RightPanel({ animate }) {
   return (
-    <section className="panel panel--right">
+    <section className="panel panel--right fade-in-panel">
       <div className="panel__header">
         <span className="panel__label">CAPABILITIES</span>
         <span className="panel__decoration">━━━━━━━━━━</span>

@@ -705,6 +705,74 @@ body {
 }
 
 /* ============================================
+   CUSTOM GLOW CURSOR
+   ============================================ */
+.glow-cursor {
+  position: fixed;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--primary);
+  box-shadow: 0 0 10px var(--primary), 0 0 30px var(--primary), 0 0 60px var(--secondary);
+  pointer-events: none;
+  z-index: 99998;
+  mix-blend-mode: screen;
+  transition: opacity 0.2s;
+}
+
+.glow-cursor-trail {
+  position: fixed;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 1px solid rgba(0, 212, 255, 0.3);
+  pointer-events: none;
+  z-index: 99997;
+}
+
+/* Hide custom cursor on touch devices */
+@media (hover: none) {
+  .glow-cursor,
+  .glow-cursor-trail {
+    display: none;
+  }
+  body {
+    cursor: auto;
+  }
+}
+
+/* ============================================
+   TYPING CURSOR
+   ============================================ */
+.typing-cursor {
+  color: var(--primary);
+  animation: blink 0.6s infinite;
+  font-weight: 400;
+}
+
+/* ============================================
+   PANEL SLIDE-IN ANIMATION
+   ============================================ */
+.fade-in-panel {
+  animation: panel-slide-in 0.6s ease-out both;
+}
+
+.panel--left.fade-in-panel  { animation-delay: 0.1s; }
+.panel--center.fade-in-panel { animation-delay: 0.3s; }
+.panel--right.fade-in-panel  { animation-delay: 0.5s; }
+
+@keyframes panel-slide-in {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ============================================
    ACCESSIBILITY — REDUCED MOTION
    ============================================ */
 @media (prefers-reduced-motion: reduce) {

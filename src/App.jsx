@@ -6,6 +6,7 @@ import CenterPanel from './components/CenterPanel'
 import RightPanel from './components/RightPanel'
 import BottomBar from './components/BottomBar'
 import Particles from './components/Particles'
+import GlowCursor from './components/GlowCursor'
 
 export default function App() {
   const [booted, setBooted] = useState(false)
@@ -14,6 +15,7 @@ export default function App() {
     <>
       {!booted && <BootSequence onComplete={() => setBooted(true)} />}
       <Particles />
+      <GlowCursor />
       <div className={`hud${booted ? '' : ' hidden'}`}>
         <TopBar />
         <main className="hud-grid">

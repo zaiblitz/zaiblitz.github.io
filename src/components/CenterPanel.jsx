@@ -3,7 +3,7 @@ import Terminal from './Terminal'
 
 export default function CenterPanel() {
   return (
-    <section className="panel panel--center">
+    <section className="panel panel--center fade-in-panel">
       <div className="panel__header">
         <span className="panel__label">PROJECT DATABASE</span>
         <span className="panel__decoration">━━━━━━━━━━━━━━━━</span>
