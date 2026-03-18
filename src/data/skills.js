@@ -10,7 +10,7 @@ export const skills = [
 ]
 
 export const stats = [
-  { label: 'YRS EXP', target: 5 },
+  { label: 'YRS EXP', target: 12 },
   { label: 'PROJECTS', target: 30 },
   { label: 'COMMITS', target: 1200 },
   { label: 'UPTIME %', target: 99 },
