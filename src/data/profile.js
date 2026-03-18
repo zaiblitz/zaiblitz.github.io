@@ -12,12 +12,12 @@ export const profile = {
     },
     {
       label: 'LinkedIn',
-      url: 'https://linkedin.com/in/',
+      url: 'https://www.linkedin.com/in/merwindaledomingo/',
       icon: 'linkedin',
     },
     {
       label: 'Email',
-      url: 'mailto:merwin@example.com',
+      url: 'mailto:merwindale.domingo@gmail.com',
       icon: 'email',
     },
   ],
