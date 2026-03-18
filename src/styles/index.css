@@ -722,20 +722,17 @@ body {
 /* Tablet */
 @media (max-width: 1024px) {
   .hud-grid {
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: auto auto;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto;
   }
 
-  .panel--left {
-    grid-column: 1 / 2;
+  .hud {
+    grid-template-rows: auto auto auto;
+    min-height: auto;
   }
 
-  .panel--center {
-    grid-column: 2 / 3;
-  }
-
-  .panel--right {
-    grid-column: 1 / -1;
+  .panel {
+    overflow-y: visible;
   }
 
   .projects-grid {
@@ -752,17 +749,6 @@ body {
   .hud {
     padding: 0.4rem;
     gap: 0.4rem;
-    grid-template-rows: auto auto auto;
-    min-height: auto;
-  }
-
-  .hud-grid {
-    grid-template-columns: 1fr;
-    grid-template-rows: auto auto auto;
-  }
-
-  .panel {
-    overflow-y: visible;
   }
 
   .top-bar {
@@ -779,10 +765,6 @@ body {
 
   .coordinates {
     display: none;
-  }
-
-  .projects-grid {
-    grid-template-columns: 1fr;
   }
 
   .stats-grid {
