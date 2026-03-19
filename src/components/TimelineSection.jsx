@@ -25,6 +25,13 @@ export default function TimelineSection() {
               <h3 className="timeline-role">{entry.role}</h3>
               <span className="timeline-org">{entry.org}</span>
               <p className="timeline-desc">{entry.description}</p>
+              {entry.tags && (
+                <div className="timeline-tags">
+                  {entry.tags.map((tag) => (
+                    <span key={tag} className="tag">{tag}</span>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
         ))}

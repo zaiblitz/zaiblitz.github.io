@@ -931,6 +931,13 @@ body {
   opacity: 0.85;
 }
 
+.timeline-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 0.5rem;
+}
+
 /* --- Contact Section --- */
 .contact-intro {
   font-size: 0.8rem;
