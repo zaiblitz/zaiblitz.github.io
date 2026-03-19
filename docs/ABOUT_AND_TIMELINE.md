@@ -1,31 +1,14 @@
-# Phase 2 — High-Impact Improvements
+# Phase 2 — About Section & Career Timeline
 
 ## Overview
 
-Phase 2 adds content depth and interactivity to the portfolio while maintaining the Jarvis/Iron Man HUD aesthetic.
+Phase 2 adds content depth to the portfolio while maintaining the Jarvis/Iron Man HUD aesthetic. New About and Career Timeline sections provide context about the developer behind the HUD.
 
 ---
 
 ## Changes Implemented
 
-### 1. Real Project Links
-
-**File:** `src/data/projects.js`
-
-Replaced placeholder projects (Atlas, Nexus, Cipher, Horizon with `#` links) with actual projects:
-
-| Project | Status | Link |
-|---------|--------|------|
-| PROJECT BEACON | ACTIVE | github.com/zaiblitz/zaiblitz-apps |
-| PROJECT ATLAS | IN DEV | github.com/zaiblitz/zaiblitz-api |
-| PROJECT FORGE | PLANNED | github.com/zaiblitz/zaiblitz-api |
-| ZAIBLITZ HUD | ACTIVE | github.com/zaiblitz/zaiblitz.github.io |
-
-Added new status badge styles: `IN DEV` (gold), `PLANNED` (orange).
-
----
-
-### 2. About Section
+### 1. About Section
 
 **Files:** `src/components/AboutSection.jsx`, `src/data/about.js`
 
@@ -35,7 +18,7 @@ Added a dossier-style about section with:
 
 ---
 
-### 3. Career Timeline
+### 2. Career Timeline
 
 **Files:** `src/components/TimelineSection.jsx`, `src/data/timeline.js`
 
@@ -47,14 +30,17 @@ Mission-log styled career timeline with:
 
 ---
 
-### 4. Contact Form
+### 3. Updated Terminal About Command
 
-**File:** `src/components/ContactSection.jsx`
+**File:** `src/data/commands.js`
 
-HUD-themed contact section with:
-- Labeled inputs: CALLSIGN (name), FREQUENCY (email), TRANSMISSION (message)
-- Submit button opens mailto link (no backend needed)
-- Direct channel links to GitHub, LinkedIn, Email
+Added Focus and Status lines to the `about` terminal command output.
+
+---
+
+### 4. Organized Documentation
+
+Moved `INSTRUCTIONS.md` into `docs/` folder for cleaner project root.
 
 ---
 
@@ -64,8 +50,7 @@ HUD-themed contact section with:
 src/
 ├── components/
 │   ├── AboutSection.jsx      ← About/Dossier section
-│   ├── TimelineSection.jsx   ← Career timeline
-│   └── ContactSection.jsx    ← Contact form
+│   └── TimelineSection.jsx   ← Career timeline
 ├── data/
 │   ├── about.js              ← About content data
 │   └── timeline.js           ← Career entries data
@@ -78,7 +63,6 @@ src/
 ├── components/
 │   └── CenterPanel.jsx       ← Added new sections
 ├── data/
-│   ├── projects.js            ← Real projects & links
 │   └── commands.js            ← Updated terminal about command
 ├── styles/
 │   └── index.css              ← New section styles + status badges
@@ -90,8 +74,13 @@ src/
 
 - **All new sections** are placed in the center panel to maintain the 3-column HUD layout
 - **Sections separated** by `border-top` dividers matching the HUD panel border style
-- **Contact form** uses `mailto:` links instead of a backend — keeps the site fully static on GitHub Pages
 - **Timeline** uses vertical line + dot pattern similar to HUD system readouts
 - **Status badges** use color coding: green (ACTIVE), gold (IN DEV), orange (PLANNED), dim (ARCHIVED/COMPLETED)
 - **All fonts** maintain Orbitron (display) + Share Tech Mono (body) consistency
 - **Responsive** — focus grid and project grid collapse to single column on tablet/mobile
+
+---
+
+## Notes
+
+- `ContactSection.jsx` was created but removed from the active layout to keep the page minimal. The component file remains in the repo if needed later.
