@@ -41,6 +41,8 @@ export const commands = {
     `  Role     : ${profile.title}`,
     '  Location : Philippines',
     '  Mission  : Building elegant, high-performance systems.',
+    '  Focus    : Full-stack web dev (React, Laravel, Docker)',
+    '  Status   : Building ZaiBlitz platform (Beacon, Atlas, Forge)',
   ].join('\n'),
 
   skills: () => {

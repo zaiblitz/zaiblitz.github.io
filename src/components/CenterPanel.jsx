@@ -1,5 +1,7 @@
 import { projects } from '../data/projects'
 import Terminal from './Terminal'
+import AboutSection from './AboutSection'
+import TimelineSection from './TimelineSection'
 
 export default function CenterPanel() {
   return (
@@ -14,7 +16,7 @@ export default function CenterPanel() {
           <article key={project.id} className="project-card">
             <div className="project-card__header">
               <span
-                className={`project-card__status${project.status === 'ARCHIVED' ? ' status--archived' : ''}`}
+                className={`project-card__status${project.status === 'ARCHIVED' ? ' status--archived' : ''}${project.status === 'PLANNED' ? ' status--planned' : ''}${project.status === 'IN DEV' ? ' status--indev' : ''}`}
               >
                 ● {project.status}
               </span>
@@ -27,11 +29,13 @@ export default function CenterPanel() {
                 <span key={tag} className="tag">{tag}</span>
               ))}
             </div>
-            <a href={project.url} className="project-card__btn">ACCESS ▸</a>
+            <a href={project.url} target="_blank" rel="noopener noreferrer" className="project-card__btn">ACCESS ▸</a>
           </article>
         ))}
       </div>
 
+      <AboutSection />
+      <TimelineSection />
       <Terminal />
     </section>
   )
