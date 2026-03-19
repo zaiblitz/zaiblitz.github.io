@@ -3,7 +3,7 @@ export const timeline = [
     year: '2019 — PRESENT',
     role: 'LEAD SOFTWARE ENGINEER',
     org: 'EK CONSULTING',
-    description: 'Led game integration efforts across multiple third-party providers. Mentored junior developers and contributed to core module development.',
+    description: 'Led the game integration team across multiple providers. Mentored junior developers and contributed to core system design.',
     tags: ['LARAVEL', 'REACT', 'REDIS', 'AWS'],
     status: 'ACTIVE',
   },
