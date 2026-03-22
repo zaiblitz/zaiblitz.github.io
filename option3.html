@@ -3,323 +3,279 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>F.R.I.D.A.Y. Protocol - Mark L</title>
+    <title>JARVIS - Stealth Protocol</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Jura:wght@400;700&display=swap');
-
         :root {
-            --primary: #c4f9ff;
-            --secondary: #0088ff;
-            --alert: #ff2a2a;
-            --bg: #010408;
-            --panel-bg: rgba(0, 30, 60, 0.15);
+            --hud-dark: #001133;
+            --hud-cyan: #00bbff;
+            --hud-alert: #ffdd00;
+            --bg: #000205;
         }
 
         body {
-            margin: 0;
-            padding: 0;
+            margin: 0; padding: 0;
             background-color: var(--bg);
-            color: var(--primary);
-            font-family: 'Jura', sans-serif;
+            color: var(--hud-cyan);
+            font-family: 'Courier New', Courier, monospace;
             overflow: hidden;
-            perspective: 1200px; /* 3D effect base */
             background-image: 
-                radial-gradient(ellipse at 50% 50%, rgba(0, 136, 255, 0.1) 0%, transparent 60%);
+                radial-gradient(circle at 20% 50%, rgba(0, 187, 255, 0.05) 0%, transparent 50%),
+                linear-gradient(rgba(0, 187, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 187, 255, 0.03) 1px, transparent 1px);
+            background-size: 100% 100%, 40px 40px, 40px 40px;
         }
 
-        /* 3D Holographic Stage */
-        .holo-stage {
+        /* Overlay sweeps */
+        .radar-sweep {
             position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 100vw;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(180deg, transparent 0%, rgba(0, 187, 255, 0.1) 50%, transparent 100%);
+            animation: mapScan 6s linear infinite;
+            pointer-events: none;
+            z-index: 90;
+        }
+
+        @keyframes mapScan {
+            0% { transform: translateY(-100%); }
+            100% { transform: translateY(100%); }
+        }
+
+        .layout-grid {
+            display: grid;
+            grid-template-columns: 400px 1fr 350px;
             height: 100vh;
-            transform: translate(-50%, -50%) rotateX(15deg);
-            transform-style: preserve-3d;
+            padding: 40px;
+            box-sizing: border-box;
+            gap: 20px;
+        }
+
+        /* Left side: Advanced Radar */
+        .radar-container {
+            position: relative;
             display: flex;
             justify-content: center;
             align-items: center;
-            pointer-events: none;
+            border: 1px solid rgba(0, 187, 255, 0.2);
+            background: rgba(0, 17, 51, 0.4);
+            border-radius: 8px;
+            overflow: hidden;
         }
-
-        /* Ambient scan grid */
-        .grid-floor {
+        
+        .radar-ring {
             position: absolute;
-            top: 10%;
-            width: 200%;
-            height: 200%;
-            background-image: linear-gradient(var(--secondary) 1px, transparent 1px), linear-gradient(90deg, var(--secondary) 1px, transparent 1px);
-            background-size: 60px 60px;
-            transform: rotateX(75deg) translateZ(-200px);
-            opacity: 0.15;
-            animation: gridMove 20s linear infinite;
-        }
-
-        @keyframes gridMove {
-            0% { transform: rotateX(75deg) translateZ(-200px) translateY(0); }
-            100% { transform: rotateX(75deg) translateZ(-200px) translateY(60px); }
-        }
-
-        /* Central Geometric Core */
-        .central-core {
-            position: relative;
-            transform-style: preserve-3d;
-            animation: floatCore 6s ease-in-out infinite alternate;
-        }
-
-        .core-ring {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
             border-radius: 50%;
-            border: 2px solid rgba(196, 249, 255, 0.3);
-            box-sizing: border-box;
-            box-shadow: 0 0 20px rgba(0, 136, 255, 0.2), inset 0 0 20px rgba(0, 136, 255, 0.2);
+            border: 1px solid var(--hud-cyan);
+        }
+        
+        .r-1 { width: 300px; height: 300px; border-style: dashed; animation: spin 12s linear infinite; }
+        .r-2 { width: 260px; height: 260px; border-color: rgba(0,187,255,0.4); border-width: 4px; animation: spinRev 20s linear infinite; }
+        .r-3 { width: 150px; height: 150px; border-style: dotted; animation: spin 8s linear infinite; }
+        
+        .radar-center {
+            text-align: center;
+            z-index: 10;
+        }
+        .radar-center h2 { margin: 0; letter-spacing: 5px; font-size: 1.2rem; text-shadow: 0 0 10px var(--hud-cyan); }
+        .radar-center p { margin: 5px 0 0; font-size: 0.8rem; color: #fff; }
+
+        /* Middle: Main Status */
+        .center-feed {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding-bottom: 20px;
+        }
+        
+        .feed-log {
+            font-size: 0.8rem;
+            color: rgba(255,255,255,0.7);
+            line-height: 1.5;
+            margin-bottom: 10px;
+            border-left: 2px solid var(--hud-cyan);
+            padding-left: 10px;
         }
 
-        .ring-1 { width: 500px; height: 500px; border-width: 1px; animation: spinZ 30s linear infinite; }
-        .ring-2 { width: 450px; height: 450px; border-style: dashed; animation: spinZRev 25s linear infinite; }
-        .ring-3 { width: 380px; height: 380px; border-width: 4px 0 4px 0; animation: spinZ 15s linear infinite; border-color: var(--secondary); }
-        .ring-4 { width: 300px; height: 300px; background: rgba(0, 136, 255, 0.05); animation: pulse Glow 4s infinite alternate;}
+        /* Right side: Diagnostics */
+        .diagnostics {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
 
-        .data-sphere {
+        .data-block {
+            border: 1px solid rgba(0, 187, 255, 0.3);
+            background: rgba(0, 17, 51, 0.5);
+            padding: 15px;
+            position: relative;
+        }
+        .data-block::before {
+            content: '';
+            position: absolute;
+            left: 0; top: 0;
+            width: 3px; height: 100%;
+            background: var(--hud-cyan);
+        }
+        
+        .block-title {
+            font-size: 0.7rem;
+            color: var(--hud-alert);
+            margin-bottom: 10px;
+            letter-spacing: 2px;
+        }
+
+        .skill-row { margin-bottom: 8px; }
+        .skill-name { font-size: 0.9rem; display: flex; justify-content: space-between; margin-bottom: 4px;}
+        .bar { height: 4px; background: rgba(0, 187, 255, 0.2); }
+        .fill { height: 100%; background: var(--hud-cyan); box-shadow: 0 0 8px var(--hud-cyan); }
+
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+        @keyframes spinRev { 100% { transform: rotate(-360deg); } }
+        @keyframes blink { 50% { opacity: 0; } }
+
+        /* Navigation Menu */
+        .nav-menu {
+            position: absolute;
+            top: 20px;
+            right: 40px;
+            display: flex;
+            gap: 15px;
+            z-index: 50;
+        }
+        .nav-btn {
+            background: transparent;
+            border: 1px solid var(--hud-cyan);
+            color: var(--hud-cyan);
+            padding: 6px 12px;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 12px;
+            letter-spacing: 2px;
+            transition: all 0.3s;
+        }
+        .nav-btn:hover {
+            background: rgba(0, 187, 255, 0.2);
+            box-shadow: 0 0 10px var(--hud-cyan);
+        }
+
+        /* Terminal Pop-up */
+        .terminal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 2, 5, 0.85);
+            z-index: 150;
+            display: none;
+            backdrop-filter: blur(4px);
+        }
+        .terminal-overlay.active { display: block; }
+        
+        .terminal-popup {
             position: absolute;
             top: 50%; left: 50%;
             transform: translate(-50%, -50%);
-            text-align: center;
-            z-index: 100;
+            width: 700px;
+            max-width: 90vw;
+            height: 450px;
+            background: rgba(0, 10, 25, 0.9);
+            border: 1px solid var(--hud-cyan);
+            box-shadow: 0 0 40px rgba(0, 187, 255, 0.15);
+            z-index: 200;
+            display: none;
+            flex-direction: column;
         }
-
-        .data-sphere h1 {
-            font-size: 3rem;
-            margin: 0;
-            letter-spacing: 15px;
-            font-weight: 700;
-            text-shadow: 0 0 15px var(--primary);
+        .terminal-popup.active { display: flex; }
+        
+        .terminal-header {
+            background: rgba(0, 187, 255, 0.15);
+            padding: 10px 15px;
+            border-bottom: 1px solid var(--hud-cyan);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
-
-        .data-sphere p {
-            font-size: 1.2rem;
-            letter-spacing: 5px;
-            color: var(--secondary);
-            margin-top: 10px;
-        }
-
-        /* Floating UI Panels */
-        .ui-panel {
-            position: absolute;
-            background: var(--panel-bg);
-            border: 1px solid rgba(0, 136, 255, 0.4);
+        .close-btn { cursor: pointer; color: var(--hud-alert); font-size: 14px; letter-spacing: 1px; }
+        .close-btn:hover { text-shadow: 0 0 8px var(--hud-alert); }
+        
+        .terminal-body {
             padding: 20px;
-            backdrop-filter: blur(8px);
-            pointer-events: auto; /* Make clickable */
-            transition: all 0.3s;
-            box-shadow: 0 0 15px rgba(0, 136, 255, 0.1);
-        }
-        
-        .ui-panel:hover {
-            border-color: var(--primary);
-            box-shadow: 0 0 30px rgba(0, 136, 255, 0.4);
-            transform: scale(1.02);
-            background: rgba(0, 50, 100, 0.25);
-        }
-
-        .ui-panel::before {
-            content: '';
-            position: absolute;
-            top: -2px; left: -2px;
-            width: 15px; height: 15px;
-            border-top: 2px solid var(--primary);
-            border-left: 2px solid var(--primary);
-        }
-        .ui-panel::after {
-            content: '';
-            position: absolute;
-            bottom: -2px; right: -2px;
-            width: 15px; height: 15px;
-            border-bottom: 2px solid var(--primary);
-            border-right: 2px solid var(--primary);
-        }
-
-        .panel-left {
-            left: 5vw;
-            top: 20vh;
-            width: 300px;
-        }
-
-        .panel-right {
-            right: 5vw;
-            top: 20vh;
-            width: 300px;
-        }
-
-        .panel-bottom {
-            bottom: 5vh;
-            left: 50vw;
-            transform: translateX(-50%);
-            width: 70vw;
-            display: flex;
-            justify-content: space-between;
-        }
-
-        .header-title {
-            font-size: 0.9rem;
-            color: var(--primary);
-            letter-spacing: 3px;
-            border-bottom: 1px solid var(--secondary);
-            padding-bottom: 8px;
-            margin-bottom: 15px;
-            text-transform: uppercase;
-        }
-
-        /* Next-gen progressive bars */
-        .stat-group {
-            margin-bottom: 15px;
-        }
-        .stat-label {
-            display: flex;
-            justify-content: space-between;
-            font-size: 0.8rem;
-            margin-bottom: 5px;
-            color: rgba(196, 249, 255, 0.8);
-        }
-        .stat-track {
-            display: flex;
-            gap: 2px;
-            height: 10px;
-        }
-        .stat-seg {
             flex: 1;
-            background: rgba(0, 136, 255, 0.2);
-            height: 100%;
+            overflow-y: auto;
+            color: #fff;
+            line-height: 1.6;
+            font-size: 14px;
         }
-        .stat-seg.fill {
-            background: var(--primary);
-            box-shadow: 0 0 5px var(--primary);
-        }
-        
-        /* Node Connectors */
-        .node-list .node-item {
-            display: flex;
-            align-items: center;
-            margin-bottom: 12px;
-            font-size: 0.85rem;
-            cursor: pointer;
-        }
-        .node-item::before {
-            content: '';
+        .terminal-cursor {
             display: inline-block;
-            width: 8px; height: 8px;
-            background: var(--secondary);
-            border-radius: 50%;
-            margin-right: 10px;
-            box-shadow: 0 0 8px var(--secondary);
+            width: 10px; height: 16px;
+            background: var(--hud-cyan);
+            animation: blink 1s infinite;
+            vertical-align: middle;
+            margin-left: 5px;
         }
-        .node-item:hover::before {
-            background: var(--primary);
-            box-shadow: 0 0 15px var(--primary);
-        }
-        .node-item:hover { color: #fff; }
-
-        @keyframes floatCore {
-            0% { transform: translateY(-10px); }
-            100% { transform: translateY(10px); }
-        }
-        @keyframes spinZ { 100% { transform: translate(-50%, -50%) rotate(360deg); } }
-        @keyframes spinZRev { 100% { transform: translate(-50%, -50%) rotate(-360deg); } }
-        
-        /* Top Navigation Overlay */
-        .top-nav {
-            position: absolute;
-            top: 0; left: 0; right: 0;
-            padding: 20px 40px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            pointer-events: auto;
-            border-bottom: 1px solid rgba(0, 136, 255, 0.2);
-            background: linear-gradient(to bottom, rgba(0,20,40,0.8), transparent);
-        }
-        .brand { font-size: 1.5rem; font-weight: bold; letter-spacing: 5px; }
-        .sys-status { color: var(--secondary); font-size: 0.8rem; letter-spacing: 2px; }
-
     </style>
 </head>
 <body>
-    <div class="top-nav">
-        <div class="brand">F.R.I.D.A.Y. // <span style="font-weight:normal; color: var(--secondary);">OS v5.0</span></div>
-        <div class="sys-status" id="sys-clock">SYNCING...</div>
+    <div class="radar-sweep"></div>
+    
+    <div class="nav-menu">
+        <button class="nav-btn" onclick="openTerminal('about')">ABOUT_US</button>
+        <button class="nav-btn" onclick="openTerminal('career')">CAREERS</button>
+        <button class="nav-btn" onclick="openTerminal('contact')">COMMS</button>
     </div>
 
-    <!-- 3D Environment -->
-    <div class="holo-stage">
-        <div class="grid-floor"></div>
-        <div class="central-core">
-            <div class="core-ring ring-1"></div>
-            <div class="core-ring ring-2"></div>
-            <div class="core-ring ring-3"></div>
-            <div class="core-ring ring-4"></div>
-            <div class="data-sphere">
-                <h1>ZAIBLITZ</h1>
-                <p>SOFTWARE ARCHITECT</p>
-                <div style="margin-top: 15px; font-size: 0.7rem; color: var(--primary);">
-                    [ NEURAL LINK ESTABLISHED ]
-                </div>
+    <!-- Terminal System -->
+    <div class="terminal-overlay" id="term-overlay" onclick="closeTerminal()"></div>
+    <div class="terminal-popup" id="terminal">
+        <div class="terminal-header">
+            <span style="color:var(--hud-cyan);letter-spacing:2px;font-size:12px;" id="term-title">STEALTH_TERMINAL</span>
+            <span class="close-btn" onclick="closeTerminal()">[ X ] OVERRIDE</span>
+        </div>
+        <div class="terminal-body" id="term-body"></div>
+    </div>
+
+    <div class="layout-grid">
+        <!-- Radar Left -->
+        <div class="radar-container panel">
+            <div class="radar-ring r-1"></div>
+            <div class="radar-ring r-2"></div>
+            <div class="radar-ring r-3"></div>
+            <div class="radar-center">
+                <h2>ZAIBLITZ</h2>
+                <p>STEALTH PROTOCOL</p>
+                <div style="color:var(--hud-alert); font-size:10px; margin-top:20px;">[ MONITORED ZONE ]</div>
             </div>
         </div>
-    </div>
 
-    <!-- UI Overlay Layer -->
-    <div class="ui-panel panel-left" id="skill-panel">
-        <div class="header-title">SYSTEM_CAPABILITIES</div>
-        
-        <script>
-            // Generate segmented progress bars for sci-fi look
-            function genSegments(percent) {
-                let html = '<div class="stat-track">';
-                let totalSegs = 20;
-                let fillSegs = Math.round((percent / 100) * totalSegs);
-                for(let i=0; i<totalSegs; i++) {
-                    html += `<div class="stat-seg ${i < fillSegs ? 'fill' : ''}"></div>`;
-                }
-                html += '</div>';
-                return html;
-            }
-            
-            document.write(`
-                <div class="stat-group"><div class="stat-label"><span>FRONTEND ARCHITECTURE</span><span>95%</span></div>${genSegments(95)}</div>
-                <div class="stat-group"><div class="stat-label"><span>BACKEND SYSTEMS</span><span>88%</span></div>${genSegments(88)}</div>
-                <div class="stat-group"><div class="stat-label"><span>CLOUD DEPLOYMENT</span><span>85%</span></div>${genSegments(85)}</div>
-                <div class="stat-group"><div class="stat-label"><span>AI INTEGRATION</span><span>90%</span></div>${genSegments(90)}</div>
-            `);
-        </script>
-    </div>
+        <!-- Center Feed -->
+        <div class="center-feed">
+            <div class="feed-log">> INITIALIZING LOCAL ENVIRONMENT... OK</div>
+            <div class="feed-log">> BYPASSING FIREWALL SECURITIES... 99%</div>
+            <div class="feed-log">> ALL SYSTEMS NOMINAL. READY FOR INPUT.</div>
+        </div>
 
-    <div class="ui-panel panel-right">
-        <div class="header-title">ACTIVE_DIRECTIVES</div>
-        <div class="node-list">
-            <div class="node-item">PROJECT_ATLAS<br><span style="color:var(--secondary);font-size:0.7rem;margin-left:auto;">[ ONLINE ]</span></div>
-            <div class="node-item">PROJECT_BEACON<br><span style="color:var(--secondary);font-size:0.7rem;margin-left:auto;">[ ONLINE ]</span></div>
-            <div class="node-item" style="color:var(--alert);">PROJECT_FORGE<br><span style="color:var(--alert);font-size:0.7rem;margin-left:auto;">[ INITIATING ]</span></div>
-        </div>
-        <div style="margin-top:30px; border-top:1px solid var(--secondary); padding-top:10px;">
-            <div style="font-size:0.7rem; color:var(--secondary);">> AWAITING MANUAL OVERRIDE</div>
-        </div>
-    </div>
+        <!-- Right Diagnostics -->
+        <div class="diagnostics">
+            <div class="data-block panel">
+                <div class="block-title">SYS_CAPACITIES</div>
+                <div class="skill-row">
+                    <div class="skill-name"><span>FRONTEND</span><span>96%</span></div>
+                    <div class="bar"><div class="fill" style="width: 96%;"></div></div>
+                </div>
+                <div class="skill-row">
+                    <div class="skill-name"><span>BACKEND/LARAVEL</span><span>89%</span></div>
+                    <div class="bar"><div class="fill" style="width: 89%;"></div></div>
+                </div>
+                <div class="skill-row">
+                    <div class="skill-name"><span>CLOUD OPS</span><span>91%</span></div>
+                    <div class="bar"><div class="fill" style="width: 91%;"></div></div>
+                </div>
+            </div>
 
-    <div class="ui-panel panel-bottom">
-        <div>
-            <div style="font-size:0.7rem; color:var(--secondary);">NETWORK STATUS</div>
-            <div style="letter-spacing: 2px;">SECURE CONNECTION PROXY_7</div>
-        </div>
-        <div style="text-align:center;">
-            <div style="font-size:0.7rem; color:var(--secondary);">CORE TEMP</div>
-            <div style="letter-spacing: 2px; color:var(--primary);">OPTIMAL</div>
-        </div>
-        <div style="text-align:right;">
-            <div style="font-size:0.7rem; color:var(--secondary);">LOCATION DATA</div>
-            <div style="letter-spacing: 2px;">LAT_14.5995 N / LNG_120.9842 E</div>
+            <div class="data-block panel">
+                <div class="block-title">PROJECT_ARCHIVE</div>
+                <div style="font-size: 0.8rem; margin-bottom: 8px;">> ATLAS <span style="float:right; color:var(--hud-alert)">DEPLOYED</span></div>
+                <div style="font-size: 0.8rem; margin-bottom: 8px;">> BEACON <span style="float:right; color:var(--hud-alert)">ACTIVE</span></div>
+                <div style="font-size: 0.8rem; margin-bottom: 8px;">> FORGE <span style="float:right; color:var(--hud-alert)">COMPILING</span></div>
+            </div>
         </div>
     </div>
 
@@ -339,12 +295,9 @@
                 const gain = audioCtx.createGain();
                 osc.type = type;
                 osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
-                // Glassy, clean ping (high freq dropping smoothly)
-                osc.frequency.exponentialRampToValueAtTime(freq * 0.95, audioCtx.currentTime + duration);
-                
+                osc.frequency.exponentialRampToValueAtTime(freq * 0.9, audioCtx.currentTime + duration);
                 gain.gain.setValueAtTime(vol, audioCtx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
-                
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + duration);
                 osc.connect(gain);
                 gain.connect(audioCtx.destination);
                 osc.start();
@@ -352,33 +305,69 @@
             }, delay);
         }
 
-        // Initialize on first click
-        document.body.addEventListener('click', () => { 
-            initAudio(); 
-            playBeep(2000, 'sine', 0.2, 0.05, 0); 
-        }, { once: true });
+        document.body.addEventListener('click', () => { initAudio(); }, { once: true });
 
-        // Hover events for UI panels
-        document.querySelectorAll('.ui-panel, .node-item').forEach(el => {
+        // Hover Sounds
+        document.querySelectorAll('.panel, .nav-btn').forEach(el => {
             el.addEventListener('mouseenter', () => {
                 initAudio();
-                playBeep(2400, 'sine', 0.05, 0.03, 0);
+                playBeep(1200, 'sine', 0.05, 0.05, 0);
             });
         });
 
-        // Top Clock
-        setInterval(() => {
-            const d = new Date();
-            document.getElementById('sys-clock').innerText = `LOCAL_TIME: ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}:${String(d.getSeconds()).padStart(2,'0')}`;
-        }, 1000);
+        // Terminal Logic
+        const terminalData = {
+            about: ">> DECRYPTING: ABOUT_US.DAT\n\n> ZAIBLITZ PROTOCOL is an advanced development initiative.\n> SPECIALIZATION: Scalable web infrastructure, AI-enhanced logic, and cybernetic UI/UX.\n\n> STATUS: Operating seamlessly from the shadows.\n[ END OF FILE ]",
+            career: ">> DECRYPTING: CAREERS.DAT\n\n> SCANNING NETWORK FOR OPPORTUNITIES...\n> FOUND: 2 OPEN DIRECTIVES\n\n> OPTION_A: STEALTH INTEGRATION SPECIALIST\n> REQUIREMENT: Master-level JavaScript and API manipulation.\n\n> OPTION_B: CORE SYSTEMS GUARDIAN\n> REQUIREMENT: Laravel architecture, DB Security protocols.\n\n[ END OF FILE ]",
+            contact: ">> ESTABLISHING P2P CONNECTION...\n\n> FREQUENCY: ENCRYPTED\n> LOCAL RELAY: comms@zaiblitz.net\n> LAT/LONG: CLASSIFIED\n\n> AWAITING TRANSMISSION..."
+        };
 
-        // Ambient data processing sound
-        setInterval(() => {
-            if(audioCtx && audioCtx.state === 'running') {
-                playBeep(3000, 'sine', 0.1, 0.01, 0);
-                playBeep(3200, 'sine', 0.1, 0.01, 150);
-            }
-        }, 4000);
+        let typingTimer;
+
+        function openTerminal(section) {
+            initAudio();
+            playBeep(600, 'sawtooth', 0.15, 0.1, 0);
+            
+            const overlay = document.getElementById('term-overlay');
+            const terminal = document.getElementById('terminal');
+            const termBody = document.getElementById('term-body');
+            const termTitle = document.getElementById('term-title');
+            
+            overlay.classList.add('active');
+            terminal.classList.add('active');
+            termTitle.innerText = `SYS // DIRECTIVE: ${section.toUpperCase()}`;
+            termBody.innerHTML = '';
+            
+            const textToType = terminalData[section];
+            let i = 0;
+            if(typingTimer) clearInterval(typingTimer);
+            
+            typingTimer = setInterval(() => {
+                if(i < textToType.length) {
+                    let char = textToType.charAt(i);
+                    let htmlChar = (char === '\n') ? '<br>' : char;
+                    
+                    termBody.innerHTML = termBody.innerHTML.replace('<span class="terminal-cursor"></span>', '') + htmlChar + '<span class="terminal-cursor"></span>';
+                    
+                    if(char !== ' ' && char !== '\n' && (i % 2 === 0)) {
+                        playBeep(1000 + Math.random()*200, 'square', 0.02, 0.02, 0);
+                    }
+                    
+                    i++;
+                    termBody.scrollTop = termBody.scrollHeight;
+                } else {
+                    clearInterval(typingTimer);
+                    playBeep(800, 'sine', 0.2, 0.05, 0);
+                }
+            }, 25);
+        }
+
+        function closeTerminal() {
+            playBeep(300, 'square', 0.1, 0.1, 0);
+            if(typingTimer) clearInterval(typingTimer);
+            document.getElementById('term-overlay').classList.remove('active');
+            document.getElementById('terminal').classList.remove('active');
+        }
     </script>
 </body>
 </html>

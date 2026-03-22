@@ -214,21 +214,37 @@
             </div>
         </a>
 
-        <!-- F.R.I.D.A.Y. / E.D.I.T.H (Clean Blue/White 3D) -->
-        <a href="option3.html" class="option-card friday-protocol" style="width: 280px; padding: 30px; border-color: #c4f9ff; color: #c4f9ff;">
-            <div class="card-icon" style="border-color: #c4f9ff; border-radius: 10px; animation: spinZ 15s linear infinite;">
-                <div class="card-inner-icon" style="background: rgba(196, 249, 255, 0.2); box-shadow: 0 0 15px #c4f9ff; border-radius: 5px;"></div>
+        <!-- Option 3 (Stealth) -->
+        <a href="option3.html" class="option-card stealth-protocol" style="width: 280px; padding: 30px; border-color: #00bbff; color: #00bbff;">
+            <div class="card-icon" style="border-color: #00bbff; border-style: dashed; animation: spinRev 12s linear infinite;">
+                <div class="card-inner-icon" style="background: rgba(0, 187, 255, 0.2); box-shadow: 0 0 15px #00bbff; border-radius: 50%;"></div>
             </div>
-            <div class="option-title">F.R.I.D.A.Y. OS</div>
+            <div class="option-title">NIGHT PROTOCOL</div>
             <div class="option-desc">
-                Initialize Mark L Glass-morphism Engine. 3D holographic projection, stark white/blue neons, segmented data tracks.
+                Engage stealth-based asymmetric HUD. Deep spectrum blue hues, off-center radar sweeping, floating data columns, and terminal feeds.
             </div>
             <style>
-                .friday-protocol:hover {
-                    box-shadow: 0 0 30px rgba(196, 249, 255, 0.4) !important;
-                    background: rgba(0, 80, 120, 0.4) !important;
+                .stealth-protocol:hover {
+                    box-shadow: 0 0 30px rgba(0, 187, 255, 0.4) !important;
+                    background: rgba(0, 17, 51, 0.6) !important;
                 }
-                @keyframes spinZ { 100% { transform: rotate(360deg); } }
+            </style>
+        </a>
+
+        <!-- Option 4 (Diagnostic/Wireframe) -->
+        <a href="option4.html" class="option-card diag-protocol" style="width: 280px; padding: 30px; border-color: #5dffcc; color: #5dffcc; font-family: 'Consolas', monospace;">
+            <div class="card-icon" style="border: 2px solid #5dffcc; border-radius: 0; animation: spinZ 15s linear infinite; clip-path: polygon(10% 0, 100% 0, 100% 90%, 90% 100%, 0 100%, 0 10%);">
+                <div class="card-inner-icon" style="background: rgba(93, 255, 204, 0.2); border-radius: 0; width: 30px; height: 30px;"></div>
+            </div>
+            <div class="option-title">DIAGNOSTIC MODE</div>
+            <div class="option-desc">
+                Engage Wireframe Schematic View. Targeting brackets, sharp monospace fonts, rigid grid lines, and high-frequency analytical terminals.
+            </div>
+            <style>
+                .diag-protocol:hover {
+                    box-shadow: 0 0 30px rgba(93, 255, 204, 0.3) !important;
+                    background: rgba(0, 20, 15, 0.8) !important;
+                }
             </style>
         </a>
     </div>
@@ -323,13 +339,15 @@
         document.querySelectorAll('.option-card').forEach(card => {
             card.addEventListener('mouseenter', () => {
                 const isBleedingEdge = card.classList.contains('bleeding-edge');
-                const isFriday = card.classList.contains('friday-protocol');
+                const isStealth = card.classList.contains('stealth-protocol');
+                const isDiag = card.classList.contains('diag-protocol');
                 if(isBleedingEdge) {
                     playBeep(300, 'sawtooth', 0.15, 0.2, 0);
                     playBeep(280, 'square', 0.1, 0.1, 50);
-                } else if(isFriday) {
-                    playBeep(1200, 'sine', 0.1, 0.1, 0);
-                    playBeep(1600, 'sine', 0.05, 0.05, 50);
+                } else if(isStealth) {
+                    playBeep(500, 'sine', 0.1, 0.1, 0);
+                } else if(isDiag) {
+                    playBeep(1500, 'square', 0.05, 0.05, 0);
                 } else {
                     playBeep(600, 'sine', 0.1, 0.2, 0);
                     playBeep(800, 'sine', 0.1, 0.1, 50);
@@ -338,13 +356,18 @@
             
             card.addEventListener('click', (e) => {
                 const isBleedingEdge = card.classList.contains('bleeding-edge');
-                const isFriday = card.classList.contains('friday-protocol');
+                const isStealth = card.classList.contains('stealth-protocol');
+                const isDiag = card.classList.contains('diag-protocol');
                 if(isBleedingEdge) {
                     speak("Deploying Hulkbuster Operating System.", 0.7, 0.9);
                     playBeep(150, 'sawtooth', 0.5, 0.5, 0);
-                } else if(isFriday) {
-                    speak("Initializing Friday Protocol Mark 50.", 1.2, 1.0); // Higher pitch for Friday synth
-                    playBeep(2000, 'sine', 0.5, 0.3, 0);
+                } else if(isStealth) {
+                    speak("Stealth protocol engaged. Running silent.", 0.8, 0.85);
+                    playBeep(400, 'sine', 0.8, 0.3, 0);
+                } else if (isDiag) {
+                    speak("Diagnostic mode activated. Scanning systems.", 1.1, 1.1);
+                    playBeep(2000, 'square', 0.3, 0.2, 0);
+                    playBeep(2200, 'square', 0.1, 0.2, 300);
                 } else {
                     speak("Engaging Mark Seven Holographic Display.", 0.9, 0.9);
                     playBeep(800, 'sine', 0.4, 0.4, 0);
