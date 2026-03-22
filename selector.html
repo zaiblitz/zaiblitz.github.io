@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>J.A.R.V.I.S. - Select Protocol</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+
+        :root {
+            --cyan: #00f3ff;
+            --orange: #ff4500;
+            --bg: #030811;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg);
+            color: var(--cyan);
+            font-family: 'Share Tech Mono', monospace;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            background-image: 
+                radial-gradient(circle at 50% 50%, rgba(0, 243, 255, 0.05) 0%, transparent 60%),
+                linear-gradient(rgba(0, 243, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 243, 255, 0.03) 1px, transparent 1px);
+            background-size: 100% 100%, 30px 30px, 30px 30px;
+        }
+
+        .scanlines {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,0) 50%, rgba(0,0,0,0.2) 50%, rgba(0,0,0,0.2));
+            background-size: 100% 4px;
+            z-index: 10;
+            pointer-events: none;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+            animation: fadeIn 2s ease-in;
+        }
+
+        .title {
+            font-size: 3rem;
+            letter-spacing: 10px;
+            text-shadow: 0 0 20px rgba(0, 243, 255, 0.8);
+            margin: 0 0 10px 0;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.7);
+            letter-spacing: 5px;
+        }
+
+        .options-container {
+            display: flex;
+            gap: 50px;
+            z-index: 20;
+        }
+
+        .option-card {
+            background: rgba(0, 20, 40, 0.4);
+            border: 1px solid var(--cyan);
+            padding: 40px;
+            width: 300px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .option-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(45deg, transparent, rgba(0, 243, 255, 0.1), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.6s ease;
+        }
+
+        .option-card:hover::before {
+            transform: translateX(100%);
+        }
+
+        .option-card:hover {
+            box-shadow: 0 0 30px rgba(0, 243, 255, 0.4);
+            transform: translateY(-10px);
+            background: rgba(0, 40, 80, 0.6);
+        }
+
+        /* Orange variant for Option 2 */
+        .option-card.bleeding-edge {
+            border-color: var(--orange);
+            color: var(--orange);
+        }
+        
+        .option-card.bleeding-edge:hover {
+            box-shadow: 0 0 30px rgba(255, 69, 0, 0.4);
+            background: rgba(80, 20, 0, 0.4);
+        }
+
+        .option-title {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            letter-spacing: 3px;
+        }
+
+        .option-desc {
+            font-size: 0.9rem;
+            line-height: 1.5;
+            color: rgba(255,255,255,0.6);
+        }
+
+        .status-text {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            font-size: 0.8rem;
+            color: #fff;
+            animation: blink 1s infinite alternate;
+        }
+
+        @keyframes fadeIn {
+            0% { opacity: 0; transform: translateY(-20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes blink {
+            0% { opacity: 0.3; }
+            100% { opacity: 1; }
+        }
+
+        /* Arc reactor spin inside the cards */
+        .card-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 20px auto;
+            border-radius: 50%;
+            border: 2px dashed var(--cyan);
+            animation: spin 10s linear infinite;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .bleeding-edge .card-icon {
+            border-color: var(--orange);
+            border-style: dotted;
+            animation: spin-reverse 8s linear infinite;
+        }
+        
+        .card-inner-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(0, 243, 255, 0.2);
+            box-shadow: 0 0 15px var(--cyan);
+        }
+
+        .bleeding-edge .card-inner-icon {
+            background: rgba(255, 69, 0, 0.2);
+            box-shadow: 0 0 15px var(--orange);
+            border-radius: 0; /* Square for edgier look */
+            transform: rotate(45deg);
+        }
+
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+        @keyframes spin-reverse { 100% { transform: rotate(-360deg); } }
+    </style>
+</head>
+<body>
+    <div class="scanlines"></div>
+
+    <div class="header">
+        <h1 class="title">J.A.R.V.I.S.</h1>
+        <div class="subtitle">SYSTEM INITIALIZED // AWAITING PROTOCOL SELECTION</div>
+    </div>
+
+    <div class="options-container">
+        <!-- Alpha Protocol (Cyan) -->
+        <a href="option1.html" class="option-card alpha-protocol">
+            <div class="card-icon">
+                <div class="card-inner-icon"></div>
+            </div>
+            <div class="option-title">MARK VII HUD</div>
+            <div class="option-desc">
+                Engage classic J.A.R.V.I.S. interface. Blue/Cyan hologographics, spherical focal points, and fluid animations.
+            </div>
+        </a>
+
+        <!-- Bleeding Edge (Orange/Red) -->
+        <a href="option2.html" class="option-card bleeding-edge">
+            <div class="card-icon">
+                <div class="card-inner-icon"></div>
+            </div>
+            <div class="option-title">HULKBUSTER OS</div>
+            <div class="option-desc">
+                Deploy high-contrast tactical overlay. Orange/Red diagnostics, hexagonal matrices, and rigid tracking grids.
+            </div>
+        </a>
+    </div>
+
+    <div class="status-text">> CONNECTED TO STARK INTRA_NET... READY</div>
+
+    <script>
+        // Typing effect for the status text
+        const statusText = document.querySelector('.status-text');
+        const text = "> ESTABLISHING SECURE CONNECTION... VERIFYING BIOMETRICS... WELCOME, SIR.";
+        statusText.innerHTML = "";
+        let i = 0;
+        
+        setTimeout(() => {
+            const typer = setInterval(() => {
+                if(i < text.length) {
+                    statusText.innerHTML += text.charAt(i);
+                    i++;
+                } else {
+                    clearInterval(typer);
+                }
+            }, 50);
+        }, 1000);
+    </script>
+</body>
+</html>
