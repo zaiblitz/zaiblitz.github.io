@@ -161,6 +161,10 @@
             0% { box-shadow: 0 0 30px rgba(0, 243, 255, 0.1); }
             100% { box-shadow: 0 0 80px rgba(0, 243, 255, 0.4); }
         }
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
         
         .scanline {
             position: absolute;
@@ -178,12 +182,142 @@
             0% { top: -10%; }
             100% { top: 110%; }
         }
+
+        /* Navigation Menu */
+        .nav-menu {
+            position: absolute;
+            top: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 20px;
+            z-index: 50;
+        }
+        .nav-btn {
+            background: rgba(0, 243, 255, 0.05);
+            border: 1px solid var(--hud-color);
+            color: var(--hud-color);
+            padding: 8px 16px;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 14px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        .nav-btn::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: rgba(0, 243, 255, 0.2);
+            transition: transform 0.3s;
+        }
+        .nav-btn:hover::before {
+            transform: translateX(100%);
+        }
+        .nav-btn:hover {
+            box-shadow: 0 0 15px var(--hud-color);
+            background: rgba(0, 243, 255, 0.15);
+        }
+
+        /* Terminal Pop-up */
+        .terminal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 5, 15, 0.8);
+            z-index: 150;
+            display: none;
+            backdrop-filter: blur(5px);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .terminal-overlay.active {
+            display: block;
+            opacity: 1;
+        }
+        .terminal-popup {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.9);
+            width: 600px;
+            max-width: 90vw;
+            height: 400px;
+            background: rgba(5, 10, 21, 0.95);
+            border: 1px solid var(--hud-color);
+            box-shadow: 0 0 30px rgba(0, 243, 255, 0.2), inset 0 0 15px rgba(0, 243, 255, 0.1);
+            z-index: 200;
+            display: none;
+            flex-direction: column;
+            opacity: 0;
+            transition: opacity 0.3s, transform 0.3s;
+        }
+        .terminal-popup.active {
+            display: flex;
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+        }
+        .terminal-header {
+            background: rgba(0, 243, 255, 0.1);
+            padding: 10px 15px;
+            border-bottom: 1px solid var(--hud-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .close-btn {
+            cursor: pointer;
+            color: var(--hud-alert);
+            font-weight: bold;
+            font-size: 14px;
+        }
+        .close-btn:hover {
+            text-shadow: 0 0 5px var(--hud-alert);
+        }
+        .terminal-body {
+            padding: 20px;
+            flex: 1;
+            overflow-y: auto;
+            color: #fff;
+            line-height: 1.6;
+            font-size: 14px;
+        }
+        .terminal-cursor {
+            display: inline-block;
+            width: 10px;
+            height: 16px;
+            background: var(--hud-color);
+            animation: blink 1s infinite;
+            vertical-align: middle;
+            margin-left: 5px;
+        }
     </style>
 </head>
 <body>
     <div class="grid"></div>
     <div class="scanline"></div>
     
+    <div class="nav-menu">
+        <button class="nav-btn" onclick="openTerminal('about')">ABOUT US</button>
+        <button class="nav-btn" onclick="openTerminal('career')">CAREERS</button>
+        <button class="nav-btn" onclick="openTerminal('contact')">CONTACT</button>
+    </div>
+
+    <!-- Terminal System -->
+    <div class="terminal-overlay" id="term-overlay" onclick="closeTerminal()"></div>
+    <div class="terminal-popup" id="terminal">
+        <div class="terminal-header">
+            <span style="color:var(--hud-color);letter-spacing:2px;font-size:12px;" id="term-title">SECURE_TERMINAL // v1.0</span>
+            <span class="close-btn" onclick="closeTerminal()">[ TERMINATE ]</span>
+        </div>
+        <div class="terminal-body" id="term-body">
+            <!-- Dynamic Content -->
+        </div>
+    </div>
+
     <div class="container">
         <!-- Left Panel: Profile / Skills -->
         <div class="panel panel-left">
@@ -301,6 +435,66 @@
                 playBeep(1500, 'sine', 0.05, 0.05, 0);
             });
         });
+
+        // Terminal Logic
+        const terminalData = {
+            about: "INITIATING QUERY: ABOUT US\n\n> ZAIBLITZ PROTOCOL is a highly advanced AI-driven architecture and full-stack ecosystem.\n> DEVELOPER: Zaiblitz\n> DIRECTIVE: To build seamless, scalable, and visually stunning web systems.\n> CURRENT ASSETS: React, Vue, Laravel, Cloud Infrastructures.\n\n[ END OF TRANSMISSION ]",
+            career: "INITIATING QUERY: CAREERS\n\n> SCANNING DATABASE FOR OPEN POSITIONS...\n\n> POSITION_1: UI/UX HOLOGRAPHIC ENGINEER\n> STATUS: OPEN\n> REQ: React, Visionary Cybernetic Design, WebGL.\n\n> POSITION_2: DATA CORE ARCHITECT\n> STATUS: OPEN\n> REQ: Laravel, High-volume DB Optimization, Sentinel Protocols.\n\n[ END OF TRANSMISSION ]",
+            contact: "INITIATING QUERY: CONTACT\n\n> ENCRYPTING CONNECTION...\n> SECURE CHANNEL ESTABLISHED.\n\n> COMMS FREQUENCY: 89.2 MHz\n> EMAIL_RELAY: comms@zaiblitz.net\n> BASE_LOCATION: Sector 7, Neo-Manila\n\n> AWAITING INCOMING TRANSMISSION..."
+        };
+
+        let typingTimer;
+
+        function openTerminal(section) {
+            initAudio();
+            playBeep(800, 'square', 0.1, 0.1, 0); // Panel open sound
+            
+            const overlay = document.getElementById('term-overlay');
+            const terminal = document.getElementById('terminal');
+            const termBody = document.getElementById('term-body');
+            const termTitle = document.getElementById('term-title');
+            
+            overlay.classList.add('active');
+            terminal.classList.add('active');
+            
+            termTitle.innerText = `OS // QUERY: ${section.toUpperCase()}`;
+            termBody.innerHTML = '';
+            
+            const textToType = terminalData[section];
+            let i = 0;
+            if(typingTimer) clearInterval(typingTimer);
+            
+            typingTimer = setInterval(() => {
+                if(i < textToType.length) {
+                    let char = textToType.charAt(i);
+                    let htmlChar = (char === '\n') ? '<br><br>' : char;
+                    
+                    termBody.innerHTML = termBody.innerHTML.replace('<span class="terminal-cursor"></span>', '') + htmlChar + '<span class="terminal-cursor"></span>';
+                    
+                    // Typing sound (randomized pitch for realism)
+                    if(char !== ' ' && char !== '\n' && (i % 2 === 0)) {
+                        playBeep(1200 + Math.random()*500, 'square', 0.02, 0.02, 0);
+                    }
+                    
+                    i++;
+                    termBody.scrollTop = termBody.scrollHeight;
+                } else {
+                    clearInterval(typingTimer);
+                    playBeep(600, 'sine', 0.3, 0.05, 0); // Complete sound
+                }
+            }, 30); // Typing speed
+        }
+
+        function closeTerminal() {
+            playBeep(400, 'sawtooth', 0.1, 0.1, 0); // Panel close sound
+            if(typingTimer) clearInterval(typingTimer);
+            
+            const overlay = document.getElementById('term-overlay');
+            const terminal = document.getElementById('terminal');
+            
+            overlay.classList.remove('active');
+            terminal.classList.remove('active');
+        }
     </script>
 </body>
 </html>
