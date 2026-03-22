@@ -86,3 +86,36 @@
 .diag-theme .term-close:hover {
     color: var(--term-color);
 }
+
+/* ============================================
+   RESPONSIVE — TERMINAL MANAGER
+   ============================================ */
+
+@media (max-width: 768px) {
+    .term-mngr-popup {
+        width: 95vw;
+        height: 50vh;
+    }
+    .term-mngr-body {
+        padding: 12px;
+        font-size: 13px;
+    }
+    .term-title {
+        font-size: 11px;
+    }
+}
+
+@media (max-width: 480px) {
+    .term-mngr-popup {
+        width: 98vw;
+        height: 45vh;
+    }
+    .term-mngr-body {
+        padding: 10px;
+        font-size: 12px;
+        line-height: 1.5;
+    }
+    .term-mngr-header {
+        padding: 8px 10px;
+    }
+}

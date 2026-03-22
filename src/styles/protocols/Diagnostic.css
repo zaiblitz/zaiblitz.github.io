@@ -95,3 +95,110 @@
 
 .diagnostic-theme .panel-heading { font-size: 0.8rem; margin-bottom: 10px; border-bottom: 1px solid var(--mesh-dim); padding-bottom: 4px; }
 .diagnostic-theme .data-line { display: flex; justify-content: space-between; font-size: 0.75rem; margin-bottom: 5px; }
+
+/* ============================================
+   RESPONSIVE — DIAGNOSTIC
+   ============================================ */
+
+/* Tablet */
+@media (max-width: 1024px) {
+    .diagnostic-theme .targeting-bracket {
+        width: 300px;
+        height: 300px;
+    }
+    .diagnostic-theme .panel {
+        width: 200px;
+        padding: 15px;
+    }
+    .diagnostic-theme .central-designation h1 {
+        font-size: 2rem;
+        letter-spacing: 8px;
+    }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+    .diagnostic-theme {
+        overflow-y: auto;
+        position: fixed;
+    }
+    .diagnostic-theme .targeting-bracket {
+        width: 200px;
+        height: 200px;
+    }
+    .diagnostic-theme .central-designation h1 {
+        font-size: 1.4rem;
+        letter-spacing: 5px;
+    }
+    .diagnostic-theme .central-designation p {
+        font-size: 0.8rem;
+        letter-spacing: 2px;
+    }
+    .diagnostic-theme .panel {
+        position: relative;
+        width: 100% !important;
+        left: auto !important;
+        right: auto !important;
+        top: auto !important;
+        bottom: auto !important;
+        margin: 0;
+        box-sizing: border-box;
+    }
+    .diagnostic-theme .reticle-container {
+        position: relative;
+        min-height: 250px;
+        pointer-events: auto;
+    }
+    /* Stack panels below the reticle */
+    .diagnostic-theme .p-top-left,
+    .diagnostic-theme .p-top-right,
+    .diagnostic-theme .p-bottom-left,
+    .diagnostic-theme .p-bottom-right {
+        position: relative;
+        top: auto; left: auto; right: auto; bottom: auto;
+    }
+    /* Create a flex column layout */
+    .diagnostic-theme {
+        display: flex;
+        flex-direction: column;
+        padding: 70px 15px 20px;
+        gap: 10px;
+        height: auto;
+        min-height: 100vh;
+    }
+    .diagnostic-theme .nav-menu {
+        top: 10px;
+        flex-wrap: wrap;
+        justify-content: center;
+        width: 90%;
+    }
+    .diagnostic-theme .nav-btn {
+        padding: 6px 14px;
+        font-size: 12px;
+        letter-spacing: 1px;
+    }
+}
+
+/* Small Mobile */
+@media (max-width: 480px) {
+    .diagnostic-theme {
+        padding: 60px 10px 15px;
+    }
+    .diagnostic-theme .targeting-bracket {
+        width: 160px;
+        height: 160px;
+    }
+    .diagnostic-theme .central-designation h1 {
+        font-size: 1.1rem;
+        letter-spacing: 3px;
+    }
+    .diagnostic-theme .panel {
+        padding: 10px;
+    }
+    .diagnostic-theme .panel-heading {
+        font-size: 0.7rem;
+    }
+    .diagnostic-theme .data-line {
+        font-size: 0.65rem;
+    }
+}

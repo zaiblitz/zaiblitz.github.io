@@ -304,3 +304,110 @@
     0%, 100% { box-shadow: 0 0 10px rgba(255, 51, 51, 0.3); }
     50% { box-shadow: 0 0 25px rgba(255, 51, 51, 0.6); }
 }
+
+/* ============================================
+   RESPONSIVE — PROTOCOL SELECTOR
+   ============================================ */
+
+/* Tablet */
+@media (max-width: 1024px) {
+    .selector-theme .title {
+        font-size: 2rem;
+        letter-spacing: 6px;
+    }
+    .selector-theme .subtitle {
+        font-size: 1rem;
+        letter-spacing: 3px;
+    }
+    .selector-theme .header {
+        margin-bottom: 30px;
+    }
+    .selector-theme .options-container {
+        gap: 20px;
+        max-width: 90vw;
+    }
+    .selector-theme .option-card {
+        width: 200px;
+        padding: 20px;
+    }
+    .selector-theme .option-title {
+        font-size: 1.1rem;
+    }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+    .selector-theme .title {
+        font-size: 1.5rem;
+        letter-spacing: 4px;
+    }
+    .selector-theme .subtitle {
+        font-size: 0.8rem;
+        letter-spacing: 2px;
+    }
+    .selector-theme .header {
+        margin-bottom: 20px;
+    }
+    .selector-theme .options-container {
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+        max-width: 95vw;
+        overflow-y: auto;
+        max-height: 65vh;
+        padding: 10px 0;
+    }
+    .selector-theme .option-card {
+        width: 85vw;
+        max-width: 320px;
+        padding: 15px;
+    }
+    .selector-theme .option-card:hover {
+        transform: translateY(-3px);
+    }
+    .selector-theme .option-title {
+        font-size: 1rem;
+        letter-spacing: 2px;
+    }
+    .selector-theme .option-desc {
+        font-size: 0.8rem;
+    }
+    .selector-theme .card-icon {
+        width: 60px;
+        height: 60px;
+        margin-bottom: 12px;
+    }
+    .selector-theme .card-inner-icon {
+        width: 30px;
+        height: 30px;
+    }
+    .selector-theme .voice-cmd-btn {
+        bottom: 20px;
+        right: 15px;
+        padding: 10px 14px;
+        font-size: 0.75rem;
+    }
+    .selector-theme .sel-status-text {
+        font-size: 0.7rem;
+        bottom: 10px;
+        left: 10px;
+    }
+}
+
+/* Small Mobile */
+@media (max-width: 480px) {
+    .selector-theme .title {
+        font-size: 1.2rem;
+        letter-spacing: 3px;
+    }
+    .selector-theme .subtitle {
+        font-size: 0.7rem;
+    }
+    .selector-theme .option-card {
+        width: 90vw;
+        padding: 12px;
+    }
+    .selector-theme .option-title {
+        font-size: 0.9rem;
+    }
+}

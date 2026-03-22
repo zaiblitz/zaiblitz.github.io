@@ -1,8 +1,8 @@
-# Personal Website — Jarvis/Iron Man HUD Theme
+# Z.A.I.B.L.I.T.Z. — Setup & Deployment
 
 ## Vision
 
-A futuristic, immersive single-page personal website inspired by the Iron Man / J.A.R.V.I.S. HUD interface. Think holographic displays, glowing neon elements, animated data streams, and a dark tactical command-center aesthetic.
+A futuristic, immersive personal portfolio powered by a multi-protocol theme system inspired by Iron Man HUD aesthetics. Features 5 selectable visual protocols, synthesized audio, voice commands, and a terminal-driven interface.
 
 ---
 
@@ -159,47 +159,74 @@ git push
 zaiblitz.github.io/
 ├── .github/
 │   └── workflows/
-│       └── deploy.yml        ← GitHub Actions workflow (auto-deploy)
+│       └── deploy.yml              ← GitHub Actions workflow (auto-deploy)
 ├── src/
-│   ├── main.jsx              ← React entry point
-│   ├── App.jsx               ← Root component (boot → HUD)
+│   ├── main.jsx                    ← React entry point
+│   ├── App.jsx                     ← Root: ProtocolProvider → AppContent
+│   ├── contexts/
+│   │   └── ProtocolContext.jsx     ← Theme state, boot settings, localStorage
+│   ├── hooks/
+│   │   ├── useZaiblitzAudio.js     ← Shared Web Audio API + Speech Synthesis
+│   │   ├── useVoiceCommand.js      ← Speech Recognition for voice commands
+│   │   └── useTypingEffect.js      ← Typing animation hook
 │   ├── components/
-│   │   ├── BootSequence.jsx  ← Startup animation
-│   │   ├── TopBar.jsx        ← Name, status, clock
-│   │   ├── LeftPanel.jsx     ← Avatar, bio, social links
-│   │   ├── CenterPanel.jsx   ← Project cards + terminal
-│   │   ├── RightPanel.jsx    ← Skill bars + stat counters
-│   │   ├── BottomBar.jsx     ← Scrolling marquee
-│   │   ├── Terminal.jsx      ← Interactive command terminal
-│   │   ├── Particles.jsx     ← Canvas particle background
-│   │   └── SocialIcon.jsx    ← SVG social icons
+│   │   ├── shared/                 ← System-level (cross-protocol)
+│   │   │   ├── ProtocolSelector.jsx
+│   │   │   ├── SettingsPanel.jsx
+│   │   │   └── TerminalManager.jsx
+│   │   └── protocols/              ← Theme layout components
+│   │       ├── Legacy.jsx
+│   │       ├── MarkVII.jsx
+│   │       ├── Hulkbuster.jsx
+│   │       ├── Stealth.jsx
+│   │       ├── Diagnostic.jsx
+│   │       └── legacy/             ← Legacy-only sub-components
+│   │           ├── BootSequence.jsx
+│   │           ├── TopBar.jsx
+│   │           ├── CenterPanel.jsx
+│   │           ├── Terminal.jsx
+│   │           └── ...
 │   ├── data/
-│   │   ├── profile.js        ← Name, title, social links
-│   │   ├── projects.js       ← Project cards data
-│   │   ├── skills.js         ← Skill bars + stat numbers
-│   │   ├── boot.js           ← Boot sequence lines + marquee text
-│   │   └── commands.js       ← Terminal command definitions
+│   │   ├── settings.js             ← Master protocol config
+│   │   ├── profile.js              ← Name, title, social links
+│   │   ├── projects.js             ← Project cards data
+│   │   ├── skills.js               ← Skill bars + stat numbers
+│   │   ├── about.js                ← About/dossier content
+│   │   ├── timeline.js             ← Career history entries
+│   │   ├── commands.js             ← Terminal command definitions
+│   │   └── boot.js                 ← Boot sequence lines + marquee
 │   └── styles/
-│       └── index.css         ← All styles + animations
-├── index.html                ← HTML shell (Vite entry)
-├── vite.config.js            ← Vite build config
-├── package.json              ← Dependencies & scripts
-├── package-lock.json         ← Locked dependency versions
-├── .gitignore                ← Files git should ignore
-└── INSTRUCTIONS.md           ← This file
+│       ├── index.css               ← Legacy master stylesheet
+│       ├── ProtocolSelector.css    ← Selector screen styles
+│       └── protocols/              ← Per-protocol CSS
+│           ├── MarkVII.css
+│           ├── Hulkbuster.css
+│           ├── Stealth.css
+│           └── Diagnostic.css
+├── prototypes/                     ← Original standalone HTML references
+│   ├── selector.html
+│   ├── option1.html — option4.html
+├── docs/                           ← Documentation
+├── index.html                      ← HTML shell (Vite entry)
+├── vite.config.js                  ← Vite build config
+└── package.json                    ← Dependencies & scripts
 ```
 
 ### Where to edit what
 
-| Want to change...          | Edit this file          |
-|----------------------------|-------------------------|
-| Your name, title, links    | `src/data/profile.js`   |
-| Projects list              | `src/data/projects.js`  |
-| Skills & stats             | `src/data/skills.js`    |
-| Boot sequence text         | `src/data/boot.js`      |
-| Terminal commands           | `src/data/commands.js`  |
-| Colors, fonts, layout      | `src/styles/index.css`  |
-| Component behavior          | `src/components/*.jsx`  |
+| Want to change...              | Edit this file              |
+|--------------------------------|-----------------------------|
+| Your name, title, links        | `src/data/profile.js`       |
+| Projects list                  | `src/data/projects.js`      |
+| Skills & stats                 | `src/data/skills.js`        |
+| About/dossier content          | `src/data/about.js`         |
+| Career timeline                | `src/data/timeline.js`      |
+| Boot sequence text             | `src/data/boot.js`          |
+| Terminal commands               | `src/data/commands.js`      |
+| Protocol config (active/order) | `src/data/settings.js`      |
+| Colors, fonts, layout          | `src/styles/index.css`      |
+| Protocol-specific styles       | `src/styles/protocols/*.css` |
+| Component behavior             | `src/components/**/*.jsx`   |
 
 ---
 

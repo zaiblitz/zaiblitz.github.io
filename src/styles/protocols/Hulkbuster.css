@@ -169,3 +169,127 @@
 @keyframes HBspin { 100% { transform: rotate(360deg); } }
 @keyframes HBspinReverse { 100% { transform: rotate(-360deg); } }
 @keyframes HBpulseBg { 100% { opacity: 0.5; } }
+
+/* ============================================
+   RESPONSIVE — HULKBUSTER
+   ============================================ */
+
+/* Tablet */
+@media (max-width: 1024px) {
+    .hulkbuster-theme .hud-wrapper {
+        grid-template-columns: 220px 1fr 220px;
+        padding: 15px;
+        gap: 15px;
+    }
+    .hulkbuster-theme .hexa-grid {
+        width: 400px;
+        height: 400px;
+    }
+    .hulkbuster-theme .main-avatar {
+        width: 180px;
+        height: 180px;
+    }
+    .hulkbuster-theme .ring-1 {
+        width: 260px;
+        height: 260px;
+    }
+    .hulkbuster-theme .ring-2 {
+        width: 340px;
+        height: 340px;
+    }
+    .hulkbuster-theme .title {
+        font-size: 22px;
+        letter-spacing: 3px;
+    }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+    .hulkbuster-theme {
+        overflow-y: auto;
+        position: fixed;
+    }
+    .hulkbuster-theme .hud-wrapper {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto auto auto auto auto;
+        height: auto;
+        min-height: 100vh;
+        padding: 15px;
+        gap: 15px;
+    }
+    .hulkbuster-theme .top-bar {
+        flex-direction: column;
+        text-align: center;
+        gap: 8px;
+    }
+    .hulkbuster-theme .title {
+        font-size: 18px;
+        letter-spacing: 2px;
+    }
+    .hulkbuster-theme .timecode {
+        font-size: 14px;
+    }
+    .hulkbuster-theme .center-display {
+        min-height: 300px;
+    }
+    .hulkbuster-theme .hexa-grid {
+        width: 280px;
+        height: 280px;
+    }
+    .hulkbuster-theme .main-avatar {
+        width: 160px;
+        height: 160px;
+    }
+    .hulkbuster-theme .main-avatar h2 {
+        font-size: 16px;
+    }
+    .hulkbuster-theme .ring-1 {
+        width: 220px;
+        height: 220px;
+    }
+    .hulkbuster-theme .ring-2 {
+        width: 280px;
+        height: 280px;
+    }
+    .hulkbuster-theme .bottom-bar {
+        flex-direction: column;
+        gap: 10px;
+        align-items: flex-start;
+    }
+}
+
+/* Small Mobile */
+@media (max-width: 480px) {
+    .hulkbuster-theme .hud-wrapper {
+        padding: 10px;
+        gap: 10px;
+    }
+    .hulkbuster-theme .title {
+        font-size: 15px;
+    }
+    .hulkbuster-theme .hexa-grid {
+        width: 220px;
+        height: 220px;
+    }
+    .hulkbuster-theme .main-avatar {
+        width: 130px;
+        height: 130px;
+    }
+    .hulkbuster-theme .main-avatar h2 {
+        font-size: 14px;
+    }
+    .hulkbuster-theme .ring-1 {
+        width: 180px;
+        height: 180px;
+    }
+    .hulkbuster-theme .ring-2 {
+        width: 230px;
+        height: 230px;
+    }
+    .hulkbuster-theme .panel {
+        padding: 12px;
+    }
+    .hulkbuster-theme .section-title {
+        font-size: 12px;
+    }
+}

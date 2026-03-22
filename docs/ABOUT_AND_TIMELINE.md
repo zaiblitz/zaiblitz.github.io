@@ -1,86 +1,70 @@
-# Phase 2 — About Section & Career Timeline
+# Content System — About, Career & Terminal Commands
 
 ## Overview
 
-Phase 2 adds content depth to the portfolio while maintaining the Jarvis/Iron Man HUD aesthetic. New About and Career Timeline sections provide context about the developer behind the HUD.
+Content in Z.A.I.B.L.I.T.Z. is delivered through **terminal popups** rather than static page sections. In the Legacy protocol, typing `about`, `career`, or `contact` in the interactive terminal triggers a Z.A.I.B.L.I.T.Z.-style typing popup with sound effects. The other protocols (Mark VII, Stealth, Diagnostic) have dedicated nav buttons that open the same popup system.
 
 ---
 
-## Changes Implemented
+## Data Sources
 
-### 1. About Section
-
-**Files:** `src/components/AboutSection.jsx`, `src/data/about.js`
-
-Added a dossier-style about section with:
-- 3 paragraphs about background, current work, and personality
-- Focus grid (2×2) showing: Frontend, Backend, Infra, Philosophy
-
----
-
-### 2. Career Timeline
-
-**Files:** `src/components/TimelineSection.jsx`, `src/data/timeline.js`
-
-Mission-log styled career timeline with:
-- Vertical timeline with connecting lines
-- Active/completed status indicators
-- Glowing dot for current position
-- 4 entries from Junior Developer → Independent Developer
+| File | Content |
+|------|---------|
+| `src/data/about.js` | Operator dossier — bio paragraphs, focus grid (Frontend, Backend, Infra, Philosophy) |
+| `src/data/timeline.js` | Career history — 5 entries from 2012 to present with roles, orgs, tags, status |
+| `src/data/commands.js` | Terminal command definitions — `help`, `about`, `career`, `skills`, `projects`, `contact`, `status`, `date`, `quote`, `clear` |
+| `src/data/profile.js` | Name, title, social links |
+| `src/data/projects.js` | Project cards data |
+| `src/data/skills.js` | Skill bars and stat numbers |
 
 ---
 
-### 3. Updated Terminal About Command
+## How Content is Displayed
 
-**File:** `src/data/commands.js`
+### Legacy Protocol (Standard View)
+- About, career, and contact are **not** rendered as static sections
+- They are triggered by typing commands in the interactive terminal (`ZAIBLITZ>`)
+- Commands `about`, `career`, `contact` open a `<TerminalManager>` popup with typing animation and sound
+- Other commands (`skills`, `projects`, `status`, etc.) display inline in the terminal
 
-Added Focus and Status lines to the `about` terminal command output.
+### Mark VII / Stealth / Diagnostic Protocols
+- Nav buttons (ABOUT, CAREERS, CONTACT) trigger the same `<TerminalManager>` popup
+- Each protocol has its own `terminalData` object with themed text content
 
 ---
 
-### 4. Organized Documentation
-
-Moved `INSTRUCTIONS.md` into `docs/` folder for cleaner project root.
-
----
-
-## New Files Added
+## Terminal Commands (Legacy)
 
 ```
-src/
-├── components/
-│   ├── AboutSection.jsx      ← About/Dossier section
-│   └── TimelineSection.jsx   ← Career timeline
-├── data/
-│   ├── about.js              ← About content data
-│   └── timeline.js           ← Career entries data
-```
+ZAIBLITZ> help
 
-## Modified Files
-
-```
-src/
-├── components/
-│   └── CenterPanel.jsx       ← Added new sections
-├── data/
-│   └── commands.js            ← Updated terminal about command
-├── styles/
-│   └── index.css              ← New section styles + status badges
+AVAILABLE COMMANDS:
+  help      — Show this help menu
+  about     — Who am I?
+  career    — Mission log / career history
+  skills    — List core skills
+  projects  — List active projects
+  contact   — Get in touch
+  status    — System status report
+  clear     — Clear terminal
+  date      — Current date/time
+  quote     — Random quote
 ```
 
 ---
 
-## Design Decisions
+## Key Components
 
-- **All new sections** are placed in the center panel to maintain the 3-column HUD layout
-- **Sections separated** by `border-top` dividers matching the HUD panel border style
-- **Timeline** uses vertical line + dot pattern similar to HUD system readouts
-- **Status badges** use color coding: green (ACTIVE), gold (IN DEV), orange (PLANNED), dim (ARCHIVED/COMPLETED)
-- **All fonts** maintain Orbitron (display) + Share Tech Mono (body) consistency
-- **Responsive** — focus grid and project grid collapse to single column on tablet/mobile
+| Component | Location | Purpose |
+|-----------|----------|---------|
+| `Terminal.jsx` | `components/protocols/legacy/` | Interactive command-line with `ZAIBLITZ>` prompt |
+| `TerminalManager.jsx` | `components/shared/` | Reusable typing popup with sound effects |
+| `CenterPanel.jsx` | `components/protocols/legacy/` | Hosts project grid + terminal, passes popup commands |
 
 ---
 
 ## Notes
 
-- `ContactSection.jsx` was created but removed from the active layout to keep the page minimal. The component file remains in the repo if needed later.
+- `AboutSection.jsx` and `TimelineSection.jsx` remain in `components/protocols/legacy/` but are no longer imported — kept as reference
+- The `<TerminalManager>` uses a shared `AudioContext` so typing sounds work across all protocols
+- Career data in `timeline.js` uses status indicators: `ACTIVE` (current role) and `COMPLETED`

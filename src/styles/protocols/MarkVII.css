@@ -219,3 +219,131 @@
     box-shadow: 0 0 15px var(--hud-color);
     background: rgba(0, 243, 255, 0.15);
 }
+
+/* ============================================
+   RESPONSIVE — MARK VII
+   ============================================ */
+
+/* Tablet */
+@media (max-width: 1024px) {
+    .mark-vii-theme .arc-reactor {
+        width: 280px;
+        height: 280px;
+    }
+    .mark-vii-theme .arc-inner {
+        width: 240px;
+        height: 240px;
+    }
+    .mark-vii-theme .arc-inner-2 {
+        width: 190px;
+        height: 190px;
+    }
+    .mark-vii-theme .panel-left,
+    .mark-vii-theme .panel-right {
+        width: 200px;
+    }
+    .mark-vii-theme .panel-bottom {
+        width: 450px;
+    }
+    .mark-vii-theme .nav-menu {
+        gap: 10px;
+    }
+    .mark-vii-theme .nav-btn {
+        padding: 6px 12px;
+        font-size: 12px;
+    }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+    .mark-vii-theme .container {
+        flex-direction: column;
+        height: auto;
+        min-height: 100vh;
+        padding: 80px 15px 20px;
+        overflow-y: auto;
+    }
+    .mark-vii-theme {
+        overflow-y: auto;
+        position: fixed;
+    }
+    .mark-vii-theme .arc-reactor {
+        width: 200px;
+        height: 200px;
+        position: relative;
+        margin: 20px auto;
+    }
+    .mark-vii-theme .arc-inner {
+        width: 170px;
+        height: 170px;
+    }
+    .mark-vii-theme .arc-inner-2 {
+        width: 130px;
+        height: 130px;
+    }
+    .mark-vii-theme .core {
+        padding: 20px;
+    }
+    .mark-vii-theme .core h1 {
+        font-size: 16px;
+        letter-spacing: 2px;
+    }
+    .mark-vii-theme .core p {
+        font-size: 12px;
+    }
+    .mark-vii-theme .panel {
+        position: relative;
+        width: 100% !important;
+        left: auto !important;
+        right: auto !important;
+        top: auto !important;
+        bottom: auto !important;
+        transform: none !important;
+        margin: 10px 0;
+        border-left: 4px solid var(--hud-color) !important;
+        border-right: none !important;
+        border-bottom: none !important;
+        text-align: left !important;
+    }
+    .mark-vii-theme .panel-bottom {
+        flex-direction: column;
+        gap: 10px;
+    }
+    .mark-vii-theme .nav-menu {
+        top: 10px;
+        gap: 8px;
+        flex-wrap: wrap;
+        justify-content: center;
+        width: 90%;
+    }
+    .mark-vii-theme .nav-btn {
+        padding: 5px 10px;
+        font-size: 11px;
+        letter-spacing: 1px;
+    }
+}
+
+/* Small Mobile */
+@media (max-width: 480px) {
+    .mark-vii-theme .arc-reactor {
+        width: 160px;
+        height: 160px;
+    }
+    .mark-vii-theme .arc-inner {
+        width: 135px;
+        height: 135px;
+    }
+    .mark-vii-theme .arc-inner-2 {
+        width: 100px;
+        height: 100px;
+    }
+    .mark-vii-theme .core h1 {
+        font-size: 14px;
+    }
+    .mark-vii-theme .stat-line {
+        font-size: 12px;
+    }
+    .mark-vii-theme .data-header {
+        font-size: 10px;
+    }
+}

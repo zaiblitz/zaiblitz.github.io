@@ -147,3 +147,108 @@
     background: rgba(0, 187, 255, 0.2);
     box-shadow: 0 0 10px var(--hud-cyan);
 }
+
+/* ============================================
+   RESPONSIVE — STEALTH
+   ============================================ */
+
+/* Tablet */
+@media (max-width: 1024px) {
+    .stealth-theme .layout-grid {
+        grid-template-columns: 300px 1fr 280px;
+        padding: 25px;
+        gap: 15px;
+    }
+    .stealth-theme .r-1 {
+        width: 240px;
+        height: 240px;
+    }
+    .stealth-theme .r-2 {
+        width: 200px;
+        height: 200px;
+    }
+    .stealth-theme .r-3 {
+        width: 120px;
+        height: 120px;
+    }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+    .stealth-theme {
+        overflow-y: auto;
+        position: fixed;
+    }
+    .stealth-theme .layout-grid {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto auto auto;
+        height: auto;
+        min-height: 100vh;
+        padding: 60px 15px 20px;
+        gap: 15px;
+    }
+    .stealth-theme .radar-container {
+        min-height: 280px;
+    }
+    .stealth-theme .r-1 {
+        width: 200px;
+        height: 200px;
+    }
+    .stealth-theme .r-2 {
+        width: 170px;
+        height: 170px;
+    }
+    .stealth-theme .r-3 {
+        width: 100px;
+        height: 100px;
+    }
+    .stealth-theme .radar-center h2 {
+        font-size: 1rem;
+        letter-spacing: 3px;
+    }
+    .stealth-theme .nav-menu {
+        top: 10px;
+        right: auto;
+        left: 50%;
+        transform: translateX(-50%);
+        flex-wrap: wrap;
+        justify-content: center;
+        width: 90%;
+    }
+    .stealth-theme .nav-btn {
+        padding: 5px 10px;
+        font-size: 11px;
+        letter-spacing: 1px;
+    }
+    .stealth-theme .data-block {
+        padding: 12px;
+    }
+}
+
+/* Small Mobile */
+@media (max-width: 480px) {
+    .stealth-theme .layout-grid {
+        padding: 55px 10px 15px;
+    }
+    .stealth-theme .radar-container {
+        min-height: 220px;
+    }
+    .stealth-theme .r-1 {
+        width: 160px;
+        height: 160px;
+    }
+    .stealth-theme .r-2 {
+        width: 130px;
+        height: 130px;
+    }
+    .stealth-theme .r-3 {
+        width: 80px;
+        height: 80px;
+    }
+    .stealth-theme .block-title {
+        font-size: 0.6rem;
+    }
+    .stealth-theme .skill-name {
+        font-size: 0.8rem;
+    }
+}
