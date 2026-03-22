@@ -16,6 +16,12 @@ export function useZaiblitzAudio() {
         if (sharedAudioCtx.state === 'suspended') {
             sharedAudioCtx.resume();
         }
+        // Unlock speech synthesis on mobile (must happen in user gesture)
+        if (window.speechSynthesis) {
+            const unlock = new SpeechSynthesisUtterance('');
+            unlock.volume = 0;
+            window.speechSynthesis.speak(unlock);
+        }
     }, [config.isMuted]);
 
     const playBeep = useCallback((freq, type, duration, vol, delay = 0) => {
