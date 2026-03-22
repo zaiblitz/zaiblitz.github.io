@@ -1,12 +1,12 @@
 import { useState } from 'react'
-import BootSequence from '../../components/BootSequence'
-import TopBar from '../../components/TopBar'
-import LeftPanel from '../../components/LeftPanel'
-import CenterPanel from '../../components/CenterPanel'
-import RightPanel from '../../components/RightPanel'
-import BottomBar from '../../components/BottomBar'
-import Particles from '../../components/Particles'
-import GlowCursor from '../../components/GlowCursor'
+import BootSequence from './legacy/BootSequence'
+import TopBar from './legacy/TopBar'
+import LeftPanel from './legacy/LeftPanel'
+import CenterPanel from './legacy/CenterPanel'
+import RightPanel from './legacy/RightPanel'
+import BottomBar from './legacy/BottomBar'
+import Particles from './legacy/Particles'
+import GlowCursor from './legacy/GlowCursor'
 
 export default function Legacy() {
   const [booted, setBooted] = useState(false)

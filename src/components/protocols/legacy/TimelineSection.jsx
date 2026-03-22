@@ -1,4 +1,4 @@
-import { timeline } from '../data/timeline'
+import { timeline } from '../../../data/timeline'
 
 export default function TimelineSection() {
   return (

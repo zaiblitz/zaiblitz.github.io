@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { profile } from '../data/profile'
+import { profile } from '../../../data/profile'
 
 export default function TopBar() {
   const [time, setTime] = useState(formatTime())

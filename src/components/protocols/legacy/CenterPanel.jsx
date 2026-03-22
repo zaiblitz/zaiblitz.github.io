@@ -1,4 +1,4 @@
-import { projects } from '../data/projects'
+import { projects } from '../../../data/projects'
 import Terminal from './Terminal'
 import AboutSection from './AboutSection'
 import TimelineSection from './TimelineSection'

@@ -1,8 +1,9 @@
-import { useState } from 'react';
-import { useProtocol } from '../contexts/ProtocolContext';
-import { useZaiblitzAudio } from '../hooks/useZaiblitzAudio';
-import { getActiveProtocols } from '../data/settings';
-import '../styles/ProtocolSelector.css';
+import { useState, useCallback } from 'react';
+import { useProtocol } from '../../contexts/ProtocolContext';
+import { useZaiblitzAudio } from '../../hooks/useZaiblitzAudio';
+import { useVoiceCommand } from '../../hooks/useVoiceCommand';
+import { getActiveProtocols } from '../../data/settings';
+import '../../styles/ProtocolSelector.css';
 
 const hoverSounds = {
     hulkbuster: (beep) => { beep(300, 'sawtooth', 0.15, 0.2, 0); beep(280, 'square', 0.1, 0.1, 50); },
@@ -25,8 +26,55 @@ export default function ProtocolSelector() {
     const { initAudio, playBeep, speak } = useZaiblitzAudio();
     const [booted, setBooted] = useState(false);
     const [statusText, setStatusText] = useState("> STANDBY...");
+    const [voiceStatus, setVoiceStatus] = useState('');
 
     const activeProtocols = getActiveProtocols();
+
+    const matchProtocol = useCallback((primary, alternatives) => {
+        const allTexts = [primary, ...(alternatives || [])];
+        for (const text of allTexts) {
+            for (const proto of activeProtocols) {
+                if (!proto.voiceKeywords) continue;
+                for (const kw of proto.voiceKeywords) {
+                    if (text.includes(kw)) return proto;
+                }
+            }
+        }
+        return null;
+    }, [activeProtocols]);
+
+    const onVoiceResult = useCallback((primary, alternatives) => {
+        const matched = matchProtocol(primary, alternatives);
+        if (matched) {
+            setVoiceStatus(`> VOICE MATCH: "${primary}" → ${matched.name}`);
+            playBeep(1000, 'sine', 0.3, 0.3, 0);
+            handleSelect(matched);
+        } else {
+            setVoiceStatus(`> UNRECOGNIZED: "${primary}" — SAY A PROTOCOL NAME`);
+            playBeep(200, 'square', 0.3, 0.2, 0);
+            speak("Command not recognized. Please say a protocol name.", 0.9, 1.0);
+        }
+    }, [matchProtocol, playBeep, speak]);
+
+    const { listen, isListening, supported } = useVoiceCommand({
+        onResult: onVoiceResult,
+        onListening: (active) => {
+            if (active) {
+                setVoiceStatus("> LISTENING... SPEAK PROTOCOL NAME");
+            }
+        },
+    });
+
+    const handleVoiceActivate = () => {
+        if (!supported) {
+            setVoiceStatus("> VOICE RECOGNITION NOT SUPPORTED IN THIS BROWSER");
+            return;
+        }
+        playBeep(800, 'sine', 0.2, 0.2, 0);
+        playBeep(1200, 'sine', 0.2, 0.15, 100);
+        speak("Voice command active. Speak protocol name.", 1.0, 1.0);
+        setTimeout(() => listen(), 500);
+    };
 
     const handleBoot = () => {
         initAudio();
@@ -100,7 +148,18 @@ export default function ProtocolSelector() {
                 ))}
             </div>
 
-            <div className="sel-status-text">{statusText}</div>
+            <div className="sel-status-text">{voiceStatus || statusText}</div>
+
+            {booted && supported && (
+                <button 
+                    className={`voice-cmd-btn ${isListening ? 'listening' : ''}`}
+                    onClick={handleVoiceActivate}
+                    disabled={isListening}
+                >
+                    <div className="mic-icon">{isListening ? '◉' : '🎙'}</div>
+                    <span>{isListening ? 'LISTENING...' : 'VOICE COMMAND'}</span>
+                </button>
+            )}
         </div>
     );
 }

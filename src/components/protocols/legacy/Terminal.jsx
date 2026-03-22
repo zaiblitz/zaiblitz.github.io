@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react'
-import { commands } from '../data/commands'
+import { commands } from '../../../data/commands'
 
 export default function Terminal() {
   const [history, setHistory] = useState([

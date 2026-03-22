@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react'
-import { skills, stats } from '../data/skills'
+import { skills, stats } from '../../../data/skills'
 
 export default function RightPanel({ animate }) {
   return (

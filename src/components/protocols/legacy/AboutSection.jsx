@@ -1,4 +1,4 @@
-import { about } from '../data/about'
+import { about } from '../../../data/about'
 
 export default function AboutSection() {
   return (

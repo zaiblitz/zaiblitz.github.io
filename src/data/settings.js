@@ -16,6 +16,7 @@ export const protocols = [
         voiceLine: 'Loading standard portfolio matrix.',
         voicePitch: 0.9,
         voiceRate: 0.9,
+        voiceKeywords: ['standard', 'standard view', 'legacy', 'portfolio', 'default'],
         active: true,
     },
     {
@@ -27,6 +28,7 @@ export const protocols = [
         voiceLine: 'Engaging Mark Seven Holographic Display.',
         voicePitch: 0.9,
         voiceRate: 0.9,
+        voiceKeywords: ['mark', 'mark 7', 'mark seven', 'mark vii', 'holographic'],
         active: true,
     },
     {
@@ -38,6 +40,7 @@ export const protocols = [
         voiceLine: 'Deploying Hulkbuster Operating System.',
         voicePitch: 0.7,
         voiceRate: 0.9,
+        voiceKeywords: ['hulkbuster', 'hulk', 'buster', 'tactical', 'orange'],
         active: true,
     },
     {
@@ -49,6 +52,7 @@ export const protocols = [
         voiceLine: 'Stealth protocol engaged. Running silent.',
         voicePitch: 0.8,
         voiceRate: 0.85,
+        voiceKeywords: ['stealth', 'night', 'night protocol', 'silent', 'dark'],
         active: true,
     },
     {
@@ -60,6 +64,7 @@ export const protocols = [
         voiceLine: 'Diagnostic mode activated. Scanning systems.',
         voicePitch: 1.1,
         voiceRate: 1.1,
+        voiceKeywords: ['diagnostic', 'diagnostics', 'wireframe', 'schematic', 'scan'],
         active: true,
     },
 ];

@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { bootLines } from '../data/boot'
+import { bootLines } from '../../../data/boot'
 
 export default function BootSequence({ onComplete }) {
   const [lines, setLines] = useState([])

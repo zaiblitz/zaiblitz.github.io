@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { useZaiblitzAudio } from '../hooks/useZaiblitzAudio';
+import { useZaiblitzAudio } from '../../hooks/useZaiblitzAudio';
 import './TerminalManager.css';
 
 export default function TerminalManager({ isOpen, onClose, title, content, typeSpeed = 30, soundPitch = 1200, isDiag = false }) {

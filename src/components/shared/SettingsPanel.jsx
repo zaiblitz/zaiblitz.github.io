@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { useProtocol } from '../contexts/ProtocolContext';
-import { getActiveProtocols } from '../data/settings';
+import { useProtocol } from '../../contexts/ProtocolContext';
+import { getActiveProtocols } from '../../data/settings';
 import './SettingsPanel.css';
 
 export default function SettingsPanel() {

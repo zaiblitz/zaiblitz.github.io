@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useZaiblitzAudio } from '../../hooks/useZaiblitzAudio';
-import TerminalManager from '../TerminalManager';
+import TerminalManager from '../shared/TerminalManager';
 import '../../styles/protocols/Diagnostic.css';
 
 const terminalData = {

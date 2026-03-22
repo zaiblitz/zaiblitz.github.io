@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { profile } from '../data/profile'
+import { profile } from '../../../data/profile'
 
 export default function ContactSection() {
   const [form, setForm] = useState({ name: '', email: '', message: '' })

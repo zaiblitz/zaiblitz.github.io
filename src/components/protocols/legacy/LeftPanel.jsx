@@ -1,6 +1,6 @@
-import { profile } from '../data/profile'
+import { profile } from '../../../data/profile'
 import SocialIcon from './SocialIcon'
-import { useTypingEffect } from '../hooks/useTypingEffect'
+import { useTypingEffect } from '../../../hooks/useTypingEffect'
 
 export default function LeftPanel() {
   const { displayed: typedTagline, done } = useTypingEffect(profile.tagline, 40, 800)

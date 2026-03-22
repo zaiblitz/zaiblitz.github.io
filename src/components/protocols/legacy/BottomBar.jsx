@@ -1,4 +1,4 @@
-import { marqueeItems } from '../data/boot'
+import { marqueeItems } from '../../../data/boot'
 
 export default function BottomBar() {
   // Duplicate items for seamless loop
