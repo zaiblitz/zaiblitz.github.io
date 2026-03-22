@@ -26,6 +26,8 @@ export function ProtocolProvider({ children }) {
         return null;
     });
 
+    const [returnToSelector, setReturnToSelector] = useState(false);
+
     useEffect(() => {
         localStorage.setItem('zaiblitz_os_config', JSON.stringify(config));
     }, [config]);
@@ -45,6 +47,7 @@ export function ProtocolProvider({ children }) {
     };
 
     const rebootToSelector = () => {
+        setReturnToSelector(true);
         setActiveProtocol(null);
     };
 
@@ -54,7 +57,9 @@ export function ProtocolProvider({ children }) {
             updateConfig,
             activeProtocol,
             activateProtocol,
-            rebootToSelector
+            rebootToSelector,
+            returnToSelector,
+            setReturnToSelector
         }}>
             {children}
         </ProtocolContext.Provider>

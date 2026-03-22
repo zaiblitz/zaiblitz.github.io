@@ -22,11 +22,18 @@ const selectSounds = {
 };
 
 export default function ProtocolSelector() {
-    const { activateProtocol } = useProtocol();
+    const { activateProtocol, returnToSelector, setReturnToSelector } = useProtocol();
     const { initAudio, playBeep, speak } = useZaiblitzAudio();
-    const [booted, setBooted] = useState(false);
-    const [statusText, setStatusText] = useState("> STANDBY...");
+    const isReturning = returnToSelector;
+    const [booted, setBooted] = useState(isReturning);
+    const [statusText, setStatusText] = useState(isReturning ? "> READY. SELECT PROTOCOL." : "> STANDBY...");
     const [voiceStatus, setVoiceStatus] = useState('');
+
+    // Clear the return flag after using it
+    if (isReturning) {
+        initAudio();
+        setReturnToSelector(false);
+    }
 
     const activeProtocols = getActiveProtocols();
 
