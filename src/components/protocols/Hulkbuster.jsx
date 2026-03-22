@@ -1,8 +1,11 @@
 import { useState, useEffect } from 'react';
+import { useProtocol } from '../../contexts/ProtocolContext';
 import { useZaiblitzAudio } from '../../hooks/useZaiblitzAudio';
+import { systemSettings } from '../../data/settings';
 import '../../styles/protocols/Hulkbuster.css';
 
 export default function Hulkbuster() {
+    const { rebootToSelector } = useProtocol();
     const { initAudio, playBeep } = useZaiblitzAudio();
     const [timecode, setTimecode] = useState("00:00:00:00");
 
@@ -44,6 +47,11 @@ export default function Hulkbuster() {
         <div className="hulkbuster-theme">
             <div className="hud-wrapper">
                 <div className="top-bar">
+                    {systemSettings.selectorEnabled && (
+                        <button className="back-btn" onClick={() => { playBeep(150, 'sawtooth', 0.2, 0.15, 0); rebootToSelector(); }} onMouseEnter={handleHover} title="Back to Protocol Selector">
+                            <span className="back-icon">◁</span>
+                        </button>
+                    )}
                     <div className="title">ZAIBLITZ_OS v4.2</div>
                     <div className="timecode">{timecode}</div>
                 </div>

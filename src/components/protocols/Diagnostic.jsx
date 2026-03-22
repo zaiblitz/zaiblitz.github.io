@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
+import { useProtocol } from '../../contexts/ProtocolContext';
 import { useZaiblitzAudio } from '../../hooks/useZaiblitzAudio';
+import { systemSettings } from '../../data/settings';
 import TerminalManager from '../shared/TerminalManager';
 import '../../styles/protocols/Diagnostic.css';
 
@@ -10,6 +12,7 @@ const terminalData = {
 };
 
 export default function Diagnostic() {
+    const { rebootToSelector } = useProtocol();
     const { initAudio, playBeep } = useZaiblitzAudio();
     const [termState, setTermState] = useState({ open: false, key: 'about' });
 
@@ -34,6 +37,7 @@ export default function Diagnostic() {
         <div className="diagnostic-theme">
             
             <div className="nav-menu">
+                {systemSettings.selectorEnabled && <button className="nav-btn back-btn" onMouseEnter={handleHover} onClick={() => { playBeep(1500, 'square', 0.1, 0.1, 0); rebootToSelector(); }} title="Back to Protocol Selector">◁</button>}
                 <button className="nav-btn" onMouseEnter={handleHover} onClick={() => openTerminal('about')}>ABOUT</button>
                 <button className="nav-btn" onMouseEnter={handleHover} onClick={() => openTerminal('career')}>CAREERS</button>
                 <button className="nav-btn" onMouseEnter={handleHover} onClick={() => openTerminal('contact')}>CONTACT</button>

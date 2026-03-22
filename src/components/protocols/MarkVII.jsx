@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
+import { useProtocol } from '../../contexts/ProtocolContext';
 import { useZaiblitzAudio } from '../../hooks/useZaiblitzAudio';
+import { systemSettings } from '../../data/settings';
 import TerminalManager from '../shared/TerminalManager';
 import '../../styles/protocols/MarkVII.css';
 
@@ -10,6 +12,7 @@ const terminalData = {
 };
 
 export default function MarkVII() {
+    const { rebootToSelector } = useProtocol();
     const { initAudio, playBeep } = useZaiblitzAudio();
     const [termState, setTermState] = useState({ open: false, key: 'about' });
 
@@ -51,6 +54,12 @@ export default function MarkVII() {
                 <button className="nav-btn" onMouseEnter={handleHover} onClick={() => openTerminal('career')}>CAREERS</button>
                 <button className="nav-btn" onMouseEnter={handleHover} onClick={() => openTerminal('contact')}>CONTACT</button>
             </div>
+
+            {systemSettings.selectorEnabled && (
+                <button className="back-btn" onClick={() => { playBeep(400, 'sine', 0.2, 0.2, 0); rebootToSelector(); }} onMouseEnter={handleHover} title="Back to Protocol Selector">
+                    <span className="back-icon">◁</span>
+                </button>
+            )}
 
             <TerminalManager 
                 isOpen={termState.open}

@@ -81,6 +81,24 @@
     box-shadow: 0 0 15px var(--mesh);
 }
 
+/* Back Button override — icon-only with accent */
+.diagnostic-theme .nav-btn.back-btn {
+    border-style: solid;
+    border-color: #ffaa00;
+    color: #ffaa00;
+    width: 34px;
+    padding: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+}
+.diagnostic-theme .nav-btn.back-btn:hover {
+    background: #ffaa00;
+    color: var(--bg);
+    box-shadow: 0 0 15px #ffaa00;
+}
+
 .diagnostic-theme .panel {
     position: absolute;
     background: rgba(0, 12, 10, 0.9);

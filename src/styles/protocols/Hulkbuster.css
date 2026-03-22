@@ -170,6 +170,35 @@
 @keyframes HBspinReverse { 100% { transform: rotate(-360deg); } }
 @keyframes HBpulseBg { 100% { opacity: 0.5; } }
 
+/* Back Button */
+.hulkbuster-theme .back-btn {
+    background: transparent;
+    border: 1px solid var(--primary);
+    color: var(--primary);
+    width: 34px;
+    height: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 14px;
+    padding: 0;
+    transition: all 0.3s;
+    clip-path: polygon(15% 0, 100% 0, 85% 100%, 0% 100%);
+}
+.hulkbuster-theme .back-btn:hover {
+    background: var(--primary);
+    color: var(--bg);
+    box-shadow: 0 0 15px var(--primary);
+}
+.hulkbuster-theme .back-icon {
+    transition: transform 0.2s;
+}
+.hulkbuster-theme .back-btn:hover .back-icon {
+    transform: translateX(-2px);
+}
+
 /* ============================================
    RESPONSIVE — HULKBUSTER
    ============================================ */

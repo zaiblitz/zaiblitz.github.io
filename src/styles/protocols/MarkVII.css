@@ -220,6 +220,37 @@
     background: rgba(0, 243, 255, 0.15);
 }
 
+/* Back Button */
+.mark-vii-theme .back-btn {
+    position: absolute;
+    top: 40px;
+    left: 5vw;
+    z-index: 50;
+    background: rgba(0, 243, 255, 0.05);
+    border: 1px solid var(--hud-color);
+    color: var(--hud-color);
+    width: 34px;
+    height: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 14px;
+    padding: 0;
+    transition: all 0.3s;
+}
+.mark-vii-theme .back-btn:hover {
+    box-shadow: 0 0 15px var(--hud-color);
+    background: rgba(0, 243, 255, 0.15);
+}
+.mark-vii-theme .back-icon {
+    transition: transform 0.2s;
+}
+.mark-vii-theme .back-btn:hover .back-icon {
+    transform: translateX(-2px);
+}
+
 /* ============================================
    RESPONSIVE — MARK VII
    ============================================ */
@@ -320,6 +351,12 @@
         padding: 5px 10px;
         font-size: 11px;
         letter-spacing: 1px;
+    }
+    .mark-vii-theme .back-btn {
+        top: 10px;
+        left: 10px;
+        padding: 5px 10px;
+        font-size: 11px;
     }
 }
 
