@@ -180,6 +180,10 @@
     </style>
 </head>
 <body>
+    <div id="init-overlay" style="position:fixed;top:0;left:0;width:100%;height:100%;background:#030811;z-index:9999;display:flex;justify-content:center;align-items:center;cursor:pointer;flex-direction:column;gap:20px;">
+        <h2 style="color:var(--cyan);letter-spacing:5px;animation:blink 1s infinite alternate; font-weight:normal;">[ SYSTEM STANDBY ]</h2>
+        <div style="font-size:0.8rem; letter-spacing:3px;">CLICK TO INITIALIZE J.A.R.V.I.S. PROTOCOL</div>
+    </div>
     <div class="scanlines"></div>
 
     <div class="header">
@@ -211,25 +215,123 @@
         </a>
     </div>
 
-    <div class="status-text">> CONNECTED TO STARK INTRA_NET... READY</div>
+    <div class="status-text">> STANDBY...</div>
 
     <script>
-        // Typing effect for the status text
-        const statusText = document.querySelector('.status-text');
-        const text = "> ESTABLISHING SECURE CONNECTION... VERIFYING BIOMETRICS... WELCOME, SIR.";
-        statusText.innerHTML = "";
-        let i = 0;
+        const initOverlay = document.getElementById('init-overlay');
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        let audioCtx;
         
-        setTimeout(() => {
-            const typer = setInterval(() => {
-                if(i < text.length) {
-                    statusText.innerHTML += text.charAt(i);
-                    i++;
+        let typingInterval;
+
+        // Sound Synthesis Engine
+        function playBeep(freq, type, duration, vol, delay = 0) {
+            if(!audioCtx) return;
+            setTimeout(() => {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = type;
+                osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+                // Sweep frequency down slightly for sci-fi feel
+                osc.frequency.exponentialRampToValueAtTime(freq * 0.8, audioCtx.currentTime + duration);
+                
+                gain.gain.setValueAtTime(vol, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + duration);
+                
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start();
+                osc.stop(audioCtx.currentTime + duration);
+            }, delay);
+        }
+
+        function speak(text, pitch = 1.0, rate = 0.95) {
+            if(!window.speechSynthesis) return;
+            const utter = new SpeechSynthesisUtterance(text);
+            const voices = window.speechSynthesis.getVoices();
+            // Try to find a British or robotic sounding voice
+            const jarvisVoice = voices.find(v => v.name.includes('Daniel') || v.name.includes('UK English Male') || v.name.includes('Google UK English Male')) || voices.find(v => v.lang.includes('en-GB')) || voices[0];
+            if(jarvisVoice) utter.voice = jarvisVoice;
+            utter.pitch = pitch;
+            utter.rate = rate;
+            window.speechSynthesis.speak(utter);
+        }
+        
+        // Wait for voices to load before initial speak if needed
+        window.speechSynthesis.onvoiceschanged = () => {};
+
+        initOverlay.addEventListener('click', () => {
+            // First user interaction initializes the audio context
+            audioCtx = new AudioContext();
+            audioCtx.resume();
+            
+            // Hide the boot screen
+            initOverlay.style.opacity = '0';
+            setTimeout(() => initOverlay.style.display = 'none', 500);
+
+            // Startup Sounds
+            playBeep(220, 'sine', 0.8, 0.4, 0);
+            playBeep(440, 'triangle', 0.5, 0.4, 300);
+            playBeep(880, 'sine', 0.3, 0.3, 500);
+
+            // Welcome Voice
+            setTimeout(() => {
+                speak("Systems online. Welcome sir. Awaiting protocol selection.", 0.9, 0.9);
+            }, 1000);
+
+            // Typing effect for the status text
+            const statusText = document.querySelector('.status-text');
+            const scriptStr = "> SECURE CONNECTION ESTABLISHED... VERIFYING BIOMETRICS... READY.";
+            statusText.innerHTML = "";
+            let i = 0;
+            
+            setTimeout(() => {
+                typingInterval = setInterval(() => {
+                    if(i < scriptStr.length) {
+                        statusText.innerHTML += scriptStr.charAt(i);
+                        if(scriptStr.charAt(i) !== ' ') {
+                            // Typing sound effect
+                            playBeep(1200 + Math.random()*200, 'square', 0.05, 0.02, 0);
+                        }
+                        i++;
+                    } else {
+                        clearInterval(typingInterval);
+                    }
+                }, 40);
+            }, 800);
+        });
+
+        // Add Hover/Click Audio to Options
+        document.querySelectorAll('.option-card').forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                const isBleedingEdge = card.classList.contains('bleeding-edge');
+                if(isBleedingEdge) {
+                    playBeep(300, 'sawtooth', 0.15, 0.2, 0);
+                    playBeep(280, 'square', 0.1, 0.1, 50);
                 } else {
-                    clearInterval(typer);
+                    playBeep(600, 'sine', 0.1, 0.2, 0);
+                    playBeep(800, 'sine', 0.1, 0.1, 50);
                 }
-            }, 50);
-        }, 1000);
+            });
+            
+            card.addEventListener('click', (e) => {
+                const isBleedingEdge = card.classList.contains('bleeding-edge');
+                if(isBleedingEdge) {
+                    speak("Deploying Hulkbuster Operating System.", 0.7, 0.9);
+                    playBeep(150, 'sawtooth', 0.5, 0.5, 0);
+                } else {
+                    speak("Engaging Mark Seven Holographic Display.", 0.9, 0.9);
+                    playBeep(800, 'sine', 0.4, 0.4, 0);
+                }
+                
+                // Delay navigation slightly so they hear the sound/speech start
+                if(audioCtx && audioCtx.state === 'running') {
+                    e.preventDefault();
+                    const target = card.href;
+                    setTimeout(() => window.location = target, 600);
+                }
+            });
+        });
     </script>
 </body>
 </html>

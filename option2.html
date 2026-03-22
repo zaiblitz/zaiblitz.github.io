@@ -291,6 +291,55 @@
                 String(d.getSeconds()).padStart(2, '0') + ':' + 
                 String(Math.floor(d.getMilliseconds() / 10)).padStart(2, '0');
         }, 50);
+
+        // Advanced HUD Audio Engine (Bleeding Edge)
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        let audioCtx;
+
+        function initAudio() {
+            if(!audioCtx) { audioCtx = new window.AudioContext(); }
+            if(audioCtx.state === 'suspended') { audioCtx.resume(); }
+        }
+
+        // Deep drone/engine hum
+        setInterval(() => {
+            if(audioCtx && audioCtx.state === 'running') {
+                // Aggressive lower frequency drone
+                playBeep(60, 'sawtooth', 1.0, 0.05, 0);
+                playBeep(55, 'square', 0.8, 0.03, 100);
+            }
+        }, 5000);
+
+        document.body.addEventListener('click', () => { initAudio(); playBeep(200, 'sawtooth', 0.2, 0.1, 0); }, { once: true });
+
+        function playBeep(freq, type, duration, vol, delay = 0) {
+            if(!audioCtx) return;
+            setTimeout(() => {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = type;
+                osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+                // Hard downward sweep
+                osc.frequency.exponentialRampToValueAtTime(freq * 0.5, audioCtx.currentTime + duration);
+                
+                gain.gain.setValueAtTime(vol, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + duration);
+                
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start();
+                osc.stop(audioCtx.currentTime + duration);
+            }, delay);
+        }
+
+        // Heavy mechanics / Tactical hover sounds
+        document.querySelectorAll('.panel, .project-card, .skill-item').forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                initAudio();
+                playBeep(300, 'square', 0.1, 0.05, 0); // Harder tech sound
+            });
+        });
+
     </script>
 </body>
 </html>
