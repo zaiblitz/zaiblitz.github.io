@@ -8,6 +8,17 @@
 
 export const protocols = [
     {
+        id: 'legacy',
+        name: 'STANDARD VIEW',
+        description: 'Initialize localized portfolio databanks. Original web presentation matrix.',
+        cardClass: 'legacy-protocol',
+        hoverType: 'legacy',
+        voiceLine: 'Loading standard portfolio matrix.',
+        voicePitch: 0.9,
+        voiceRate: 0.9,
+        active: true,
+    },
+    {
         id: 'mark_vii',
         name: 'MARK VII HUD',
         description: 'Engage classic Z.A.I.B.L.I.T.Z. interface. Holographic command terminals and spherical focus.',
@@ -49,17 +60,6 @@ export const protocols = [
         voiceLine: 'Diagnostic mode activated. Scanning systems.',
         voicePitch: 1.1,
         voiceRate: 1.1,
-        active: true,
-    },
-    {
-        id: 'legacy',
-        name: 'STANDARD VIEW',
-        description: 'Initialize localized portfolio databanks. Original web presentation matrix.',
-        cardClass: 'legacy-protocol',
-        hoverType: 'legacy',
-        voiceLine: 'Loading standard portfolio matrix.',
-        voicePitch: 0.9,
-        voiceRate: 0.9,
         active: true,
     },
 ];
