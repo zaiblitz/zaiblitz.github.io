@@ -1,0 +1,171 @@
+.hulkbuster-theme {
+    --primary: #ff4500;
+    --secondary: #00e5ff;
+    --bg: #030303;
+    --text-main: #fff;
+    --text-dim: rgba(255, 255, 255, 0.6);
+    
+    background-color: var(--bg);
+    color: var(--text-main);
+    font-family: 'Consolas', 'Courier New', monospace;
+    overflow: hidden;
+    background-image: 
+        linear-gradient(rgba(255, 69, 0, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 69, 0, 0.05) 1px, transparent 1px);
+    background-size: 100px 100px;
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    top: 0; left: 0;
+}
+
+.hulkbuster-theme .hud-wrapper {
+    width: 100vw;
+    height: 100vh;
+    display: grid;
+    grid-template-columns: 300px 1fr 300px;
+    grid-template-rows: 80px 1fr 100px;
+    padding: 20px;
+    gap: 20px;
+    box-sizing: border-box;
+}
+
+.hulkbuster-theme .top-bar {
+    grid-column: 1 / -1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid var(--primary);
+    padding-bottom: 20px;
+    position: relative;
+}
+
+.hulkbuster-theme .top-bar::after {
+    content: '';
+    position: absolute;
+    bottom: -6px;
+    left: 0;
+    width: 30%;
+    height: 2px;
+    background: var(--secondary);
+}
+
+.hulkbuster-theme .title {
+    font-size: 28px;
+    font-weight: bold;
+    letter-spacing: 5px;
+    text-shadow: 0 0 10px var(--primary);
+}
+
+.hulkbuster-theme .timecode {
+    color: var(--secondary);
+    font-size: 18px;
+    letter-spacing: 2px;
+}
+
+.hulkbuster-theme .panel {
+    background: rgba(10, 10, 10, 0.8);
+    border: 1px solid rgba(255, 69, 0, 0.3);
+    border-radius: 4px;
+    padding: 20px;
+    position: relative;
+    overflow: hidden;
+}
+
+.hulkbuster-theme .panel::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 20px; height: 2px;
+    background: var(--primary);
+}
+
+.hulkbuster-theme .section-title {
+    color: var(--secondary);
+    font-size: 14px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    letter-spacing: 2px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.hulkbuster-theme .section-title::before {
+    content: '>';
+    color: var(--primary);
+}
+
+.hulkbuster-theme .skill-item { margin-bottom: 15px; }
+.hulkbuster-theme .skill-name { font-size: 12px; margin-bottom: 5px; color: var(--text-dim); }
+.hulkbuster-theme .skill-track {
+    height: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    position: relative;
+    clip-path: polygon(0 0, 100% 0, 95% 100%, 0% 100%);
+}
+.hulkbuster-theme .skill-fill {
+    height: 100%;
+    background: var(--primary);
+    box-shadow: 0 0 10px var(--primary);
+}
+
+.hulkbuster-theme .center-display {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.hulkbuster-theme .hexa-grid {
+    position: absolute;
+    width: 600px;
+    height: 600px;
+    background-image: url('data:image/svg+xml;utf8,<svg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"><path d="M20 0 L40 10 L40 30 L20 40 L0 30 L0 10 Z" fill="none" stroke="rgba(0, 229, 255, 0.1)" stroke-width="1"/></svg>');
+    animation: HBpulseBg 4s infinite alternate;
+}
+
+.hulkbuster-theme .main-avatar {
+    width: 250px;
+    height: 250px;
+    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+    background: rgba(255, 69, 0, 0.1);
+    border: 2px solid var(--primary);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+    box-shadow: inset 0 0 40px rgba(255, 69, 0, 0.3);
+    backdrop-filter: blur(10px);
+}
+
+.hulkbuster-theme .main-avatar h2 { margin: 0; font-size: 22px; color: var(--secondary); text-shadow: 0 0 8px var(--secondary); }
+.hulkbuster-theme .main-avatar p { font-size: 12px; color: var(--text-dim); margin-top: 5px; }
+
+.hulkbuster-theme .ring { position: absolute; border-radius: 50%; border: 1px solid var(--secondary); }
+.hulkbuster-theme .ring-1 { width: 350px; height: 350px; animation: HBspin 10s linear infinite; border-style: dashed; }
+.hulkbuster-theme .ring-2 { width: 450px; height: 450px; animation: HBspinReverse 15s linear infinite; border-color: rgba(255,69,0,0.5); border-width: 2px 0; }
+
+.hulkbuster-theme .project-card {
+    border-left: 2px solid var(--primary);
+    padding-left: 10px;
+    margin-bottom: 20px;
+    background: linear-gradient(90deg, rgba(255,69,0,0.1) 0%, transparent 100%);
+    padding: 10px;
+}
+.hulkbuster-theme .proj-title { color: var(--secondary); font-size: 14px; font-weight: bold; }
+.hulkbuster-theme .proj-desc { font-size: 11px; color: var(--text-dim); margin-top: 5px; }
+
+.hulkbuster-theme .bottom-bar {
+    grid-column: 1 / -1;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+.hulkbuster-theme .status-feed span { display: block; font-size: 10px; color: var(--text-dim); margin-top: 4px; }
+
+@keyframes HBspin { 100% { transform: rotate(360deg); } }
+@keyframes HBspinReverse { 100% { transform: rotate(-360deg); } }
+@keyframes HBpulseBg { 100% { opacity: 0.5; } }

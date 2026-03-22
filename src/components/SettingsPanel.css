@@ -1,0 +1,122 @@
+.settings-trigger {
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    background: transparent;
+    border: none;
+    color: rgba(255, 255, 255, 0.4);
+    font-family: inherit;
+    font-size: 10px;
+    cursor: pointer;
+    z-index: 10000; /* highest */
+    letter-spacing: 2px;
+}
+.settings-trigger:hover {
+    color: #fff;
+    text-shadow: 0 0 5px #fff;
+}
+
+.settings-overlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10001;
+    backdrop-filter: blur(5px);
+    font-family: monospace;
+}
+
+.settings-panel {
+    background: rgba(10, 15, 20, 0.95);
+    border: 1px solid #00f3ff;
+    width: 400px;
+    max-width: 90vw;
+    color: #00f3ff;
+}
+
+.settings-header {
+    background: rgba(0, 243, 255, 0.1);
+    padding: 10px 15px;
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid #00f3ff;
+    letter-spacing: 2px;
+}
+
+.settings-header .close-btn {
+    background: none; border: none; color: inherit; cursor: pointer; font-size: 14px;
+}
+
+.settings-section {
+    padding: 15px;
+    border-bottom: 1px solid rgba(0, 243, 255, 0.2);
+}
+
+.settings-section h4 {
+    margin: 0 0 15px 0;
+    font-size: 12px;
+    letter-spacing: 2px;
+    color: #fff;
+}
+
+.protocol-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.proto-btn {
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(0, 243, 255, 0.3);
+    color: #00f3ff;
+    padding: 8px;
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.2s;
+}
+
+.proto-btn:hover {
+    background: rgba(0, 243, 255, 0.1);
+}
+
+.proto-btn.active {
+    background: #00f3ff;
+    color: #000;
+    font-weight: bold;
+}
+
+.toggle-label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #ccc;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.settings-footer {
+    padding: 15px;
+    text-align: center;
+}
+
+.settings-hint {
+    font-size: 10px;
+    color: rgba(255, 255, 255, 0.3);
+    margin-top: 8px;
+    letter-spacing: 1px;
+}
+
+.reboot-btn {
+    background: transparent;
+    border: 1px dashed #ffaa00;
+    color: #ffaa00;
+    padding: 10px 20px;
+    cursor: pointer;
+    letter-spacing: 2px;
+}
+
+.reboot-btn:hover {
+    background: rgba(255, 170, 0, 0.1);
+}
