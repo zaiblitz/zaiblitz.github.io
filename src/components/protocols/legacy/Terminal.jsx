@@ -1,9 +1,9 @@
 import { useState, useRef, useEffect } from 'react'
 import { commands } from '../../../data/commands'
 
-export default function Terminal() {
+export default function Terminal({ onPopupCommand }) {
   const [history, setHistory] = useState([
-    { type: 'output', text: 'Type "help" for available commands' },
+    { type: 'output', text: 'Type "help" for available commands. Try "about", "career", or "contact".' },
   ])
   const [input, setInput] = useState('')
   const bodyRef = useRef(null)
@@ -25,6 +25,13 @@ export default function Terminal() {
 
     if (cmd === 'clear') {
       setHistory([])
+      return
+    }
+
+    // Check if this command should open a popup
+    if (onPopupCommand && onPopupCommand(cmd)) {
+      newHistory.push({ type: 'output', text: `> Opening ${cmd.toUpperCase()} terminal...` })
+      setHistory(newHistory)
       return
     }
 
@@ -56,7 +63,7 @@ export default function Terminal() {
           <div key={i} className="terminal__line">
             {entry.type === 'command' ? (
               <>
-                <span className="terminal__prompt">JARVIS&gt;</span> {entry.text}
+                <span className="terminal__prompt">ZAIBLITZ&gt;</span> {entry.text}
               </>
             ) : (
               <span style={{ whiteSpace: 'pre' }}>{entry.text}</span>
@@ -66,7 +73,7 @@ export default function Terminal() {
       </div>
 
       <div className="terminal__input-row">
-        <span className="terminal__prompt">JARVIS&gt;</span>
+        <span className="terminal__prompt">ZAIBLITZ&gt;</span>
         <input
           ref={inputRef}
           type="text"

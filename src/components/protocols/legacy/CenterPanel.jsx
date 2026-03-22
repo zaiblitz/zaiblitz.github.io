@@ -1,9 +1,54 @@
+import { useState } from 'react'
 import { projects } from '../../../data/projects'
+import { about } from '../../../data/about'
+import { timeline } from '../../../data/timeline'
 import Terminal from './Terminal'
-import AboutSection from './AboutSection'
-import TimelineSection from './TimelineSection'
+import TerminalManager from '../../shared/TerminalManager'
+
+const terminalData = {
+  about: () => {
+    const lines = [
+      "INITIATING QUERY: DOSSIER\n",
+      `> OPERATOR: ${about.headline}`,
+      ...about.paragraphs.map(p => `> ${p}`),
+      "",
+      ...about.focus.map(f => `> ${f.label}: ${f.value}`),
+      "\n[ END OF FILE ]"
+    ];
+    return lines.join('\n');
+  },
+  career: () => {
+    const lines = [
+      "INITIATING QUERY: MISSION LOG\n",
+      "> SCANNING CAREER DATABASE...\n"
+    ];
+    timeline.forEach(entry => {
+      lines.push(`> [${entry.year}] ${entry.role}`);
+      lines.push(`  ORG: ${entry.org}`);
+      lines.push(`  ${entry.description}`);
+      lines.push(`  STATUS: ${entry.status}`);
+      if (entry.tags) lines.push(`  TAGS: ${entry.tags.join(', ')}`);
+      lines.push("");
+    });
+    lines.push("[ END OF TRANSMISSION ]");
+    return lines.join('\n');
+  },
+  contact: () => {
+    return "INITIATING QUERY: CONTACT\n\n> ENCRYPTING CONNECTION...\n> SECURE CHANNEL ESTABLISHED.\n\n> Use the terminal command 'contact' for direct links.\n\n> AWAITING INCOMING TRANSMISSION...";
+  }
+};
 
 export default function CenterPanel() {
+  const [termState, setTermState] = useState({ open: false, key: 'about' });
+
+  const handleTerminalCommand = (cmd) => {
+    if (terminalData[cmd]) {
+      setTermState({ open: true, key: cmd });
+      return true; // handled as popup
+    }
+    return false; // let terminal handle normally
+  };
+
   return (
     <section className="panel panel--center fade-in-panel">
       <div className="panel__header">
@@ -34,9 +79,15 @@ export default function CenterPanel() {
         ))}
       </div>
 
-      <AboutSection />
-      <TimelineSection />
-      <Terminal />
+      <Terminal onPopupCommand={handleTerminalCommand} />
+
+      <TerminalManager
+        isOpen={termState.open}
+        onClose={() => setTermState(prev => ({ ...prev, open: false }))}
+        title={`OS // QUERY: ${termState.key.toUpperCase()}`}
+        content={typeof terminalData[termState.key] === 'function' ? terminalData[termState.key]() : ''}
+        soundPitch={1200}
+      />
     </section>
   )
 }

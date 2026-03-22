@@ -26,6 +26,7 @@ export const commands = {
     'AVAILABLE COMMANDS:',
     '  help      — Show this help menu',
     '  about     — Who am I?',
+    '  career    — Mission log / career history',
     '  skills    — List core skills',
     '  projects  — List active projects',
     '  contact   — Get in touch',
