@@ -191,20 +191,20 @@
         <div class="subtitle">SYSTEM INITIALIZED // AWAITING PROTOCOL SELECTION</div>
     </div>
 
-    <div class="options-container">
+    <div class="options-container" style="display:flex; gap:30px; z-index:20; flex-wrap:wrap; justify-content:center;">
         <!-- Alpha Protocol (Cyan) -->
-        <a href="option1.html" class="option-card alpha-protocol">
+        <a href="option1.html" class="option-card alpha-protocol" style="width: 280px; padding: 30px;">
             <div class="card-icon">
                 <div class="card-inner-icon"></div>
             </div>
             <div class="option-title">MARK VII HUD</div>
             <div class="option-desc">
-                Engage classic J.A.R.V.I.S. interface. Blue/Cyan hologographics, spherical focal points, and fluid animations.
+                Engage classic J.A.R.V.I.S. interface. Holographic command terminals, spherical focus, and dynamic typing feeds.
             </div>
         </a>
 
         <!-- Bleeding Edge (Orange/Red) -->
-        <a href="option2.html" class="option-card bleeding-edge">
+        <a href="option2.html" class="option-card bleeding-edge" style="width: 280px; padding: 30px;">
             <div class="card-icon">
                 <div class="card-inner-icon"></div>
             </div>
@@ -212,6 +212,24 @@
             <div class="option-desc">
                 Deploy high-contrast tactical overlay. Orange/Red diagnostics, hexagonal matrices, and rigid tracking grids.
             </div>
+        </a>
+
+        <!-- F.R.I.D.A.Y. / E.D.I.T.H (Clean Blue/White 3D) -->
+        <a href="option3.html" class="option-card friday-protocol" style="width: 280px; padding: 30px; border-color: #c4f9ff; color: #c4f9ff;">
+            <div class="card-icon" style="border-color: #c4f9ff; border-radius: 10px; animation: spinZ 15s linear infinite;">
+                <div class="card-inner-icon" style="background: rgba(196, 249, 255, 0.2); box-shadow: 0 0 15px #c4f9ff; border-radius: 5px;"></div>
+            </div>
+            <div class="option-title">F.R.I.D.A.Y. OS</div>
+            <div class="option-desc">
+                Initialize Mark L Glass-morphism Engine. 3D holographic projection, stark white/blue neons, segmented data tracks.
+            </div>
+            <style>
+                .friday-protocol:hover {
+                    box-shadow: 0 0 30px rgba(196, 249, 255, 0.4) !important;
+                    background: rgba(0, 80, 120, 0.4) !important;
+                }
+                @keyframes spinZ { 100% { transform: rotate(360deg); } }
+            </style>
         </a>
     </div>
 
@@ -305,9 +323,13 @@
         document.querySelectorAll('.option-card').forEach(card => {
             card.addEventListener('mouseenter', () => {
                 const isBleedingEdge = card.classList.contains('bleeding-edge');
+                const isFriday = card.classList.contains('friday-protocol');
                 if(isBleedingEdge) {
                     playBeep(300, 'sawtooth', 0.15, 0.2, 0);
                     playBeep(280, 'square', 0.1, 0.1, 50);
+                } else if(isFriday) {
+                    playBeep(1200, 'sine', 0.1, 0.1, 0);
+                    playBeep(1600, 'sine', 0.05, 0.05, 50);
                 } else {
                     playBeep(600, 'sine', 0.1, 0.2, 0);
                     playBeep(800, 'sine', 0.1, 0.1, 50);
@@ -316,9 +338,13 @@
             
             card.addEventListener('click', (e) => {
                 const isBleedingEdge = card.classList.contains('bleeding-edge');
+                const isFriday = card.classList.contains('friday-protocol');
                 if(isBleedingEdge) {
                     speak("Deploying Hulkbuster Operating System.", 0.7, 0.9);
                     playBeep(150, 'sawtooth', 0.5, 0.5, 0);
+                } else if(isFriday) {
+                    speak("Initializing Friday Protocol Mark 50.", 1.2, 1.0); // Higher pitch for Friday synth
+                    playBeep(2000, 'sine', 0.5, 0.3, 0);
                 } else {
                     speak("Engaging Mark Seven Holographic Display.", 0.9, 0.9);
                     playBeep(800, 'sine', 0.4, 0.4, 0);
