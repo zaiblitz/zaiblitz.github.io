@@ -8,6 +8,9 @@ export default function TerminalManager({ isOpen, onClose, title, content, typeS
     const bodyRef = useRef(null);
     const { playBeep } = useZaiblitzAudio();
 
+    const playBeepRef = useRef(playBeep);
+    playBeepRef.current = playBeep;
+
     useEffect(() => {
         if (!isOpen) {
             setDisplayedText('');
@@ -26,7 +29,7 @@ export default function TerminalManager({ isOpen, onClose, title, content, typeS
                 
                 // Typing sound
                 if (char !== ' ' && char !== '\n' && (i % 2 === 0)) {
-                    playBeep(soundPitch + Math.random() * 200, isDiag ? 'square' : 'square', 0.02, 0.02, 0);
+                    playBeepRef.current(soundPitch + Math.random() * 200, isDiag ? 'square' : 'square', 0.02, 0.02, 0);
                 }
                 
                 i++;
@@ -36,12 +39,12 @@ export default function TerminalManager({ isOpen, onClose, title, content, typeS
             } else {
                 clearInterval(timer);
                 setIsTyping(false);
-                playBeep(soundPitch * 0.5, 'sine', 0.2, 0.05, 0); // End sound
+                playBeepRef.current(soundPitch * 0.5, 'sine', 0.2, 0.05, 0); // End sound
             }
         }, typeSpeed);
 
         return () => clearInterval(timer);
-    }, [isOpen, content, typeSpeed, soundPitch, isDiag, playBeep]);
+    }, [isOpen, content, typeSpeed, soundPitch, isDiag]);
 
     if (!isOpen) return null;
 

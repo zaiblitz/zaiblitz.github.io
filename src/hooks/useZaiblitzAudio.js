@@ -1,25 +1,27 @@
-import { useRef, useEffect, useCallback } from 'react';
+import { useEffect, useCallback } from 'react';
 import { useProtocol } from '../contexts/ProtocolContext';
+
+// Shared AudioContext across all hook instances
+let sharedAudioCtx = null;
 
 export function useZaiblitzAudio() {
     const { config } = useProtocol();
-    const audioCtxRef = useRef(null);
 
     const initAudio = useCallback(() => {
         if (config.isMuted) return;
-        if (!audioCtxRef.current) {
+        if (!sharedAudioCtx) {
             const AudioContext = window.AudioContext || window.webkitAudioContext;
-            audioCtxRef.current = new AudioContext();
+            sharedAudioCtx = new AudioContext();
         }
-        if (audioCtxRef.current.state === 'suspended') {
-            audioCtxRef.current.resume();
+        if (sharedAudioCtx.state === 'suspended') {
+            sharedAudioCtx.resume();
         }
     }, [config.isMuted]);
 
     const playBeep = useCallback((freq, type, duration, vol, delay = 0) => {
-        if (config.isMuted || !audioCtxRef.current) return;
+        if (config.isMuted || !sharedAudioCtx) return;
         
-        const ctx = audioCtxRef.current;
+        const ctx = sharedAudioCtx;
         setTimeout(() => {
             const osc = ctx.createOscillator();
             const gain = ctx.createGain();

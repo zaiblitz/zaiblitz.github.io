@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio - Bleeding Edge HUD</title>
+    <style>
+        :root {
+            --primary: #ff4500; /* Deep orange */
+            --secondary: #00e5ff; /* Cyan */
+            --bg: #030303;
+            --text-main: #fff;
+            --text-dim: rgba(255, 255, 255, 0.6);
+        }
+        
+        * { box-sizing: border-box; }
+        
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg);
+            color: var(--text-main);
+            font-family: 'Consolas', 'Courier New', monospace;
+            overflow: hidden;
+            background-image: 
+                linear-gradient(rgba(255, 69, 0, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 69, 0, 0.05) 1px, transparent 1px);
+            background-size: 100px 100px;
+        }
+
+        .hud-wrapper {
+            width: 100vw;
+            height: 100vh;
+            display: grid;
+            grid-template-columns: 300px 1fr 300px;
+            grid-template-rows: 80px 1fr 100px;
+            padding: 20px;
+            gap: 20px;
+        }
+
+        /* Top Bar */
+        .top-bar {
+            grid-column: 1 / -1;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 20px;
+            position: relative;
+        }
+        .top-bar::after {
+            content: '';
+            position: absolute;
+            bottom: -6px;
+            left: 0;
+            width: 30%;
+            height: 2px;
+            background: var(--secondary);
+        }
+
+        .title {
+            font-size: 28px;
+            font-weight: bold;
+            letter-spacing: 5px;
+            text-shadow: 0 0 10px var(--primary);
+        }
+
+        .timecode {
+            color: var(--secondary);
+            font-size: 18px;
+            letter-spacing: 2px;
+        }
+
+        /* Side Panels */
+        .panel {
+            background: rgba(10, 10, 10, 0.8);
+            border: 1px solid rgba(255, 69, 0, 0.3);
+            border-radius: 4px;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .panel::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 20px; height: 2px;
+            background: var(--primary);
+        }
+
+        .section-title {
+            color: var(--secondary);
+            font-size: 14px;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            letter-spacing: 2px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .section-title::before {
+            content: '>';
+            color: var(--primary);
+        }
+
+        /* Skill Bars */
+        .skill-item { margin-bottom: 15px; }
+        .skill-name { font-size: 12px; margin-bottom: 5px; color: var(--text-dim); }
+        .skill-track {
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            position: relative;
+            clip-path: polygon(0 0, 100% 0, 95% 100%, 0% 100%);
+        }
+        .skill-fill {
+            height: 100%;
+            background: var(--primary);
+            box-shadow: 0 0 10px var(--primary);
+        }
+
+        /* Central Display */
+        .center-display {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .hexa-grid {
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            background-image: url('data:image/svg+xml;utf8,<svg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"><path d="M20 0 L40 10 L40 30 L20 40 L0 30 L0 10 Z" fill="none" stroke="rgba(0, 229, 255, 0.1)" stroke-width="1"/></svg>');
+            animation: pulseBg 4s infinite alternate;
+        }
+
+        .main-avatar {
+            width: 250px;
+            height: 250px;
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+            background: rgba(255, 69, 0, 0.1);
+            border: 2px solid var(--primary);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+            box-shadow: inset 0 0 40px rgba(255, 69, 0, 0.3);
+            backdrop-filter: blur(10px);
+        }
+
+        .main-avatar h2 {
+            margin: 0;
+            font-size: 22px;
+            color: var(--secondary);
+            text-shadow: 0 0 8px var(--secondary);
+        }
+
+        .main-avatar p {
+            font-size: 12px;
+            color: var(--text-dim);
+            margin-top: 5px;
+        }
+
+        /* Targeting Rings */
+        .ring {
+            position: absolute;
+            border-radius: 50%;
+            border: 1px solid var(--secondary);
+        }
+        .ring-1 { width: 350px; height: 350px; animation: spin 10s linear infinite; border-style: dashed; }
+        .ring-2 { width: 450px; height: 450px; animation: spinReverse 15s linear infinite; border-color: rgba(255,69,0,0.5); border-width: 2px 0; }
+
+        /* Project Cards */
+        .project-card {
+            border-left: 2px solid var(--primary);
+            padding-left: 10px;
+            margin-bottom: 20px;
+            background: linear-gradient(90deg, rgba(255,69,0,0.1) 0%, transparent 100%);
+            padding: 10px;
+        }
+        .proj-title { color: var(--secondary); font-size: 14px; font-weight: bold; }
+        .proj-desc { font-size: 11px; color: var(--text-dim); margin-top: 5px; }
+
+        /* Bottom Bar */
+        .bottom-bar {
+            grid-column: 1 / -1;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .status-feed span { display: block; font-size: 10px; color: var(--text-dim); margin-top: 4px; }
+        
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+        @keyframes spinReverse { 100% { transform: rotate(-360deg); } }
+        @keyframes pulseBg { 100% { opacity: 0.5; } }
+    </style>
+</head>
+<body>
+    <div class="hud-wrapper">
+        <!-- Top Header -->
+        <div class="top-bar">
+            <div class="title">ZAIBLITZ_OS v4.2</div>
+            <div class="timecode" id="clock">00:00:00:00</div>
+        </div>
+
+        <!-- Left Panel: Stats -->
+        <div class="panel">
+            <div class="section-title">CORE PROTOCOLS</div>
+            
+            <div class="skill-item">
+                <div class="skill-name">REACT / VITE ENGAGED</div>
+                <div class="skill-track"><div class="skill-fill" style="width: 95%;"></div></div>
+            </div>
+            
+            <div class="skill-item">
+                <div class="skill-name">LARAVEL BACKEND</div>
+                <div class="skill-track"><div class="skill-fill" style="width: 88%;"></div></div>
+            </div>
+            
+            <div class="skill-item">
+                <div class="skill-name">DATABASE MGMT</div>
+                <div class="skill-track"><div class="skill-fill" style="width: 85%;"></div></div>
+            </div>
+            
+            <div class="skill-item">
+                <div class="skill-name">UI / UX ARCHITECTURE</div>
+                <div class="skill-track"><div class="skill-fill" style="width: 92%;"></div></div>
+            </div>
+        </div>
+
+        <!-- Center: Hexagon Interface -->
+        <div class="center-display">
+            <div class="hexa-grid"></div>
+            <div class="ring ring-1"></div>
+            <div class="ring ring-2"></div>
+            <div class="main-avatar">
+                <h2>ZAIBLITZ</h2>
+                <p>FULL STACK DEV</p>
+                <div style="margin-top:20px; font-size:10px; color: var(--primary);">SYSTEM: NOMINAL</div>
+            </div>
+        </div>
+
+        <!-- Right Panel: Logs/Projects -->
+        <div class="panel">
+            <div class="section-title">MISSION LOGS</div>
+            
+            <div class="project-card">
+                <div class="proj-title">PROJECT_ATLAS</div>
+                <div class="proj-desc">Mapping algorithms deployed. Efficiency at 99.8%.</div>
+            </div>
+            
+            <div class="project-card">
+                <div class="proj-title">PROJECT_BEACON</div>
+                <div class="proj-desc">Signal relay established. Awaiting incoming connections.</div>
+            </div>
+            
+            <div class="project-card">
+                <div class="proj-title">PROJECT_FORGE</div>
+                <div class="proj-desc">Resource compiler activated. Building assets.</div>
+            </div>
+        </div>
+
+        <!-- Bottom Bar -->
+        <div class="bottom-bar">
+            <div class="status-feed">
+                <span style="color: var(--primary);">> INITIALIZING...</span>
+                <span>> LOADING FRAMEWORKS... OK</span>
+                <span>> ESTABLISHING DATABASE SYNC... OK</span>
+                <span>> AWAITING COMMAND</span>
+            </div>
+            
+            <div style="text-align: right; font-size: 12px;">
+                <div style="color: var(--secondary);">POWER: 100%</div>
+                <div style="color: var(--text-dim); margin-top: 5px;">SHIELDS: MAXIMUM</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Simple clock for the HUD feel
+        setInterval(() => {
+            const d = new Date();
+            document.getElementById('clock').innerText = 
+                String(d.getHours()).padStart(2, '0') + ':' + 
+                String(d.getMinutes()).padStart(2, '0') + ':' + 
+                String(d.getSeconds()).padStart(2, '0') + ':' + 
+                String(Math.floor(d.getMilliseconds() / 10)).padStart(2, '0');
+        }, 50);
+
+        // Advanced HUD Audio Engine (Bleeding Edge)
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        let audioCtx;
+
+        function initAudio() {
+            if(!audioCtx) { audioCtx = new window.AudioContext(); }
+            if(audioCtx.state === 'suspended') { audioCtx.resume(); }
+        }
+
+        // Deep drone/engine hum
+        setInterval(() => {
+            if(audioCtx && audioCtx.state === 'running') {
+                // Aggressive lower frequency drone
+                playBeep(60, 'sawtooth', 1.0, 0.05, 0);
+                playBeep(55, 'square', 0.8, 0.03, 100);
+            }
+        }, 5000);
+
+        document.body.addEventListener('click', () => { initAudio(); playBeep(200, 'sawtooth', 0.2, 0.1, 0); }, { once: true });
+
+        function playBeep(freq, type, duration, vol, delay = 0) {
+            if(!audioCtx) return;
+            setTimeout(() => {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = type;
+                osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+                // Hard downward sweep
+                osc.frequency.exponentialRampToValueAtTime(freq * 0.5, audioCtx.currentTime + duration);
+                
+                gain.gain.setValueAtTime(vol, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + duration);
+                
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start();
+                osc.stop(audioCtx.currentTime + duration);
+            }, delay);
+        }
+
+        // Heavy mechanics / Tactical hover sounds
+        document.querySelectorAll('.panel, .project-card, .skill-item').forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                initAudio();
+                playBeep(300, 'square', 0.1, 0.05, 0); // Harder tech sound
+            });
+        });
+
+    </script>
+</body>
+</html>

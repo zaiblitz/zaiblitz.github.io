@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>J.A.R.V.I.S. - Select Protocol</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+
+        :root {
+            --cyan: #00f3ff;
+            --orange: #ff4500;
+            --bg: #030811;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg);
+            color: var(--cyan);
+            font-family: 'Share Tech Mono', monospace;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            background-image: 
+                radial-gradient(circle at 50% 50%, rgba(0, 243, 255, 0.05) 0%, transparent 60%),
+                linear-gradient(rgba(0, 243, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 243, 255, 0.03) 1px, transparent 1px);
+            background-size: 100% 100%, 30px 30px, 30px 30px;
+        }
+
+        .scanlines {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,0) 50%, rgba(0,0,0,0.2) 50%, rgba(0,0,0,0.2));
+            background-size: 100% 4px;
+            z-index: 10;
+            pointer-events: none;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+            animation: fadeIn 2s ease-in;
+        }
+
+        .title {
+            font-size: 3rem;
+            letter-spacing: 10px;
+            text-shadow: 0 0 20px rgba(0, 243, 255, 0.8);
+            margin: 0 0 10px 0;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.7);
+            letter-spacing: 5px;
+        }
+
+        .options-container {
+            display: flex;
+            gap: 50px;
+            z-index: 20;
+        }
+
+        .option-card {
+            background: rgba(0, 20, 40, 0.4);
+            border: 1px solid var(--cyan);
+            padding: 40px;
+            width: 300px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .option-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(45deg, transparent, rgba(0, 243, 255, 0.1), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.6s ease;
+        }
+
+        .option-card:hover::before {
+            transform: translateX(100%);
+        }
+
+        .option-card:hover {
+            box-shadow: 0 0 30px rgba(0, 243, 255, 0.4);
+            transform: translateY(-10px);
+            background: rgba(0, 40, 80, 0.6);
+        }
+
+        /* Orange variant for Option 2 */
+        .option-card.bleeding-edge {
+            border-color: var(--orange);
+            color: var(--orange);
+        }
+        
+        .option-card.bleeding-edge:hover {
+            box-shadow: 0 0 30px rgba(255, 69, 0, 0.4);
+            background: rgba(80, 20, 0, 0.4);
+        }
+
+        .option-title {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            letter-spacing: 3px;
+        }
+
+        .option-desc {
+            font-size: 0.9rem;
+            line-height: 1.5;
+            color: rgba(255,255,255,0.6);
+        }
+
+        .status-text {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            font-size: 0.8rem;
+            color: #fff;
+            animation: blink 1s infinite alternate;
+        }
+
+        @keyframes fadeIn {
+            0% { opacity: 0; transform: translateY(-20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes blink {
+            0% { opacity: 0.3; }
+            100% { opacity: 1; }
+        }
+
+        /* Arc reactor spin inside the cards */
+        .card-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 20px auto;
+            border-radius: 50%;
+            border: 2px dashed var(--cyan);
+            animation: spin 10s linear infinite;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .bleeding-edge .card-icon {
+            border-color: var(--orange);
+            border-style: dotted;
+            animation: spin-reverse 8s linear infinite;
+        }
+        
+        .card-inner-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(0, 243, 255, 0.2);
+            box-shadow: 0 0 15px var(--cyan);
+        }
+
+        .bleeding-edge .card-inner-icon {
+            background: rgba(255, 69, 0, 0.2);
+            box-shadow: 0 0 15px var(--orange);
+            border-radius: 0; /* Square for edgier look */
+            transform: rotate(45deg);
+        }
+
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+        @keyframes spin-reverse { 100% { transform: rotate(-360deg); } }
+    </style>
+</head>
+<body>
+    <div id="init-overlay" style="position:fixed;top:0;left:0;width:100%;height:100%;background:#030811;z-index:9999;display:flex;justify-content:center;align-items:center;cursor:pointer;flex-direction:column;gap:20px;">
+        <h2 style="color:var(--cyan);letter-spacing:5px;animation:blink 1s infinite alternate; font-weight:normal;">[ SYSTEM STANDBY ]</h2>
+        <div style="font-size:0.8rem; letter-spacing:3px;">CLICK TO INITIALIZE J.A.R.V.I.S. PROTOCOL</div>
+    </div>
+    <div class="scanlines"></div>
+
+    <div class="header">
+        <h1 class="title">J.A.R.V.I.S.</h1>
+        <div class="subtitle">SYSTEM INITIALIZED // AWAITING PROTOCOL SELECTION</div>
+    </div>
+
+    <div class="options-container" style="display:flex; gap:30px; z-index:20; flex-wrap:wrap; justify-content:center;">
+        <!-- Alpha Protocol (Cyan) -->
+        <a href="option1.html" class="option-card alpha-protocol" style="width: 280px; padding: 30px;">
+            <div class="card-icon">
+                <div class="card-inner-icon"></div>
+            </div>
+            <div class="option-title">MARK VII HUD</div>
+            <div class="option-desc">
+                Engage classic J.A.R.V.I.S. interface. Holographic command terminals, spherical focus, and dynamic typing feeds.
+            </div>
+        </a>
+
+        <!-- Bleeding Edge (Orange/Red) -->
+        <a href="option2.html" class="option-card bleeding-edge" style="width: 280px; padding: 30px;">
+            <div class="card-icon">
+                <div class="card-inner-icon"></div>
+            </div>
+            <div class="option-title">HULKBUSTER OS</div>
+            <div class="option-desc">
+                Deploy high-contrast tactical overlay. Orange/Red diagnostics, hexagonal matrices, and rigid tracking grids.
+            </div>
+        </a>
+
+        <!-- Option 3 (Stealth) -->
+        <a href="option3.html" class="option-card stealth-protocol" style="width: 280px; padding: 30px; border-color: #00bbff; color: #00bbff;">
+            <div class="card-icon" style="border-color: #00bbff; border-style: dashed; animation: spinRev 12s linear infinite;">
+                <div class="card-inner-icon" style="background: rgba(0, 187, 255, 0.2); box-shadow: 0 0 15px #00bbff; border-radius: 50%;"></div>
+            </div>
+            <div class="option-title">NIGHT PROTOCOL</div>
+            <div class="option-desc">
+                Engage stealth-based asymmetric HUD. Deep spectrum blue hues, off-center radar sweeping, floating data columns, and terminal feeds.
+            </div>
+            <style>
+                .stealth-protocol:hover {
+                    box-shadow: 0 0 30px rgba(0, 187, 255, 0.4) !important;
+                    background: rgba(0, 17, 51, 0.6) !important;
+                }
+            </style>
+        </a>
+
+        <!-- Option 4 (Diagnostic/Wireframe) -->
+        <a href="option4.html" class="option-card diag-protocol" style="width: 280px; padding: 30px; border-color: #5dffcc; color: #5dffcc; font-family: 'Consolas', monospace;">
+            <div class="card-icon" style="border: 2px solid #5dffcc; border-radius: 0; animation: spinZ 15s linear infinite; clip-path: polygon(10% 0, 100% 0, 100% 90%, 90% 100%, 0 100%, 0 10%);">
+                <div class="card-inner-icon" style="background: rgba(93, 255, 204, 0.2); border-radius: 0; width: 30px; height: 30px;"></div>
+            </div>
+            <div class="option-title">DIAGNOSTIC MODE</div>
+            <div class="option-desc">
+                Engage Wireframe Schematic View. Targeting brackets, sharp monospace fonts, rigid grid lines, and high-frequency analytical terminals.
+            </div>
+            <style>
+                .diag-protocol:hover {
+                    box-shadow: 0 0 30px rgba(93, 255, 204, 0.3) !important;
+                    background: rgba(0, 20, 15, 0.8) !important;
+                }
+            </style>
+        </a>
+    </div>
+
+    <div class="status-text">> STANDBY...</div>
+
+    <script>
+        const initOverlay = document.getElementById('init-overlay');
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        let audioCtx;
+        
+        let typingInterval;
+
+        // Sound Synthesis Engine
+        function playBeep(freq, type, duration, vol, delay = 0) {
+            if(!audioCtx) return;
+            setTimeout(() => {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = type;
+                osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+                // Sweep frequency down slightly for sci-fi feel
+                osc.frequency.exponentialRampToValueAtTime(freq * 0.8, audioCtx.currentTime + duration);
+                
+                gain.gain.setValueAtTime(vol, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + duration);
+                
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start();
+                osc.stop(audioCtx.currentTime + duration);
+            }, delay);
+        }
+
+        function speak(text, pitch = 1.0, rate = 0.95) {
+            if(!window.speechSynthesis) return;
+            const utter = new SpeechSynthesisUtterance(text);
+            const voices = window.speechSynthesis.getVoices();
+            // Try to find a British or robotic sounding voice
+            const jarvisVoice = voices.find(v => v.name.includes('Daniel') || v.name.includes('UK English Male') || v.name.includes('Google UK English Male')) || voices.find(v => v.lang.includes('en-GB')) || voices[0];
+            if(jarvisVoice) utter.voice = jarvisVoice;
+            utter.pitch = pitch;
+            utter.rate = rate;
+            window.speechSynthesis.speak(utter);
+        }
+        
+        // Wait for voices to load before initial speak if needed
+        window.speechSynthesis.onvoiceschanged = () => {};
+
+        initOverlay.addEventListener('click', () => {
+            // First user interaction initializes the audio context
+            audioCtx = new AudioContext();
+            audioCtx.resume();
+            
+            // Hide the boot screen
+            initOverlay.style.opacity = '0';
+            setTimeout(() => initOverlay.style.display = 'none', 500);
+
+            // Startup Sounds
+            playBeep(220, 'sine', 0.8, 0.4, 0);
+            playBeep(440, 'triangle', 0.5, 0.4, 300);
+            playBeep(880, 'sine', 0.3, 0.3, 500);
+
+            // Welcome Voice
+            setTimeout(() => {
+                speak("Systems online. Welcome sir. Awaiting protocol selection.", 0.9, 0.9);
+            }, 1000);
+
+            // Typing effect for the status text
+            const statusText = document.querySelector('.status-text');
+            const scriptStr = "> SECURE CONNECTION ESTABLISHED... VERIFYING BIOMETRICS... READY.";
+            statusText.innerHTML = "";
+            let i = 0;
+            
+            setTimeout(() => {
+                typingInterval = setInterval(() => {
+                    if(i < scriptStr.length) {
+                        statusText.innerHTML += scriptStr.charAt(i);
+                        if(scriptStr.charAt(i) !== ' ') {
+                            // Typing sound effect
+                            playBeep(1200 + Math.random()*200, 'square', 0.05, 0.02, 0);
+                        }
+                        i++;
+                    } else {
+                        clearInterval(typingInterval);
+                    }
+                }, 40);
+            }, 800);
+        });
+
+        // Add Hover/Click Audio to Options
+        document.querySelectorAll('.option-card').forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                const isBleedingEdge = card.classList.contains('bleeding-edge');
+                const isStealth = card.classList.contains('stealth-protocol');
+                const isDiag = card.classList.contains('diag-protocol');
+                if(isBleedingEdge) {
+                    playBeep(300, 'sawtooth', 0.15, 0.2, 0);
+                    playBeep(280, 'square', 0.1, 0.1, 50);
+                } else if(isStealth) {
+                    playBeep(500, 'sine', 0.1, 0.1, 0);
+                } else if(isDiag) {
+                    playBeep(1500, 'square', 0.05, 0.05, 0);
+                } else {
+                    playBeep(600, 'sine', 0.1, 0.2, 0);
+                    playBeep(800, 'sine', 0.1, 0.1, 50);
+                }
+            });
+            
+            card.addEventListener('click', (e) => {
+                const isBleedingEdge = card.classList.contains('bleeding-edge');
+                const isStealth = card.classList.contains('stealth-protocol');
+                const isDiag = card.classList.contains('diag-protocol');
+                if(isBleedingEdge) {
+                    speak("Deploying Hulkbuster Operating System.", 0.7, 0.9);
+                    playBeep(150, 'sawtooth', 0.5, 0.5, 0);
+                } else if(isStealth) {
+                    speak("Stealth protocol engaged. Running silent.", 0.8, 0.85);
+                    playBeep(400, 'sine', 0.8, 0.3, 0);
+                } else if (isDiag) {
+                    speak("Diagnostic mode activated. Scanning systems.", 1.1, 1.1);
+                    playBeep(2000, 'square', 0.3, 0.2, 0);
+                    playBeep(2200, 'square', 0.1, 0.2, 300);
+                } else {
+                    speak("Engaging Mark Seven Holographic Display.", 0.9, 0.9);
+                    playBeep(800, 'sine', 0.4, 0.4, 0);
+                }
+                
+                // Delay navigation slightly so they hear the sound/speech start
+                if(audioCtx && audioCtx.state === 'running') {
+                    e.preventDefault();
+                    const target = card.href;
+                    setTimeout(() => window.location = target, 600);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
