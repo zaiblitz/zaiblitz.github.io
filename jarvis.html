@@ -222,7 +222,23 @@
 
         .mod-syslog {
             bottom: 120px;
-            right: 180px;
+            right: 350px;
+        }
+
+        .syslog-terminal {
+            position: absolute;
+            left: 210px;
+            top: 30px;
+            width: 320px;
+            height: 200px;
+            background: rgba(0, 10, 20, 0.85);
+            border: 1px solid var(--cyan);
+            border-radius: 0 15px 0 15px;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 0 20px rgba(0, 243, 255, 0.15) inset;
+            z-index: 5;
         }
 
         /* Internal Elements for side modules */
@@ -259,14 +275,20 @@
 
         /* Specific module adjustments */
         .syslog-content {
-            width: 80%;
-            height: 80%;
-            font-size: 10px;
+            width: 100%;
+            height: 100%;
+            font-size: 11px;
             text-align: left;
             overflow: hidden;
             display: flex;
             flex-direction: column;
             justify-content: flex-start;
+        }
+
+        .syslog-icon-text {
+            font-size: 24px;
+            font-weight: bold;
+            text-align: center;
         }
 
         .log-line {
@@ -561,14 +583,20 @@
         <!-- SYSTEM LOG -->
         <div class="circle-module side-module mod-syslog">
             <svg class="svg-ring" viewBox="0 0 260 260">
-                <circle cx="130" cy="130" r="120" fill="rgba(0,20,40,0.6)" stroke="var(--cyan)" stroke-width="2" />
-                <path d="M 20 130 A 110 110 0 0 1 130 20" fill="none" stroke="var(--cyan)" stroke-width="6" />
+                <circle class="rotating-ccw" cx="130" cy="130" r="120" fill="rgba(0,20,40,0.6)" stroke="var(--cyan)" stroke-width="2" stroke-dasharray="100 20" />
+                <circle cx="130" cy="130" r="90" fill="none" stroke="rgba(0,243,255,0.3)" stroke-width="1" />
+                <path d="M 40 130 A 90 90 0 0 1 130 40" fill="none" stroke="var(--cyan)" stroke-width="6" />
             </svg>
-            <div class="inner-content syslog-content" id="syslog">
-                <div class="hud-text hud-title"
-                    style="margin-left: 0; font-size: 16px; position:absolute; top:-30px; right: -30px;">SYSTEM LOG
+            <div class="inner-content">
+                <div class="syslog-icon-text hud-text">LOGS</div>
+                <div style="font-size: 12px; margin-top: 5px; color: var(--white); font-weight: bold;">STREAMING</div>
+            </div>
+            
+            <div class="syslog-terminal">
+                <div class="hud-text hud-title" style="margin-left: 0; font-size: 16px; margin-bottom: 5px;">SYSTEM LOGSTREAM</div>
+                <div class="syslog-content" id="syslog">
+                    <!-- Logs populated via JS -->
                 </div>
-                <!-- Logs populated via JS -->
             </div>
         </div>
 
