@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>J.A.R.V.I.S. HUD</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@500;600;700&display=swap');
+
+        :root {
+            --cyan: #00f3ff;
+            --cyan-glow: rgba(0, 243, 255, 0.5);
+            --dark-bg: #030c14;
+            --panel-bg: rgba(2, 17, 30, 0.4);
+            --white: #ffffff;
+            --orange: #ff9d00;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            user-select: none;
+        }
+
+        body,
+        html {
+            width: 100vw;
+            height: 100vh;
+            background-color: var(--dark-bg);
+            background-image:
+                radial-gradient(circle at 50% 50%, #031828 0%, #01060a 100%),
+                url('data:image/svg+xml;utf8,<svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg"><filter id="noise"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(%23noise)" opacity="0.05" fill="none"/></svg>');
+            font-family: 'Share Tech Mono', monospace;
+            color: var(--cyan);
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #hud-container {
+            width: 1920px;
+            height: 1080px;
+            position: relative;
+            transform-origin: center;
+            /* Scale dynamically to fit the window while maintaining 16:9 */
+            transform: scale(min(calc(100vw / 1920), calc(100vh / 1080)));
+        }
+
+        /* Particles - simple CSS implementation */
+        .particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Abstract classes */
+        .panel {
+            position: absolute;
+            background: var(--panel-bg);
+            border: 1px solid rgba(0, 243, 255, 0.2);
+            box-shadow: 0 0 15px rgba(0, 243, 255, 0.1) inset;
+            border-radius: 5px;
+            padding: 15px;
+            backdrop-filter: blur(2px);
+        }
+
+        .hud-text {
+            font-family: 'Rajdhani', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 0 5px var(--cyan-glow);
+        }
+
+        .hud-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            border-bottom: 1px solid var(--cyan);
+            display: inline-block;
+            padding-bottom: 2px;
+        }
+
+        /* Circular Modules Base */
+        .circle-module {
+            position: absolute;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .svg-ring {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+        }
+
+        .rotating-cw {
+            animation: rotate-cw 20s linear infinite;
+        }
+
+        .rotating-ccw {
+            animation: rotate-ccw 25s linear infinite;
+        }
+
+        .rotating-fast {
+            animation: rotate-cw 8s linear infinite;
+        }
+
+        @keyframes rotate-cw {
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes rotate-ccw {
+            100% {
+                transform: rotate(-360deg);
+            }
+        }
+
+        /* Main Center Hub */
+        .center-hub {
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 600px;
+            height: 600px;
+            z-index: 10;
+        }
+
+        .center-text {
+            text-align: center;
+            z-index: 20;
+        }
+
+        .jarvis-logotype {
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 700;
+            font-size: 64px;
+            letter-spacing: 8px;
+            text-shadow: 0 0 20px var(--cyan), 0 0 40px var(--cyan);
+            margin: 10px 0;
+        }
+
+        .status-text {
+            font-size: 18px;
+            letter-spacing: 3px;
+            margin-bottom: 5px;
+        }
+
+        .waveform {
+            width: 250px;
+            height: 50px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .wave-bar {
+            width: 4px;
+            background: var(--cyan);
+            box-shadow: 0 0 5px var(--cyan);
+            animation: wave 1.2s infinite ease-in-out;
+        }
+
+        @keyframes wave {
+
+            0%,
+            100% {
+                height: 10px;
+            }
+
+            50% {
+                height: 40px;
+            }
+        }
+
+        /* Side Modules Positioning */
+        .side-module {
+            width: 260px;
+            height: 260px;
+            border-radius: 50%;
+        }
+
+        /* Left Side */
+        .mod-diagnostics {
+            top: 120px;
+            left: 180px;
+        }
+
+        .mod-power {
+            top: 410px;
+            left: 100px;
+        }
+
+        .mod-environment {
+            bottom: 120px;
+            left: 180px;
+        }
+
+        /* Right Side */
+        .mod-targeting {
+            top: 120px;
+            right: 180px;
+        }
+
+        .mod-comms {
+            top: 410px;
+            right: 100px;
+        }
+
+        .mod-syslog {
+            bottom: 120px;
+            right: 180px;
+        }
+
+        /* Internal Elements for side modules */
+        .inner-content {
+            position: absolute;
+            width: 70%;
+            height: 70%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .bar-chart {
+            display: flex;
+            align-items: flex-end;
+            height: 50px;
+            gap: 4px;
+            margin-top: 10px;
+        }
+
+        .bar {
+            width: 12px;
+            background: rgba(0, 243, 255, 0.3);
+            border-top: 2px solid var(--cyan);
+        }
+
+        .bar-fill {
+            background: var(--cyan);
+            box-shadow: 0 0 10px var(--cyan);
+            width: 100%;
+        }
+
+        /* Specific module adjustments */
+        .syslog-content {
+            width: 80%;
+            height: 80%;
+            font-size: 10px;
+            text-align: left;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+        }
+
+        .log-line {
+            margin-bottom: 2px;
+            white-space: nowrap;
+            opacity: 0.8;
+        }
+
+        .target-crosshair {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background:
+                linear-gradient(to right, transparent 49.5%, var(--cyan) 49.5%, var(--cyan) 50.5%, transparent 50.5%),
+                linear-gradient(to bottom, transparent 49.5%, var(--cyan) 49.5%, var(--cyan) 50.5%, transparent 50.5%);
+            opacity: 0.3;
+            border-radius: 50%;
+        }
+
+        .main-hub-title {
+            position: absolute;
+            top: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 32px;
+            letter-spacing: 12px;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .main-hub-title::before,
+        .main-hub-title::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: 100px;
+            height: 1px;
+            background: var(--cyan);
+        }
+
+        .main-hub-title::before {
+            left: -120px;
+        }
+
+        .main-hub-title::after {
+            right: -120px;
+        }
+
+        /* Bottom Nav Elements */
+        .bottom-nav {
+            position: absolute;
+            bottom: 60px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 40px;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .nav-item:hover {
+            transform: translateY(-5px);
+            text-shadow: 0 0 15px var(--cyan);
+        }
+
+        .nav-icon {
+            width: 50px;
+            height: 50px;
+            border: 2px solid var(--cyan);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 10px;
+            box-shadow: 0 0 10px inset var(--cyan-glow);
+        }
+
+        .nav-icon svg {
+            width: 24px;
+            height: 24px;
+            fill: var(--cyan);
+        }
+
+        /* Connections paths - approximated with absolute lines for visual similarity */
+        .connection-line {
+            position: absolute;
+            background: rgba(0, 243, 255, 0.4);
+            z-index: 1;
+        }
+
+        .conn-h {
+            height: 1px;
+        }
+
+        .conn-v {
+            width: 1px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="hud-container">
+
+        <div class="particles" id="particles"></div>
+
+        <div class="hud-text main-hub-title">MAIN HUB</div>
+
+        <!-- CENTER HUB -->
+        <div class="circle-module center-hub">
+            <!-- Layers of rings -->
+            <svg class="svg-ring" viewBox="0 0 600 600">
+                <circle cx="300" cy="300" r="290" fill="none" stroke="rgba(0,243,255,0.1)" stroke-width="2" />
+
+                <!-- Rotating dashed outer ring -->
+                <circle class="rotating-cw" cx="300" cy="300" r="275" fill="none" stroke="var(--cyan)" stroke-width="4"
+                    stroke-dasharray="20 10" />
+
+                <!-- Inner solid rings -->
+                <circle cx="300" cy="300" r="240" fill="rgba(0,150,255,0.05)" stroke="var(--cyan)" stroke-width="2" />
+                <circle cx="300" cy="300" r="230" fill="none" stroke="rgba(0,243,255,0.4)" stroke-width="12" />
+
+                <!-- Fast rotating inner ticks -->
+                <circle class="rotating-ccw" cx="300" cy="300" r="190" fill="none" stroke="var(--cyan)"
+                    stroke-width="15" stroke-dasharray="4 20" opacity="0.8" />
+
+                <!-- Core ring -->
+                <circle cx="300" cy="300" r="160" fill="rgba(0,0,0,0.4)" stroke="var(--cyan)" stroke-width="4"
+                    filter="drop-shadow(0 0 10px var(--cyan))" />
+            </svg>
+
+            <!-- Text Content -->
+            <div class="center-text">
+                <div class="hud-text status-text">OS Status: <span style="color:var(--white)">ACTIVE</span></div>
+                <div class="hud-text status-text">SYSTEM HEALTH: 98%</div>
+                <div class="jarvis-logotype">J.A.R.V.I.S.</div>
+                <div class="waveform" id="waveform">
+                    <!-- Script will generate bars -->
+                </div>
+            </div>
+
+            <!-- Side data bubble on Main Hub -->
+            <div
+                style="position: absolute; right: 20px; top: 50%; transform: translateY(-50%); border: 1px solid var(--cyan); border-radius: 50%; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.8); font-size: 12px;">
+                DATA</div>
+        </div>
+
+        <!-- Connections (approximated) -->
+        <!-- Center to left modules -->
+        <div class="connection-line conn-h"
+            style="top: 250px; left: 400px; width: 250px; transform: rotate(-25deg); transform-origin: left;"></div>
+        <div class="connection-line conn-h"
+            style="top: 540px; left: 360px; width: 300px; transform: rotate(0deg); transform-origin: left;"></div>
+        <div class="connection-line conn-h"
+            style="top: 830px; left: 400px; width: 250px; transform: rotate(25deg); transform-origin: left;"></div>
+
+        <!-- LEFT MODULES -->
+
+        <!-- DIAGNOSTICS -->
+        <div class="circle-module side-module mod-diagnostics">
+            <svg class="svg-ring" viewBox="0 0 260 260">
+                <circle class="rotating-cw" cx="130" cy="130" r="120" fill="none" stroke="var(--cyan)" stroke-width="2"
+                    stroke-dasharray="10 5" />
+                <circle cx="130" cy="130" r="110" fill="rgba(0,20,40,0.6)" stroke="rgba(0,243,255,0.5)"
+                    stroke-width="4" />
+                <path d="M 240 130 A 110 110 0 0 1 130 240" fill="none" stroke="var(--cyan)" stroke-width="6"
+                    filter="drop-shadow(0 0 5px var(--cyan))" />
+            </svg>
+            <div class="inner-content" style="align-items: flex-start; padding-left: 20px;">
+                <div class="hud-text hud-title" style="margin-left: -50px;">DIAGNOSTICS</div>
+                <div class="bar-chart">
+                    <div class="bar">
+                        <div class="bar-fill" style="height: 80%"></div>
+                    </div>
+                    <div class="bar">
+                        <div class="bar-fill" style="height: 50%"></div>
+                    </div>
+                    <div class="bar">
+                        <div class="bar-fill" style="height: 90%"></div>
+                    </div>
+                    <div class="bar">
+                        <div class="bar-fill" style="height: 30%"></div>
+                    </div>
+                    <div class="bar">
+                        <div class="bar-fill" style="height: 70%"></div>
+                    </div>
+                </div>
+                <div style="margin-top: 15px; font-size: 14px; line-height: 1.5;">
+                    RAM: 128TB<br>
+                    TEMP: 32°C
+                </div>
+            </div>
+        </div>
+
+        <!-- POWER GRID -->
+        <div class="circle-module side-module mod-power">
+            <svg class="svg-ring" viewBox="0 0 260 260">
+                <circle cx="130" cy="130" r="120" fill="rgba(0,20,40,0.6)" stroke="var(--cyan)" stroke-width="2" />
+                <circle class="rotating-ccw" cx="130" cy="130" r="100" fill="none" stroke="var(--cyan)"
+                    stroke-width="10" stroke-dasharray="50 10 10 10" />
+            </svg>
+            <div class="inner-content">
+                <div class="hud-text hud-title" style="margin-left: -120px; font-size: 16px;">POWER GRID</div>
+                <div style="font-size: 32px; font-weight: bold; text-shadow: 0 0 10px var(--cyan);">84%</div>
+                <div style="font-size: 12px; margin-top: 5px;">STATUS: OPTIMAL</div>
+            </div>
+        </div>
+
+        <!-- ENVIRONMENT -->
+        <div class="circle-module side-module mod-environment">
+            <svg class="svg-ring" viewBox="0 0 260 260">
+                <circle cx="130" cy="130" r="120" fill="rgba(0,20,40,0.6)" stroke="var(--cyan)" stroke-width="2" />
+                <circle cx="130" cy="130" r="110" fill="none" stroke="rgba(0,243,255,0.3)" stroke-width="1" />
+                <!-- Radar sweep -->
+                <path class="rotating-cw" d="M 130 130 L 130 20 A 110 110 0 0 1 240 130 Z" fill="rgba(0,243,255,0.1)" />
+            </svg>
+            <div class="target-crosshair"></div>
+            <div class="inner-content" style="background: rgba(0,0,0,0.5); border-radius: 50%;">
+                <div class="hud-text hud-title"
+                    style="margin-left: -100px; font-size: 14px; position:absolute; top:-30px;">ENVIRONMENT</div>
+                <div style="font-size: 28px;">☁ 22°C</div>
+                <div style="font-size: 14px; margin-top: 10px;">1013hPa</div>
+            </div>
+        </div>
+
+
+        <!-- RIGHT MODULES -->
+
+        <!-- TARGETING -->
+        <div class="circle-module side-module mod-targeting">
+            <svg class="svg-ring" viewBox="0 0 260 260">
+                <circle cx="130" cy="130" r="120" fill="rgba(0,20,40,0.6)" stroke="var(--cyan)" stroke-width="3"
+                    stroke-dasharray="20 5" />
+                <circle class="rotating-cw" cx="130" cy="130" r="90" fill="none" stroke="var(--orange)" stroke-width="2"
+                    stroke-dasharray="90 180" opacity="0.8" />
+            </svg>
+            <div class="target-crosshair"></div>
+            <div class="inner-content">
+                <div class="hud-text hud-title" style="position: absolute; top: -40px; right: -50px;">TARGETING</div>
+                <div
+                    style="text-align: left; background: rgba(0,10,20,0.8); padding: 10px; border: 1px solid var(--cyan); position: absolute; right: -80px; width: 180px;">
+                    <div style="font-size: 12px;">Locked Object:</div>
+                    <div style="font-size: 16px; color: var(--orange); margin-bottom: 10px; font-weight: bold;">TARGET
+                        ALPHA</div>
+                    <div style="font-size: 12px; display:flex; justify-content:space-between;"><span>ETA:</span>
+                        <span>1:45</span></div>
+                    <div style="font-size: 12px; display:flex; justify-content:space-between;"><span>range:</span>
+                        <span>1.45°</span></div>
+                    <div style="font-size: 12px; display:flex; justify-content:space-between;"><span>bearing:</span>
+                        <span>0.60°</span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- COMMUNICATIONS -->
+        <div class="circle-module side-module mod-comms">
+            <svg class="svg-ring" viewBox="0 0 260 260">
+                <circle cx="130" cy="130" r="120" fill="rgba(0,20,40,0.6)" stroke="rgba(0,243,255,0.4)"
+                    stroke-width="2" />
+                <circle class="rotating-cw" cx="130" cy="130" r="110" fill="none" stroke="var(--cyan)" stroke-width="4"
+                    stroke-dasharray="1 10" />
+                <circle class="rotating-ccw" cx="130" cy="130" r="70" fill="none" stroke="var(--cyan)" stroke-width="20"
+                    stroke-dasharray="40 10 10 10" />
+            </svg>
+            <div class="inner-content" style="align-items: flex-end;">
+                <div class="hud-text hud-title" style="position: absolute; top: -20px; right: -120px;">COMMUNICATIONS
+                </div>
+                <div
+                    style="text-align: right; width: 100%; padding-right: 20px; font-size: 12px; background:rgba(0,0,0,0.5);">
+                    <div style="margin-bottom: 5px;">SIGNAL STRENGTH</div>
+                    <div style="display:flex; justify-content: space-between; margin-bottom: 3px;"><span>STARK</span>
+                        <span style="background:var(--cyan); width:60px; height:8px;"></span></div>
+                    <div style="display:flex; justify-content: space-between; margin-bottom: 3px;"><span>POTTS</span>
+                        <span style="background:var(--cyan); width:40px; height:8px;"></span></div>
+                    <div style="display:flex; justify-content: space-between; margin-bottom: 3px;"><span>RHODES</span>
+                        <span style="background:var(--cyan); width:80px; height:8px;"></span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SYSTEM LOG -->
+        <div class="circle-module side-module mod-syslog">
+            <svg class="svg-ring" viewBox="0 0 260 260">
+                <circle cx="130" cy="130" r="120" fill="rgba(0,20,40,0.6)" stroke="var(--cyan)" stroke-width="2" />
+                <path d="M 20 130 A 110 110 0 0 1 130 20" fill="none" stroke="var(--cyan)" stroke-width="6" />
+            </svg>
+            <div class="inner-content syslog-content" id="syslog">
+                <div class="hud-text hud-title"
+                    style="margin-left: 0; font-size: 16px; position:absolute; top:-30px; right: -30px;">SYSTEM LOG
+                </div>
+                <!-- Logs populated via JS -->
+            </div>
+        </div>
+
+        <!-- BOTTOM NAV / ICONS -->
+        <div class="bottom-nav">
+            <div class="nav-item">
+                <div class="nav-icon">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M5,19H7V11H5V19M11,19H13V5H11V19M17,19H19V15H17V19M2,21H22V23H2V21Z" />
+                    </svg>
+                </div>
+                <div class="hud-text" style="font-size: 12px;">DATA ANALYSIS</div>
+            </div>
+            <div class="nav-item">
+                <div class="nav-icon">
+                    <svg viewBox="0 0 24 24">
+                        <path
+                            d="M12,21L15.6,16.2C14.6,15.4 13.3,15 12,15C10.7,15 9.4,15.4 8.4,16.2L12,21M12,3C7.95,3 4.21,4.34 1.2,6.6L3,9C5.5,7.12 8.62,6 12,6C15.38,6 18.5,7.12 21,9L22.8,6.6C19.79,4.34 16.05,3 12,3M12,9C9.3,9 6.81,9.89 4.8,11.4L6.6,13.8C8.1,12.67 9.97,12 12,12C14.03,12 15.9,12.67 17.4,13.8L19.2,11.4C17.19,9.89 14.7,9 12,9Z" />
+                    </svg>
+                </div>
+                <div class="hud-text" style="font-size: 12px;">NETWORK</div>
+            </div>
+            <div class="nav-item">
+                <div class="nav-icon">
+                    <svg viewBox="0 0 24 24">
+                        <path
+                            d="M15,19L9,16.89V5L15,7.11M20.5,3C20.44,3 20.39,3 20.34,3L15,5.1L9,3L3.36,4.9C3.15,4.97 3,5.15 3,5.38V20.5A0.5,0.5 0 0,0 3.5,21C3.55,21 3.61,21 3.66,20.97L9,18.9L15,21L20.64,19.1C20.85,19 21,18.85 21,18.62V3.5A0.5,0.5 0 0,0 20.5,3Z" />
+                    </svg>
+                </div>
+                <div class="hud-text" style="font-size: 12px;">MAPS</div>
+            </div>
+            <div class="nav-item">
+                <div class="nav-icon">
+                    <svg viewBox="0 0 24 24">
+                        <path
+                            d="M12,15.5A3.5,3.5 0 0,1 8.5,12A3.5,3.5 0 0,1 12,8.5A3.5,3.5 0 0,1 15.5,12A3.5,3.5 0 0,1 12,15.5M19.43,12.97C19.47,12.65 19.5,12.33 19.5,12C19.5,11.67 19.47,11.34 19.43,11L21.54,9.37C21.73,9.22 21.78,8.95 21.66,8.73L19.66,5.27C19.54,5.05 19.27,4.96 19.05,5.05L16.56,6.05C16.04,5.66 15.5,5.32 14.87,5.07L14.5,2.42C14.46,2.18 14.25,2 14,2H10C9.75,2 9.54,2.18 9.5,2.42L9.13,5.07C8.5,5.32 7.96,5.66 7.44,6.05L4.95,5.05C4.73,4.96 4.46,5.05 4.34,5.27L2.34,8.73C2.21,8.95 2.27,9.22 2.46,9.37L4.57,11C4.53,11.34 4.5,11.67 4.5,12C4.5,12.33 4.53,12.65 4.57,12.97L2.46,14.63C2.27,14.78 2.21,15.05 2.34,15.27L4.34,18.73C4.46,18.95 4.73,19.03 4.95,18.95L7.44,17.94C7.96,18.34 8.5,18.68 9.13,18.93L9.5,21.58C9.54,21.82 9.75,22 10,22H14C14.25,22 14.46,21.82 14.5,21.58L14.87,18.93C15.5,18.68 16.04,18.34 16.56,17.94L19.05,18.95C19.27,19.03 19.54,18.95 19.66,18.73L21.66,15.27C21.78,15.05 21.73,14.78 21.54,14.63L19.43,12.97Z" />
+                    </svg>
+                </div>
+                <div class="hud-text" style="font-size: 12px;">SETTINGS</div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // Generate random waveform
+        const waveform = document.getElementById('waveform');
+        for (let i = 0; i < 30; i++) {
+            const bar = document.createElement('div');
+            bar.className = 'wave-bar';
+            bar.style.animationDelay = `${Math.random()}s`;
+            bar.style.animationDuration = `${0.8 + Math.random() * 0.8}s`;
+            waveform.appendChild(bar);
+        }
+
+        // Generate mock system logs
+        const syslog = document.getElementById('syslog');
+        const logs = [
+            "SYSTEM.LOG:: INITIATING...",
+            "0x55E9 NETWORK MODULE ALIGN",
+            "OK -> SECTOR H-04 SECURED",
+            "DATASTREAM: STABLE...",
+            "[WARN] ANOMALY DETECTED IN R-4",
+            "RE-ROUTING POWER ALIGN...",
+            "THERMAL OUTPUT NORMAL",
+            "COMMUNICATIONS: ENCRYPTED",
+            "ACCESS PROTOCOL ACTIVE...",
+            "SYSTEM MAINTAINING OPTIMAL",
+            "0x89AA RE-CALIBRATING...",
+            "SECURITY PROTOCOL LAYER 7"
+        ];
+
+        setInterval(() => {
+            const row = document.createElement('div');
+            row.className = 'log-line';
+            row.innerText = `[${new Date().toISOString().substring(11, 21)}] ${logs[Math.floor(Math.random() * logs.length)]}`;
+            syslog.appendChild(row);
+            if (syslog.children.length > 12) {
+                syslog.removeChild(syslog.firstChild);
+            }
+        }, 500);
+
+        // Optional: Particles Generation
+        const parContainer = document.getElementById('particles');
+        for (let i = 0; i < 150; i++) {
+            const p = document.createElement('div');
+            p.style.position = 'absolute';
+            p.style.width = Math.random() * 3 + 'px';
+            p.style.height = p.style.width;
+            p.style.background = 'rgba(0, 243, 255, ' + Math.random() + ')';
+            p.style.left = Math.random() * 100 + '%';
+            p.style.top = Math.random() * 100 + '%';
+            p.style.borderRadius = '50%';
+            p.style.boxShadow = '0 0 5px var(--cyan)';
+            p.style.animation = `fade ${2 + Math.random() * 3}s infinite alternate`;
+            parContainer.appendChild(p);
+        }
+
+        const style = document.createElement('style');
+        style.innerHTML = `@keyframes fade { from { opacity: 0.1; } to { opacity: 1; } }`;
+        document.head.appendChild(style);
+
+    </script>
+</body>
+
+</html>
