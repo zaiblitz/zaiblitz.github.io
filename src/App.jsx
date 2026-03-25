@@ -8,14 +8,14 @@ import MarkVII from './components/protocols/MarkVII'
 import Hulkbuster from './components/protocols/Hulkbuster'
 import Stealth from './components/protocols/Stealth'
 import Diagnostic from './components/protocols/Diagnostic'
-import Jarvis from './components/protocols/Jarvis'
+import ZaiblitzHud from './components/protocols/Jarvis'
 
 const protocolComponents = {
   mark_vii: MarkVII,
   hulkbuster: Hulkbuster,
   stealth: Stealth,
   diagnostic: Diagnostic,
-  jarvis: Jarvis,
+  zaiblitz_hud: ZaiblitzHud,
   legacy: Legacy,
 }
 
