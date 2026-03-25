@@ -53,6 +53,18 @@ export const protocols = [
         voicePitch: 0.8,
         voiceRate: 0.85,
         voiceKeywords: ['stealth', 'night', 'night protocol', 'silent', 'dark'],
+        active: false,
+    },
+    {
+        id: 'jarvis',
+        name: 'JARVIS HUD',
+        description: 'Engage full-spectrum holographic command center. Circular modules and real-time system telemetry.',
+        cardClass: 'jarvis-protocol',
+        hoverType: 'mark',
+        voiceLine: 'Initializing Jarvis Heads Up Display.',
+        voicePitch: 0.9,
+        voiceRate: 0.9,
+        voiceKeywords: ['jarvis', 'jarvis hud', 'hub', 'holographic', 'command center'],
         active: true,
     },
     {

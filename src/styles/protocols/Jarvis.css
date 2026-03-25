@@ -1,0 +1,443 @@
+/* ===== Jarvis HUD Protocol ===== */
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@500;600;700&display=swap');
+
+.jarvis-theme {
+    --cyan: #00f3ff;
+    --cyan-glow: rgba(0, 243, 255, 0.5);
+    --dark-bg: #030c14;
+    --panel-bg: rgba(2, 17, 30, 0.4);
+    --white: #ffffff;
+    --orange: #ff9d00;
+
+    width: 100vw;
+    height: 100vh;
+    background-color: var(--dark-bg);
+    background-image:
+        radial-gradient(circle at 50% 50%, #031828 0%, #01060a 100%);
+    font-family: 'Share Tech Mono', monospace;
+    color: var(--cyan);
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    user-select: none;
+}
+
+.jarvis-theme * {
+    box-sizing: border-box;
+}
+
+/* HUD Container - 16:9 scaled */
+.jarvis-hud-container {
+    width: 1920px;
+    height: 1080px;
+    position: relative;
+    transform-origin: center;
+    transform: scale(min(calc(100vw / 1920), calc(100vh / 1080)));
+}
+
+/* Particles */
+.jarvis-particles {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.jarvis-particle {
+    position: absolute;
+    border-radius: 50%;
+    box-shadow: 0 0 5px var(--cyan);
+}
+
+@keyframes jarvis-fade {
+    from { opacity: 0.1; }
+    to { opacity: 1; }
+}
+
+/* HUD Text */
+.jarvis-hud-text {
+    font-family: 'Rajdhani', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    text-shadow: 0 0 5px var(--cyan-glow);
+}
+
+.jarvis-hud-title {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 15px;
+    border-bottom: 1px solid var(--cyan);
+    display: inline-block;
+    padding-bottom: 2px;
+}
+
+/* Circle Modules */
+.jarvis-circle-module {
+    position: absolute;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.jarvis-svg-ring {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+}
+
+.jarvis-rotating-cw {
+    animation: jarvis-rotate-cw 20s linear infinite;
+}
+
+.jarvis-rotating-ccw {
+    animation: jarvis-rotate-ccw 25s linear infinite;
+}
+
+.jarvis-rotating-fast {
+    animation: jarvis-rotate-cw 8s linear infinite;
+}
+
+@keyframes jarvis-rotate-cw {
+    100% { transform: rotate(360deg); }
+}
+
+@keyframes jarvis-rotate-ccw {
+    100% { transform: rotate(-360deg); }
+}
+
+/* Main Center Hub */
+.jarvis-center-hub {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 600px;
+    height: 600px;
+    z-index: 10;
+}
+
+.jarvis-center-text {
+    text-align: center;
+    z-index: 20;
+}
+
+.jarvis-logotype {
+    font-family: 'Rajdhani', sans-serif;
+    font-weight: 700;
+    font-size: 48px;
+    letter-spacing: 6px;
+    text-shadow: 0 0 20px var(--cyan), 0 0 40px var(--cyan);
+    margin: 10px 0;
+}
+
+.jarvis-status-text {
+    font-size: 18px;
+    letter-spacing: 3px;
+    margin-bottom: 5px;
+}
+
+.jarvis-waveform {
+    width: 250px;
+    height: 50px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.jarvis-wave-bar {
+    width: 4px;
+    background: var(--cyan);
+    box-shadow: 0 0 5px var(--cyan);
+    animation: jarvis-wave 1.2s infinite ease-in-out;
+}
+
+@keyframes jarvis-wave {
+    0%, 100% { height: 10px; }
+    50% { height: 40px; }
+}
+
+/* Side Module */
+.jarvis-side-module {
+    width: 260px;
+    height: 260px;
+    border-radius: 50%;
+}
+
+/* Left Side */
+.jarvis-mod-diagnostics {
+    top: 120px;
+    left: 180px;
+}
+
+.jarvis-mod-power {
+    top: 410px;
+    left: 100px;
+}
+
+.jarvis-mod-environment {
+    bottom: 120px;
+    left: 180px;
+}
+
+/* Right Side */
+.jarvis-mod-targeting {
+    top: 120px;
+    right: 180px;
+}
+
+.jarvis-mod-comms {
+    top: 410px;
+    right: 100px;
+}
+
+.jarvis-mod-syslog {
+    bottom: 120px;
+    right: 350px;
+}
+
+.jarvis-syslog-terminal {
+    position: absolute;
+    left: 210px;
+    top: 30px;
+    width: 320px;
+    height: 200px;
+    background: rgba(0, 10, 20, 0.85);
+    border: 1px solid var(--cyan);
+    border-radius: 0 15px 0 15px;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 0 20px rgba(0, 243, 255, 0.15) inset;
+    z-index: 5;
+}
+
+/* Inner content for side modules */
+.jarvis-inner-content {
+    position: absolute;
+    width: 70%;
+    height: 70%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.jarvis-bar-chart {
+    display: flex;
+    align-items: flex-end;
+    height: 50px;
+    gap: 4px;
+    margin-top: 10px;
+}
+
+.jarvis-bar {
+    width: 12px;
+    background: rgba(0, 243, 255, 0.3);
+    border-top: 2px solid var(--cyan);
+}
+
+.jarvis-bar-fill {
+    background: var(--cyan);
+    box-shadow: 0 0 10px var(--cyan);
+    width: 100%;
+}
+
+/* Syslog content */
+.jarvis-syslog-content {
+    width: 100%;
+    height: 100%;
+    font-size: 11px;
+    text-align: left;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.jarvis-syslog-icon-text {
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.jarvis-log-line {
+    margin-bottom: 2px;
+    white-space: nowrap;
+    opacity: 0.8;
+}
+
+/* Target crosshair */
+.jarvis-target-crosshair {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background:
+        linear-gradient(to right, transparent 49.5%, var(--cyan) 49.5%, var(--cyan) 50.5%, transparent 50.5%),
+        linear-gradient(to bottom, transparent 49.5%, var(--cyan) 49.5%, var(--cyan) 50.5%, transparent 50.5%);
+    opacity: 0.3;
+    border-radius: 50%;
+}
+
+/* Main Hub Title */
+.jarvis-main-hub-title {
+    position: absolute;
+    top: 50px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 32px;
+    letter-spacing: 12px;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.jarvis-main-hub-title::before,
+.jarvis-main-hub-title::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    width: 100px;
+    height: 1px;
+    background: var(--cyan);
+}
+
+.jarvis-main-hub-title::before {
+    left: -120px;
+}
+
+.jarvis-main-hub-title::after {
+    right: -120px;
+}
+
+/* Bottom Nav */
+.jarvis-bottom-nav {
+    position: absolute;
+    bottom: 60px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 40px;
+    z-index: 20;
+}
+
+.jarvis-nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.jarvis-nav-item:hover {
+    transform: translateY(-5px);
+    text-shadow: 0 0 15px var(--cyan);
+}
+
+.jarvis-nav-icon {
+    width: 50px;
+    height: 50px;
+    border: 2px solid var(--cyan);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 10px;
+    box-shadow: 0 0 10px inset var(--cyan-glow);
+}
+
+.jarvis-nav-icon svg {
+    width: 24px;
+    height: 24px;
+    fill: var(--cyan);
+}
+
+/* Connection Lines */
+.jarvis-connection-line {
+    position: absolute;
+    background: rgba(0, 243, 255, 0.4);
+    z-index: 1;
+}
+
+.jarvis-conn-h {
+    height: 1px;
+}
+
+/* Data bubble */
+.jarvis-data-bubble {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    border: 1px solid var(--cyan);
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.8);
+    font-size: 12px;
+}
+
+/* Back button */
+.jarvis-back-btn {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    z-index: 100;
+    background: transparent;
+    border: 1px solid var(--cyan);
+    color: var(--cyan);
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 18px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    text-shadow: 0 0 5px var(--cyan-glow);
+    box-shadow: 0 0 10px inset var(--cyan-glow);
+}
+
+.jarvis-back-btn:hover {
+    background: rgba(0, 243, 255, 0.15);
+    box-shadow: 0 0 20px var(--cyan-glow);
+}
+
+/* Nav Menu */
+.jarvis-nav-menu {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    z-index: 100;
+    display: flex;
+    gap: 10px;
+}
+
+.jarvis-nav-btn {
+    background: transparent;
+    border: 1px solid var(--cyan);
+    color: var(--cyan);
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 12px;
+    padding: 8px 16px;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    transition: all 0.3s ease;
+}
+
+.jarvis-nav-btn:hover {
+    background: rgba(0, 243, 255, 0.15);
+    box-shadow: 0 0 15px var(--cyan-glow);
+}
