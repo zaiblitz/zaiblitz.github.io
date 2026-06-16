@@ -1,0 +1,949 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>iGaming Admin — with AI Copilot</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #0f1419;
+            color: #e6edf3;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* TOP NAV */
+        .topnav {
+            height: 56px;
+            background: #161b22;
+            border-bottom: 1px solid #30363d;
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            justify-content: space-between;
+            z-index: 100;
+        }
+        .topnav-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        .logo {
+            font-size: 1.2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #f0883e, #e3b341);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .topnav-tabs {
+            display: flex;
+            gap: 4px;
+        }
+        .topnav-tabs a {
+            color: #8b949e;
+            text-decoration: none;
+            padding: 8px 14px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            transition: all 0.2s;
+        }
+        .topnav-tabs a:hover { background: #21262d; color: #e6edf3; }
+        .topnav-tabs a.active { background: #1f6feb; color: #fff; }
+        .topnav-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .copilot-toggle {
+            background: linear-gradient(135deg, #8b5cf6, #6366f1);
+            border: none;
+            color: #fff;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .copilot-toggle:hover {
+            transform: scale(1.02);
+            box-shadow: 0 0 20px rgba(139, 92, 246, 0.3);
+        }
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            background: #30363d;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+        }
+
+        /* MAIN LAYOUT */
+        .main-layout {
+            display: flex;
+            height: calc(100vh - 56px);
+        }
+
+        /* SIDEBAR */
+        .sidebar {
+            width: 220px;
+            background: #161b22;
+            border-right: 1px solid #30363d;
+            padding: 16px 0;
+            overflow-y: auto;
+        }
+        .sidebar-section {
+            padding: 8px 16px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: #8b949e;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .sidebar a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 16px;
+            color: #c9d1d9;
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: all 0.15s;
+            border-left: 3px solid transparent;
+        }
+        .sidebar a:hover { background: #21262d; color: #f0f6fc; }
+        .sidebar a.active { background: #1a2332; color: #58a6ff; border-left-color: #58a6ff; }
+        .sidebar a .count {
+            margin-left: auto;
+            background: #30363d;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 0.7rem;
+        }
+        .sidebar a .count.alert { background: #f85149; color: #fff; }
+
+        /* CONTENT AREA */
+        .content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 32px;
+            background: #0d1117;
+        }
+        .content-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 28px;
+        }
+        .content-header h1 { font-size: 1.5rem; color: #f0f6fc; }
+        .content-header .actions { display: flex; gap: 8px; }
+        .btn {
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            border: 1px solid #30363d;
+            background: #21262d;
+            color: #c9d1d9;
+            transition: all 0.15s;
+        }
+        .btn:hover { background: #30363d; border-color: #8b949e; }
+        .btn-primary { background: #1f6feb; border-color: #1f6feb; color: #fff; }
+        .btn-primary:hover { background: #388bfd; }
+
+        /* STATS GRID */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-bottom: 28px;
+        }
+        .stat-card {
+            background: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 10px;
+            padding: 20px;
+        }
+        .stat-label { color: #8b949e; font-size: 0.8rem; margin-bottom: 4px; }
+        .stat-value { font-size: 1.8rem; font-weight: 700; color: #f0f6fc; }
+        .stat-change { font-size: 0.8rem; margin-top: 4px; }
+        .stat-up { color: #56d364; }
+        .stat-down { color: #f85149; }
+
+        /* TABLE */
+        .data-table {
+            width: 100%;
+            background: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .data-table table { width: 100%; border-collapse: collapse; }
+        .data-table th {
+            padding: 12px 16px;
+            text-align: left;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            color: #8b949e;
+            background: #1c2128;
+            border-bottom: 1px solid #30363d;
+        }
+        .data-table td {
+            padding: 12px 16px;
+            font-size: 0.85rem;
+            color: #c9d1d9;
+            border-bottom: 1px solid #21262d;
+        }
+        .data-table tr:hover td { background: #1c2128; }
+        .status-badge {
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        .status-active { background: #1a3a2a; color: #56d364; }
+        .status-pending { background: #3d3a1f; color: #e3b341; }
+        .status-flagged { background: #3d1f1f; color: #f85149; }
+        .status-vip { background: #2d1f4e; color: #bc8cff; }
+
+        /* COPILOT PANEL */
+        .copilot-panel {
+            width: 420px;
+            background: #161b22;
+            border-left: 1px solid #30363d;
+            display: flex;
+            flex-direction: column;
+            transition: width 0.3s, opacity 0.3s;
+            position: relative;
+        }
+        .copilot-panel.hidden {
+            width: 0;
+            overflow: hidden;
+            opacity: 0;
+        }
+        .copilot-header {
+            padding: 16px 20px;
+            border-bottom: 1px solid #30363d;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .copilot-header h3 {
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #f0f6fc;
+        }
+        .copilot-header .ai-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #56d364;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+        .copilot-close {
+            background: none;
+            border: none;
+            color: #8b949e;
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+
+        /* CHAT AREA */
+        .copilot-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        .message {
+            max-width: 95%;
+            animation: fadeIn 0.3s ease;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .message-user {
+            align-self: flex-end;
+            background: #1f6feb;
+            color: #fff;
+            padding: 10px 14px;
+            border-radius: 12px 12px 2px 12px;
+            font-size: 0.88rem;
+        }
+        .message-ai {
+            align-self: flex-start;
+            background: #21262d;
+            border: 1px solid #30363d;
+            padding: 14px 16px;
+            border-radius: 2px 12px 12px 12px;
+            font-size: 0.88rem;
+            line-height: 1.5;
+        }
+        .message-ai strong { color: #58a6ff; }
+        .message-ai .highlight { color: #56d364; font-weight: 600; }
+        .message-ai .warning { color: #e3b341; }
+        .message-ai .action-card {
+            background: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 8px;
+            padding: 12px;
+            margin: 10px 0;
+        }
+        .message-ai .action-card h5 { color: #f0f6fc; font-size: 0.85rem; margin-bottom: 6px; }
+        .message-ai .action-card p { color: #8b949e; font-size: 0.8rem; margin: 0; }
+        .message-ai .action-buttons {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
+        }
+        .message-ai .action-buttons button {
+            padding: 6px 14px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: transform 0.1s;
+        }
+        .message-ai .action-buttons button:hover { transform: scale(1.03); }
+        .btn-approve { background: #238636; color: #fff; }
+        .btn-modify { background: #1f6feb; color: #fff; }
+        .btn-reject { background: #21262d; color: #f85149; border: 1px solid #f85149 !important; }
+        .typing-indicator {
+            display: flex;
+            gap: 4px;
+            padding: 10px 14px;
+            align-self: flex-start;
+        }
+        .typing-indicator span {
+            width: 8px;
+            height: 8px;
+            background: #8b949e;
+            border-radius: 50%;
+            animation: typing 1.4s infinite;
+        }
+        .typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
+        .typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
+        @keyframes typing {
+            0%, 100% { opacity: 0.3; transform: scale(0.8); }
+            50% { opacity: 1; transform: scale(1); }
+        }
+
+        /* INPUT */
+        .copilot-input {
+            padding: 16px;
+            border-top: 1px solid #30363d;
+        }
+        .input-wrapper {
+            display: flex;
+            gap: 8px;
+            background: #0d1117;
+            border: 1px solid #30363d;
+            border-radius: 10px;
+            padding: 8px 12px;
+            transition: border-color 0.2s;
+        }
+        .input-wrapper:focus-within { border-color: #8b5cf6; }
+        .input-wrapper input {
+            flex: 1;
+            background: none;
+            border: none;
+            color: #e6edf3;
+            font-size: 0.9rem;
+            outline: none;
+        }
+        .input-wrapper input::placeholder { color: #484f58; }
+        .send-btn {
+            background: linear-gradient(135deg, #8b5cf6, #6366f1);
+            border: none;
+            color: #fff;
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.1s;
+        }
+        .send-btn:hover { transform: scale(1.05); }
+        .quick-prompts {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 10px;
+        }
+        .quick-prompt {
+            background: #21262d;
+            border: 1px solid #30363d;
+            border-radius: 16px;
+            padding: 5px 12px;
+            font-size: 0.73rem;
+            color: #8b949e;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+        .quick-prompt:hover { background: #30363d; color: #e6edf3; border-color: #8b5cf6; }
+
+        /* Charts placeholder */
+        .chart-placeholder {
+            background: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 10px;
+            padding: 24px;
+            margin-bottom: 20px;
+        }
+        .chart-placeholder h4 { color: #f0f6fc; margin-bottom: 16px; font-size: 0.95rem; }
+        .chart-bar-container {
+            display: flex;
+            align-items: flex-end;
+            gap: 8px;
+            height: 120px;
+            padding-top: 8px;
+        }
+        .chart-bar {
+            flex: 1;
+            background: linear-gradient(to top, #1f6feb, #58a6ff);
+            border-radius: 4px 4px 0 0;
+            position: relative;
+            transition: height 0.5s;
+        }
+        .chart-bar-label {
+            position: absolute;
+            bottom: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.65rem;
+            color: #8b949e;
+        }
+    </style>
+</head>
+<body>
+    <!-- TOP NAVIGATION -->
+    <header class="topnav">
+        <div class="topnav-left">
+            <div class="logo">🎰 OperatorAdmin</div>
+            <div class="topnav-tabs">
+                <a href="#" class="active">Dashboard</a>
+                <a href="#">Players</a>
+                <a href="#">Campaigns</a>
+                <a href="#">CS Tickets</a>
+                <a href="#">Payments</a>
+                <a href="#">Reports</a>
+            </div>
+        </div>
+        <div class="topnav-right">
+            <button class="copilot-toggle" onclick="toggleCopilot()">
+                ✨ AI Copilot
+            </button>
+            <div class="user-avatar">JD</div>
+        </div>
+    </header>
+
+    <div class="main-layout">
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+            <div class="sidebar-section">Main</div>
+            <a href="#" class="active">📊 Dashboard</a>
+            <a href="#">👥 Players <span class="count">12,847</span></a>
+            <a href="#">🎁 Campaigns <span class="count">23</span></a>
+            <a href="#">🎫 CS Tickets <span class="count alert">47</span></a>
+            <div class="sidebar-section">Finance</div>
+            <a href="#">💳 Deposits</a>
+            <a href="#">💸 Withdrawals</a>
+            <a href="#">⚖️ Settlements</a>
+            <div class="sidebar-section">Risk</div>
+            <a href="#">🚨 Fraud Alerts <span class="count alert">5</span></a>
+            <a href="#">🔍 Player Flags</a>
+            <a href="#">📋 Audit Log</a>
+            <div class="sidebar-section">Analytics</div>
+            <a href="#">📈 KPI Reports</a>
+            <a href="#">🎯 Segments</a>
+            <a href="#">🏆 VIP Tracker</a>
+        </aside>
+
+        <!-- MAIN CONTENT -->
+        <main class="content">
+            <div class="content-header">
+                <h1>Dashboard Overview</h1>
+                <div class="actions">
+                    <button class="btn">Export</button>
+                    <button class="btn btn-primary">+ New Campaign</button>
+                </div>
+            </div>
+
+            <!-- STATS -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-label">Today's GGR</div>
+                    <div class="stat-value">€142,380</div>
+                    <div class="stat-change stat-up">↑ 8.3% vs yesterday</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Active Players</div>
+                    <div class="stat-value">3,247</div>
+                    <div class="stat-change stat-up">↑ 12% vs 7d avg</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Pending Withdrawals</div>
+                    <div class="stat-value">€89,420</div>
+                    <div class="stat-change stat-down">↓ 34 requests pending</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Open CS Tickets</div>
+                    <div class="stat-value">47</div>
+                    <div class="stat-change stat-down">↑ 15 new today</div>
+                </div>
+            </div>
+
+            <!-- CHART -->
+            <div class="chart-placeholder">
+                <h4>GGR — Last 7 Days (€)</h4>
+                <div class="chart-bar-container">
+                    <div class="chart-bar" style="height:70%"><span class="chart-bar-label">Mon</span></div>
+                    <div class="chart-bar" style="height:85%"><span class="chart-bar-label">Tue</span></div>
+                    <div class="chart-bar" style="height:60%"><span class="chart-bar-label">Wed</span></div>
+                    <div class="chart-bar" style="height:90%"><span class="chart-bar-label">Thu</span></div>
+                    <div class="chart-bar" style="height:75%"><span class="chart-bar-label">Fri</span></div>
+                    <div class="chart-bar" style="height:95%"><span class="chart-bar-label">Sat</span></div>
+                    <div class="chart-bar" style="height:100%"><span class="chart-bar-label">Sun</span></div>
+                </div>
+            </div>
+
+            <!-- TABLE -->
+            <div class="data-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Player</th>
+                            <th>Status</th>
+                            <th>Segment</th>
+                            <th>Deposits (30d)</th>
+                            <th>GGR (30d)</th>
+                            <th>Risk</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>player_8821</td>
+                            <td><span class="status-badge status-active">Active</span></td>
+                            <td>Sports · High Value</td>
+                            <td>€4,200</td>
+                            <td>€890</td>
+                            <td>Low</td>
+                        </tr>
+                        <tr>
+                            <td>player_3392</td>
+                            <td><span class="status-badge status-vip">VIP</span></td>
+                            <td>Casino · Whale</td>
+                            <td>€28,500</td>
+                            <td>€6,320</td>
+                            <td>Low</td>
+                        </tr>
+                        <tr>
+                            <td>player_1204</td>
+                            <td><span class="status-badge status-flagged">Flagged</span></td>
+                            <td>Sports · New</td>
+                            <td>€1,800</td>
+                            <td>-€2,100</td>
+                            <td style="color:#f85149">High</td>
+                        </tr>
+                        <tr>
+                            <td>player_5567</td>
+                            <td><span class="status-badge status-pending">Pending KYC</span></td>
+                            <td>Slots · Casual</td>
+                            <td>€320</td>
+                            <td>€85</td>
+                            <td>Medium</td>
+                        </tr>
+                        <tr>
+                            <td>player_9041</td>
+                            <td><span class="status-badge status-active">Active</span></td>
+                            <td>Casino · Regular</td>
+                            <td>€1,650</td>
+                            <td>€420</td>
+                            <td>Low</td>
+                        </tr>
+                        <tr>
+                            <td>player_7783</td>
+                            <td><span class="status-badge status-flagged">Flagged</span></td>
+                            <td>Sports · Multi-acc</td>
+                            <td>€950</td>
+                            <td>-€1,450</td>
+                            <td style="color:#f85149">Critical</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+
+        <!-- AI COPILOT PANEL -->
+        <aside class="copilot-panel" id="copilotPanel">
+            <div class="copilot-header">
+                <h3><div class="ai-dot"></div> AI Copilot</h3>
+                <button class="copilot-close" onclick="toggleCopilot()">✕</button>
+            </div>
+
+            <div class="copilot-messages" id="chatMessages">
+                <!-- Welcome message -->
+                <div class="message message-ai">
+                    👋 Hi! I'm your <strong>AI Risk Copilot</strong>. I can help you with:<br><br>
+                    • <strong>Opposite betting detection</strong> — find cross-account coordinated fraud<br>
+                    • <strong>Bonus abuse</strong> — detect multi-account promo exploitation<br>
+                    • <strong>Fraud alerts</strong> — analyze all suspicious patterns<br>
+                    • <strong>KPI analysis</strong> — explain revenue changes<br>
+                    • <strong>CS tickets</strong> — bulk resolve or triage<br><br>
+                    What would you like help with?
+                </div>
+            </div>
+
+            <div class="copilot-input">
+                <div class="input-wrapper">
+                    <input type="text" id="chatInput" placeholder="Ask the Copilot anything..." onkeydown="if(event.key==='Enter')sendMessage()">
+                    <button class="send-btn" onclick="sendMessage()">→</button>
+                </div>
+                <div class="quick-prompts">
+                    <span class="quick-prompt" onclick="quickPrompt('Detect opposite betting accounts')">⚔️ Opposite betting</span>
+                    <span class="quick-prompt" onclick="quickPrompt('Check for bonus abuse and multi-account creation')">🎭 Bonus abuse</span>
+                    <span class="quick-prompt" onclick="quickPrompt('Show me fraud alerts')">🚨 Fraud alerts</span>
+                    <span class="quick-prompt" onclick="quickPrompt('Why did revenue drop yesterday?')">📉 Revenue drop</span>
+                    <span class="quick-prompt" onclick="quickPrompt('Handle pending CS tickets')">🎫 CS tickets</span>
+                    <span class="quick-prompt" onclick="quickPrompt('KPI summary for today')">📊 KPI summary</span>
+                </div>
+            </div>
+        </aside>
+    </div>
+
+    <script>
+        // Toggle copilot panel
+        function toggleCopilot() {
+            document.getElementById('copilotPanel').classList.toggle('hidden');
+        }
+
+        // Quick prompt buttons
+        function quickPrompt(text) {
+            document.getElementById('chatInput').value = text;
+            sendMessage();
+        }
+
+        // Send message
+        function sendMessage() {
+            const input = document.getElementById('chatInput');
+            const text = input.value.trim();
+            if (!text) return;
+
+            // Add user message
+            addMessage(text, 'user');
+            input.value = '';
+
+            // Show typing indicator
+            showTyping();
+
+            // Simulate AI response with delay
+            setTimeout(() => {
+                removeTyping();
+                const response = getAIResponse(text);
+                addMessage(response, 'ai');
+            }, 1500 + Math.random() * 1000);
+        }
+
+        function addMessage(content, type) {
+            const container = document.getElementById('chatMessages');
+            const msg = document.createElement('div');
+            msg.className = `message message-${type}`;
+            if (type === 'ai') {
+                msg.innerHTML = content;
+            } else {
+                msg.textContent = content;
+            }
+            container.appendChild(msg);
+            container.scrollTop = container.scrollHeight;
+        }
+
+        function showTyping() {
+            const container = document.getElementById('chatMessages');
+            const typing = document.createElement('div');
+            typing.className = 'typing-indicator';
+            typing.id = 'typingIndicator';
+            typing.innerHTML = '<span></span><span></span><span></span>';
+            container.appendChild(typing);
+            container.scrollTop = container.scrollHeight;
+        }
+
+        function removeTyping() {
+            const el = document.getElementById('typingIndicator');
+            if (el) el.remove();
+        }
+
+        // Sample AI responses based on keywords
+        function getAIResponse(input) {
+            const lower = input.toLowerCase();
+
+            // Opposite betting detection
+            if (lower.includes('opposite') || lower.includes('opposite betting') || lower.includes('mirror bet')) {
+                return `
+                    🔍 <strong>Scanning bet records for opposite betting patterns...</strong><br><br>
+                    <div class="action-card" style="border-left: 3px solid #f85149;">
+                        <h5>🚨 CRITICAL — Cross-Account Opposite Betting Detected</h5>
+                        <p>
+                            <strong>Accounts:</strong> player_1204 ↔ player_7783<br>
+                            <strong>Pattern:</strong> Both accounts placed opposing bets on the <strong>same 14 football events</strong> over 7 days<br>
+                            <strong>How it works:</strong> player_1204 bets Team A wins, player_7783 bets Team A loses — one always wins, bonus absorbs the loss<br><br>
+                            <strong>Evidence from bet records:</strong><br>
+                            → 14/14 events: opposing selections on same match<br>
+                            → Average time between bets: <strong>2.3 minutes</strong><br>
+                            → Same device fingerprint on 11/14 occasions<br>
+                            → Both accounts registered within 48h, IP range 185.xx.xx.0/24<br>
+                            → Withdrawal destination: same IBAN ending **4821<br><br>
+                            <strong>Financial impact:</strong><br>
+                            → Bonus claimed by player_1204: <span style="color:#f85149">€400</span><br>
+                            → Total profit extracted across both accounts: <span style="color:#f85149">€340</span><br>
+                            → Confidence score: <span style="color:#f85149">94%</span>
+                        </p>
+                    </div>
+                    <span class="warning">⚠️ Recommended: Freeze both accounts and block pending withdrawals</span>
+                    <div class="action-buttons">
+                        <button class="btn-approve" onclick="handleApproval('opposite-freeze')">🔒 Freeze Both Accounts</button>
+                        <button class="btn-modify">📋 Escalate to Compliance</button>
+                        <button class="btn-reject">Dismiss</button>
+                    </div>
+                `;
+            }
+
+            // Bonus abuse / multi-account
+            if (lower.includes('multi') || lower.includes('multiple account') || lower.includes('bonus abuse') || lower.includes('multi-account')) {
+                return `
+                    🎭 <strong>Scanning for bonus abuse via multiple account creation...</strong><br><br>
+                    <div class="action-card" style="border-left: 3px solid #f85149;">
+                        <h5>🚨 CRITICAL — Multi-Account Bonus Abuse Ring Detected</h5>
+                        <p>
+                            <strong>Accounts in ring:</strong> 8 accounts linked<br>
+                            <strong>Ring IDs:</strong> player_2201, player_2202, player_2203, player_2205, player_2208, player_2211, player_2215, player_2219<br><br>
+                            <strong>How they did it:</strong><br>
+                            → All 8 accounts created within <strong>72 hours</strong><br>
+                            → Each claimed the €100 welcome bonus (total: <span style="color:#f85149">€800 claimed</span>)<br>
+                            → Each completed wagering using <strong>low-risk opposite bets</strong> to clear the bonus<br>
+                            → All withdrew immediately after wagering cleared<br><br>
+                            <strong>Linking evidence:</strong><br>
+                            → Same device fingerprint across all 8 accounts<br>
+                            → 6/8 accounts registered from IP range 192.168.xx.0/24<br>
+                            → All 8 withdrawal requests sent to <strong>2 unique IBANs</strong><br>
+                            → Identical wagering pattern: small opposing bets, never high-risk selections<br><br>
+                            <strong>Financial damage:</strong><br>
+                            → Total bonus paid out: <span style="color:#f85149">€800</span><br>
+                            → Total withdrawn: <span style="color:#f85149">€720</span> (bonus - wagering cost)<br>
+                            → Confidence score: <span style="color:#f85149">97%</span>
+                        </p>
+                    </div>
+                    <div class="action-card">
+                        <h5>⚠️ MEDIUM — 3 More Suspicious New Registrations</h5>
+                        <p>
+                            3 accounts registered today share a similar email pattern (user+1@, user+2@, user+3@) and the same billing address. Monitoring for bonus claim activity.
+                        </p>
+                    </div>
+                    <span class="warning">⚠️ Recommended: Freeze all 8 accounts, void bonuses, block associated IBANs</span>
+                    <div class="action-buttons">
+                        <button class="btn-approve" onclick="handleApproval('multiaccont-freeze')">🔒 Freeze All 8 Accounts</button>
+                        <button class="btn-modify">📋 Escalate to Compliance</button>
+                        <button class="btn-reject">Dismiss</button>
+                    </div>
+                `;
+            }
+
+            // Bonus / Campaign related
+            if (lower.includes('bonus') || lower.includes('campaign') || lower.includes('promo') || lower.includes('dormant')) {
+                return `
+                    I've analyzed your player segments. Here's my recommendation:<br><br>
+                    <div class="action-card">
+                        <h5>🎁 Re-engagement Campaign — Dormant Sports Players</h5>
+                        <p>
+                            <strong>Target:</strong> 1,247 players (no deposit in 30+ days, sports vertical)<br>
+                            <strong>Offer:</strong> 25% deposit bonus, max €50<br>
+                            <strong>Wagering:</strong> 8x on sports (min odds 1.50)<br>
+                            <strong>Duration:</strong> 7 days<br>
+                            <strong>Est. cost:</strong> €15,600 | <strong>Est. ROI:</strong> <span class="highlight">3.2x</span>
+                        </p>
+                    </div>
+                    Based on historical data, similar campaigns had a <span class="highlight">34% reactivation rate</span> within this segment.<br><br>
+                    <span class="warning">⚠️ This requires approval (financial action)</span>
+                    <div class="action-buttons">
+                        <button class="btn-approve" onclick="handleApproval('approved')">✅ Approve</button>
+                        <button class="btn-modify">✏️ Modify</button>
+                        <button class="btn-reject" onclick="handleApproval('rejected')">✕ Reject</button>
+                    </div>
+                `;
+            }
+
+            // Revenue / KPI related
+            if (lower.includes('revenue') || lower.includes('drop') || lower.includes('kpi') || lower.includes('summary')) {
+                return `
+                    📊 <strong>KPI Summary — June 15, 2026</strong><br><br>
+                    <div class="action-card">
+                        <h5>Today's Performance vs. 7-day Average</h5>
+                        <p>
+                            <strong>GGR:</strong> €142,380 (<span class="highlight">↑ 8.3%</span>)<br>
+                            <strong>Sports GGR:</strong> €67,200 (↑ 12%)<br>
+                            <strong>Casino GGR:</strong> €58,100 (<span style="color:#f85149">↓ 4%</span>)<br>
+                            <strong>New registrations:</strong> 89 (↑ 15%)<br>
+                            <strong>FTDs:</strong> 34 (within norm)
+                        </p>
+                    </div>
+                    <strong>Casino GGR dip root cause:</strong><br>
+                    1. 🎰 Provider X maintenance window (2h downtime, 11am–1pm)<br>
+                    2. 🏆 3 VIP players inactive today (normal pattern — typically return within 48h)<br><br>
+                    <strong>Recommendation:</strong> No structural issue. Sports compensated. VIPs expected back tomorrow.<br><br>
+                    <span style="color:#8b949e; font-size:0.8rem;">Data sourced from admin KPI API · Last refreshed: 2 min ago</span>
+                `;
+            }
+
+            // Fraud / Abuse related
+            if (lower.includes('fraud') || lower.includes('abuse') || lower.includes('alert') || lower.includes('suspicious') || lower.includes('arbitrage')) {
+                return `
+                    🚨 <strong>Active Fraud Alerts (5)</strong><br><br>
+                    <div class="action-card">
+                        <h5>⚠️ HIGH — Multi-account Bonus Abuse</h5>
+                        <p>
+                            <strong>Accounts:</strong> player_1204, player_7783 + 4 linked<br>
+                            <strong>Pattern:</strong> 6 accounts from same IP range (185.xx.xx.0/24), created within 72h, identical betting patterns (lay arbitrage on tennis)<br>
+                            <strong>Evidence:</strong> Same device fingerprint (4/6), identical withdrawal timing<br>
+                            <strong>Damage:</strong> €3,200 bonus claimed, €2,650 withdrawn<br>
+                            <strong>Confidence:</strong> <span style="color:#f85149">94%</span>
+                        </p>
+                    </div>
+                    <div class="action-card">
+                        <h5>⚠️ MEDIUM — Unusual Deposit Pattern</h5>
+                        <p>
+                            <strong>Account:</strong> player_5567<br>
+                            <strong>Pattern:</strong> 12 deposits of exactly €49.99 in 24h (just below €50 AML threshold)<br>
+                            <strong>Recommendation:</strong> Flag for compliance review
+                        </p>
+                    </div>
+                    <div class="action-buttons">
+                        <button class="btn-approve" onclick="handleApproval('fraud-actioned')">🔒 Freeze Flagged Accounts</button>
+                        <button class="btn-modify">👁️ Review Details</button>
+                    </div>
+                `;
+            }
+
+            // CS Tickets
+            if (lower.includes('ticket') || lower.includes('cs') || lower.includes('support') || lower.includes('resolve')) {
+                return `
+                    🎫 <strong>CS Ticket Analysis — 47 Open</strong><br><br>
+                    I've categorized and triaged the pending tickets:<br><br>
+                    <div class="action-card">
+                        <h5>Auto-resolvable (31 tickets)</h5>
+                        <p>
+                            • <strong>22</strong> — Withdrawal delay inquiries (standard processing time)<br>
+                            • <strong>6</strong> — Bonus terms questions (template response)<br>
+                            • <strong>3</strong> — Password reset (auto-link sent)
+                        </p>
+                    </div>
+                    <div class="action-card">
+                        <h5>Requires Review (12 tickets)</h5>
+                        <p>
+                            • <strong>5</strong> — KYC document issues → escalate to compliance<br>
+                            • <strong>4</strong> — Payment disputes (> €500) → finance team<br>
+                            • <strong>3</strong> — Account closure requests → retention workflow
+                        </p>
+                    </div>
+                    <div class="action-card">
+                        <h5>High Priority (4 tickets)</h5>
+                        <p>
+                            • <strong>2</strong> — VIP complaints (player_3392) → immediate attention<br>
+                            • <strong>2</strong> — Regulatory inquiries → legal team
+                        </p>
+                    </div>
+                    <span class="warning">⚠️ Auto-resolve 31 tickets with template responses?</span>
+                    <div class="action-buttons">
+                        <button class="btn-approve" onclick="handleApproval('tickets-resolved')">✅ Auto-resolve 31</button>
+                        <button class="btn-modify">👁️ Review first</button>
+                        <button class="btn-reject">✕ Skip</button>
+                    </div>
+                `;
+            }
+
+            // Player related
+            if (lower.includes('player') || lower.includes('segment') || lower.includes('vip')) {
+                return `
+                    👥 <strong>Player Segment Overview</strong><br><br>
+                    <div class="action-card">
+                        <h5>Current Active Segments</h5>
+                        <p>
+                            • <strong>Sports High Value:</strong> 342 players (avg deposit €3,800/mo)<br>
+                            • <strong>Casino Whales:</strong> 28 VIPs (avg GGR €8,200/mo)<br>
+                            • <strong>Slots Casual:</strong> 4,120 players (avg deposit €85/mo)<br>
+                            • <strong>Dormant 30d+:</strong> 1,247 players (last active > 30 days)<br>
+                            • <strong>New (< 7d):</strong> 156 players (onboarding)
+                        </p>
+                    </div>
+                    <strong>Notable trends:</strong><br>
+                    • Dormant segment grew 18% this month — consider reactivation campaign<br>
+                    • VIP segment stable — player_3392 approaching €100k lifetime<br>
+                    • 3 players flagged for potential multi-accounting<br><br>
+                    Want me to create a targeted campaign for any segment?
+                `;
+            }
+
+            // Default response
+            return `
+                I can help with that! Here's what I can do based on your admin data:<br><br>
+                • <strong>Analyze patterns</strong> — player behavior, revenue trends, risk signals<br>
+                • <strong>Recommend actions</strong> — campaigns, ticket resolutions, fraud responses<br>
+                • <strong>Execute (with approval)</strong> — create campaigns, flag players, resolve tickets<br>
+                • <strong>Explain</strong> — why KPIs changed, what patterns mean<br><br>
+                Try asking me something specific like:<br>
+                <em>"Create a bonus for VIP players"</em><br>
+                <em>"Why is casino revenue down?"</em><br>
+                <em>"Show me suspicious accounts"</em>
+            `;
+        }
+
+        // Handle approval button clicks
+        function handleApproval(action) {
+            let response = '';
+            switch(action) {
+                case 'approved':
+                    response = `✅ <strong>Campaign Approved & Executed</strong><br><br>Campaign "Re-engagement — Dormant Sports" has been created in the admin system.<br><br>• Target: 1,247 players<br>• Status: <span class="highlight">Active</span><br>• First notifications sent<br>• Monitoring started — I'll report results in 24h<br><br><span style="color:#8b949e; font-size:0.8rem;">Action logged · Audit ID: AUD-2026-0615-001</span>`;
+                    break;
+                case 'rejected':
+                    response = `❌ Campaign rejected. Noted — I won't execute this campaign. Would you like me to suggest an alternative approach or different segment?`;
+                    break;
+                case 'fraud-actioned':
+                    response = `🔒 <strong>Accounts Frozen</strong><br><br>6 linked accounts have been frozen:<br>• player_1204 — frozen + withdrawal blocked<br>• player_7783 — frozen + withdrawal blocked<br>• 4 linked accounts — frozen<br><br>Compliance team notified. Evidence package generated.<br><br><span style="color:#8b949e; font-size:0.8rem;">Action logged · Audit ID: AUD-2026-0615-002</span>`;
+                    break;
+                case 'opposite-freeze':
+                    response = `🔒 <strong>Opposite Betting — Accounts Frozen</strong><br><br>• player_1204 — frozen + withdrawal of €340 blocked<br>• player_7783 — frozen + withdrawal of €290 blocked<br><br>Bonus of €400 voided on player_1204.<br>Evidence package sent to compliance team.<br>Both accounts flagged as linked ring — any new registrations from same device will auto-flag.<br><br><span style="color:#8b949e; font-size:0.8rem;">Action logged · Audit ID: AUD-2026-0616-004</span>`;
+                    break;
+                case 'multiaccont-freeze':
+                    response = `🔒 <strong>Multi-Account Ring — 8 Accounts Frozen</strong><br><br>• All 8 accounts frozen immediately<br>• €800 in bonuses voided<br>• 2 linked IBANs blacklisted from future withdrawals<br>• Pending withdrawals totalling €720 blocked<br><br>Device fingerprint added to blocklist — any new registration from same device will be auto-rejected.<br>Compliance team notified with full evidence report.<br><br><span style="color:#8b949e; font-size:0.8rem;">Action logged · Audit ID: AUD-2026-0616-005</span>`;
+                    break;
+                case 'tickets-resolved':
+                    response = `✅ <strong>31 Tickets Auto-Resolved</strong><br><br>• 22 withdrawal delay — sent ETA response<br>• 6 bonus terms — sent terms explanation<br>• 3 password reset — reset links sent<br><br>Remaining 16 tickets routed to appropriate teams.<br>Average resolution time: <span class="highlight">0.3 seconds</span> (vs. 12 min manual avg)<br><br><span style="color:#8b949e; font-size:0.8rem;">Action logged · Audit ID: AUD-2026-0615-003</span>`;
+                    break;
+            }
+            showTyping();
+            setTimeout(() => {
+                removeTyping();
+                addMessage(response, 'ai');
+            }, 800);
+        }
+    </script>
+</body>
+</html>
